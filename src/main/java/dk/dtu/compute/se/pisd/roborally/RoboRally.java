@@ -64,7 +64,13 @@ public class RoboRally extends Application {
         RoboRallyMenuBar menuBar = new RoboRallyMenuBar(appController);
         boardRoot = new BorderPane();
         VBox vbox = new VBox(menuBar, boardRoot);
-        vbox.setMinWidth(MIN_APP_WIDTH);
+
+        // aspt ratio - 2/3
+        vbox.prefWidthProperty().bind(stage.widthProperty().multiply(0.80));
+        vbox.prefHeightProperty().bind(stage.widthProperty().multiply(0.80).divide(2).multiply(3));
+        vbox.setMinWidth(stage.widthProperty().multiply(0.80).get());
+        vbox.setMinHeight(stage.widthProperty().multiply(0.80).divide(2).multiply(3).get());
+
         Scene primaryScene = new Scene(vbox);
 
         stage.setScene(primaryScene);
@@ -73,8 +79,11 @@ public class RoboRally extends Application {
                 e -> {
                     e.consume();
                     appController.exit();} );
-        stage.setResizable(false);
+//        stage.minWidthProperty().bind(primaryScene.heightProperty().multiply(2));
+//        stage.minHeightProperty().bind(primaryScene.widthProperty().divide(2));
+        stage.setResizable(true);
         stage.sizeToScene();
+        stage.centerOnScreen();
         stage.show();
     }
 

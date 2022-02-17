@@ -76,7 +76,7 @@
     </dependencies>
 
     <build>
-        <defaultGoal>clean package</defaultGoal>
+        <defaultGoal>clean package javadoc:javadoc</defaultGoal>
         <!-- we use default maven directory structure as indicated below
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
