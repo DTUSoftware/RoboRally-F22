@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,15 +26,19 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * Controls stuff that happens on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class GameController {
-
+    /** The board linked to the controller */
     final public Board board;
 
+    /**
+     * The GameController constructor.
+     *
+     * @param board the board to control.
+     */
     public GameController(@NotNull Board board) {
         this.board = board;
     }
@@ -64,6 +69,16 @@ public class GameController {
         //     is not yet implemented
     };
 
+    /**
+     * Moves a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} on a source
+     * {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to
+     * another {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     * Only moves the card, if there is a card on the source field, and there is no card on the target field.
+     *
+     * @param source The source {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     * @param target The {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to move the card to.
+     * @return <code>true</code> if the card is moved, else <code>false</code>.
+     */
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         CommandCard sourceCard = source.getCard();
         CommandCard targetCard = target.getCard();

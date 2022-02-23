@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,10 +34,9 @@ import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * The view that each separate {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} has.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class PlayerView extends Tab implements ViewObserver {
 
@@ -62,6 +62,14 @@ public class PlayerView extends Tab implements ViewObserver {
 
     private GameController gameController;
 
+    /**
+     * The PlayerView constructor.
+     *
+     * @param gameController the {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}
+     *                       that controls this player view.
+     * @param player         the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} that is represented
+     *                       on this view.
+     */
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
         super(player.getName());
         this.setStyle("-fx-text-base-color: " + player.getColor() + ";");
@@ -133,6 +141,12 @@ public class PlayerView extends Tab implements ViewObserver {
         }
     }
 
+    /**
+     * Updates the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}'s view, depending on actions taken by
+     * the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
+     *
+     * @param subject the board which changed
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == player.board) {

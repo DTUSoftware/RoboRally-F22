@@ -32,7 +32,6 @@ import java.util.WeakHashMap;
  * the definition of the GoF.
  * 
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public abstract class Subject {
 	

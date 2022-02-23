@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,27 +39,37 @@ import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * The CardFieldView is the visual representation of a
+ * {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class CardFieldView extends GridPane implements ViewObserver {
 
-    // This data format helps avoiding transfers of e.g. Strings from other
-    // programs which can copy/paste Strings.
+    /**
+     * This data format helps avoiding transfers of e.g. Strings from other
+     * programs which can copy/paste Strings.
+     */
     final public static  DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
 
+    /** The width of a card field */
     final public static int CARDFIELD_WIDTH = 65;
+    /** The height of a card field */
     final public static int CARDFIELD_HEIGHT = 100;
 
+    /** The border design of a card field */
     final public static Border BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2)));
 
+    /** The background design of a card field */
     final public static Background BG_DEFAULT = new Background(new BackgroundFill(Color.WHITE, null, null));
+    /** The background design of a card when dragged */
     final public static Background BG_DRAG = new Background(new BackgroundFill(Color.GRAY, null, null));
+    /** The background design of a card when dropped */
     final public static Background BG_DROP = new Background(new BackgroundFill(Color.LIGHTGRAY, null, null));
 
+    /** The background design of a card when active */
     final public static Background BG_ACTIVE = new Background(new BackgroundFill(Color.YELLOW, null, null));
+    /** The background design of a card when done */
     final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW,  null, null));
 
     private CommandCardField field;
@@ -67,6 +78,14 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     private GameController gameController;
 
+    /**
+     * The CardFieldView constructor.
+     *
+     * @param gameController the {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}
+     *                       that controls this card field view.
+     * @param field          the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} that
+     *                       is represented in the view.
+     */
     public CardFieldView(@NotNull GameController gameController, @NotNull CommandCardField field) {
         this.gameController = gameController;
         this.field = field;
@@ -100,6 +119,12 @@ public class CardFieldView extends GridPane implements ViewObserver {
         update(field);
     }
 
+    /**
+     * Gets the representation of the provided cardfield.
+     * @param cardField the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to get the
+     *                  representation of.
+     * @return the representation, based on current field player, and such.
+     */
     private String cardFieldRepresentation(CommandCardField cardField) {
         if (cardField.player != null) {
 
@@ -121,6 +146,11 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     }
 
+    /**
+     * Gets a CommandCardField based on the provided representation.
+     * @param rep the representation.
+     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}, based on the representation.
+     */
     private CommandCardField cardFieldFromRepresentation(String rep) {
         if (rep != null && field.player != null) {
             String[] strings = rep.split(",");
@@ -140,6 +170,11 @@ public class CardFieldView extends GridPane implements ViewObserver {
         return null;
     }
 
+    /**
+     * Updates the card field, when changes are made to the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     *
+     * @param subject the subject which changed
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == field && subject != null) {
@@ -152,6 +187,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
         }
     }
 
+    /**
+     * Detects mouse drag events of cards.
+     */
     private class OnDragDetectedHandler implements EventHandler<MouseEvent> {
 
         @Override
@@ -181,6 +219,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     }
 
+    /**
+     * Handles mouse drag events of cards.
+     */
     private class OnDragOverHandler implements EventHandler<DragEvent> {
 
         @Override
@@ -203,6 +244,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     }
 
+    /**
+     * Handles mouse drag events of cards.
+     */
     private class OnDragEnteredHandler implements EventHandler<DragEvent> {
 
         @Override
@@ -226,6 +270,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     }
 
+    /**
+     * Handles mouse drag events of cards.
+     */
     private class OnDragExitedHandler implements EventHandler<DragEvent> {
 
         @Override
@@ -249,6 +296,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     }
 
+    /**
+     * Handles mouse drag events of cards.
+     */
     private class OnDragDroppedHandler implements EventHandler<DragEvent> {
 
         @Override
@@ -288,6 +338,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     }
 
+    /**
+     * Handles mouse drag events of cards.
+     */
     private class OnDragDoneHandler implements EventHandler<DragEvent> {
 
         @Override

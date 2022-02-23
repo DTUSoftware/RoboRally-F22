@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,20 +27,30 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import javafx.application.Platform;
 
 /**
- * ...
+ * The observer that's used for the Application's views.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public interface ViewObserver extends Observer {
 
+    /**
+     * The specific update method used for views.
+     *
+     * @param subject the subject which changed
+     */
     void updateView(Subject subject);
 
+    /**
+     * Default implementation of the update method.
+     *
+     * This default implementation of the update method makes sure that ViewObserver implementations
+     * are doing the update only in the FX application thread. The update of the view is instead
+     * done in the updateView() method.
+     *
+     * @param subject the subject which changed
+     */
     @Override
     default void update(Subject subject) {
-        // This default implementation of the update method makes sure that ViewObserver implementations
-        // are doing the update only in the FX application thread. The update of the view is instead
-        // done in the updateView() method;
         if (Platform.isFxApplicationThread()) {
             updateView(subject);
         } else {

@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,10 +36,9 @@ import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * The BoardView is the visual representation of a {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class BoardView extends VBox implements ViewObserver {
 
@@ -53,6 +53,12 @@ public class BoardView extends VBox implements ViewObserver {
 
     private SpaceEventHandler spaceEventHandler;
 
+    /**
+     * The BoardView constructor.
+     *
+     * @param gameController the {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}
+     *                       that controls this board.
+     */
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
@@ -82,6 +88,11 @@ public class BoardView extends VBox implements ViewObserver {
         update(board);
     }
 
+    /**
+     * Updates the board view, when changes are made to the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
+     *
+     * @param subject the subject which changed (usually the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}).
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
@@ -90,8 +101,10 @@ public class BoardView extends VBox implements ViewObserver {
         }
     }
 
-    // XXX this handler and its uses should eventually be deleted! This is just to help test the
-    //     behaviour of the game by being able to explicitly move the players on the board!
+    /**
+     * XXX this handler and its uses should eventually be deleted! This is just to help test the
+     * behaviour of the game by being able to explicitly move the players on the board!
+     */
     private class SpaceEventHandler implements EventHandler<MouseEvent> {
 
         final public GameController gameController;
@@ -100,6 +113,11 @@ public class BoardView extends VBox implements ViewObserver {
             this.gameController = gameController;
         }
 
+        /**
+         * Handles mouse events, like moving the current player to a space that is clicked.
+         *
+         * @param event the {@link javafx.scene.input.MouseEvent MouseEvent}.
+         */
         @Override
         public void handle(MouseEvent event) {
             Object source = event.getSource();
