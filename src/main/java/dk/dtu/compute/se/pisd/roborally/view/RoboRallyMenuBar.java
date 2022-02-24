@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,10 +28,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 /**
- * ...
+ * The Application's {@link javafx.scene.control.MenuBar MenuBar}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class RoboRallyMenuBar extends MenuBar {
 
@@ -39,15 +39,17 @@ public class RoboRallyMenuBar extends MenuBar {
     private Menu controlMenu;
 
     private MenuItem saveGame;
-
     private MenuItem newGame;
-
     private MenuItem loadGame;
-
     private MenuItem stopGame;
-
     private MenuItem exitApp;
 
+    /**
+     * A RoboRallyMenuBar constructor.
+     *
+     * @param appController the {@link dk.dtu.compute.se.pisd.roborally.controller.AppController AppController}
+     *                      that controls this menu.
+     */
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
 
@@ -79,6 +81,10 @@ public class RoboRallyMenuBar extends MenuBar {
         update();
     }
 
+    /**
+     * Updates the MenuBar, depending on factors such as whether
+     * the game is running or not.
+     */
     public void update() {
         if (appController.isGameRunning()) {
             newGame.setVisible(false);

@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,10 +33,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * ...
+ * The main RoboRally application, run as a JavaFX application.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class RoboRally extends Application {
 
@@ -47,11 +47,21 @@ public class RoboRally extends Application {
 
     // private AppController appController;
 
+    /**
+     * Initializes the Application.
+     *
+     * @throws Exception if not initialized.
+     */
     @Override
     public void init() throws Exception {
         super.init();
     }
 
+    /**
+     * The function that runs when the application starts.
+     *
+     * @param primaryStage The primary {@link javafx.stage.Stage Stage} of the application.
+     */
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
@@ -87,6 +97,11 @@ public class RoboRally extends Application {
         stage.show();
     }
 
+    /**
+     * Creates a new BoardView, and removes the old BoardView, if present.
+     *
+     * @param gameController The {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}.
+     */
     public void createBoardView(GameController gameController) {
         // if present, remove old BoardView
         boardRoot.getChildren().clear();
@@ -100,6 +115,11 @@ public class RoboRally extends Application {
         stage.sizeToScene();
     }
 
+    /**
+     * Stops the game.
+     *
+     * @throws Exception an exception thrown while tying to stop the game.
+     */
     @Override
     public void stop() throws Exception {
         super.stop();
@@ -110,6 +130,11 @@ public class RoboRally extends Application {
         //     so that the AppController can take care of that.
     }
 
+    /**
+     * The main function in the application - launches the game.
+     *
+     * @param args any arguments.
+     */
     public static void main(String[] args) {
         launch(args);
     }

@@ -26,7 +26,6 @@ package dk.dtu.compute.se.pisd.designpatterns.observer;
  * the definition of the GoF.
  * 
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public interface Observer {
 	

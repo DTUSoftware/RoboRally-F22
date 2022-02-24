@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -28,10 +29,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import javafx.scene.control.TabPane;
 
 /**
- * ...
+ * The view representing the players' in the game, and the current player.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class PlayersView extends TabPane implements ViewObserver {
 
@@ -39,6 +39,12 @@ public class PlayersView extends TabPane implements ViewObserver {
 
     private PlayerView[] playerViews;
 
+    /**
+     * Initializes a new players' view.
+     *
+     * @param gameController the {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}
+     *                       that controls this players' view.
+     */
     public PlayersView(GameController gameController) {
         board = gameController.board;
 
@@ -53,6 +59,11 @@ public class PlayersView extends TabPane implements ViewObserver {
         update(board);
     }
 
+    /**
+     * Updates the view when changes are made to the board.
+     *
+     * @param subject the subject which changed
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {

@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,19 +26,28 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * A card holding a single {@link dk.dtu.compute.se.pisd.roborally.model.Command Command}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class CommandCard extends Subject {
-
+    /** The command linked to the card */
     final public Command command;
 
+    /**
+     * The CommandCard constructor.
+     *
+     * @param command the command to put on the card.
+     */
     public CommandCard(@NotNull Command command) {
         this.command = command;
     }
 
+    /**
+     * Gets the displayName of the {@link dk.dtu.compute.se.pisd.roborally.model.Command Command} that's on the card.
+     *
+     * @return the displayName of the Command.
+     */
     public String getName() {
         return command.displayName;
     }

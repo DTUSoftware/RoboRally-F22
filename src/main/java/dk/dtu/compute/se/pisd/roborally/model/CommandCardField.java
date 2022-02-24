@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,29 +25,44 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 /**
- * ...
+ * A field to put {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard}s on.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class CommandCardField extends Subject {
-
+    /** The player that has the card field */
     final public Player player;
 
     private CommandCard card;
 
     private boolean visible;
 
+    /**
+     * The CommandCardField constructor.
+     *
+     * @param player the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} that has the card field.
+     */
     public CommandCardField(Player player) {
         this.player = player;
-        this. card = null;
+        this.card = null;
         this.visible = true;
     }
 
+    /**
+     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} that's on the field.
+     *
+     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard}, if any.
+     */
     public CommandCard getCard() {
         return card;
     }
 
+    /**
+     * Sets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} that is on the field.
+     * Cannot set the card to the same card.
+     *
+     * @param card The {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} to put on the field.
+     */
     public void setCard(CommandCard card) {
         if (card != this.card) {
             this.card = card;
@@ -54,10 +70,20 @@ public class CommandCardField extends Subject {
         }
     }
 
+    /**
+     * Whether the field is visible.
+     *
+     * @return <code>true</code> if the field is visible, else <code>false</code>.
+     */
     public boolean isVisible() {
         return visible;
     }
 
+    /**
+     * Control whether the field is visible or not.
+     *
+     * @param visible <code>true</code> if the field should be visible, else <code>false</code>.
+     */
     public void setVisible(boolean visible) {
         if (visible != this.visible) {
             this.visible = visible;

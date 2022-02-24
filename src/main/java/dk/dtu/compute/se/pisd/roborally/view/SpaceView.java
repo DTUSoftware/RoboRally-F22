@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,19 +35,25 @@ import javafx.scene.shape.StrokeLineCap;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ...
+ * A SpaceView is the visual representation of a {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
+    /** the height of the space view */
     final public static int SPACE_HEIGHT = 75; // 60; // 75;
+    /** the width of the space view */
     final public static int SPACE_WIDTH = 75;  // 60; // 75;
 
+    /** the Space that is linked to the view */
     public final Space space;
 
-
+    /**
+     * Creates a new view for a {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     *
+     * @param space the {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     */
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
@@ -72,6 +79,10 @@ public class SpaceView extends StackPane implements ViewObserver {
         update(space);
     }
 
+    /**
+     * Updates the view with headings and other effects on the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}
+     * when the player interacts with the {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     */
     private void updatePlayer() {
         this.getChildren().clear();
 
@@ -91,6 +102,11 @@ public class SpaceView extends StackPane implements ViewObserver {
         }
     }
 
+    /**
+     * Updates when the {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} gets changed.
+     *
+     * @param subject the subject which changed
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == this.space) {

@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,11 +23,17 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 /**
- * ...
+ * The different phases in the game.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public enum Phase {
-    INITIALISATION, PROGRAMMING, ACTIVATION, PLAYER_INTERACTION
+    /** The initialization phase */
+    INITIALISATION,
+    /** The programming phase */
+    PROGRAMMING,
+    /** The activation phase */
+    ACTIVATION,
+    /** The player interaction phase */
+    PLAYER_INTERACTION
 }

@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,19 +23,37 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 /**
- * ...
+ * An enum used for directions.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public enum Heading {
 
-    SOUTH, WEST, NORTH, EAST;
+    /** South */
+    SOUTH,
+    /** West */
+    WEST,
+    /** North */
+    NORTH,
+    /** East */
+    EAST;
 
+    /**
+     * Gets the next {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     * Example: if NORTH, returns EAST.
+     *
+     * @return the next {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     */
     public Heading next() {
         return values()[(this.ordinal() + 1) % values().length];
     }
 
+    /**
+     * Gets the previous {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     * Example: if NORTH, returns WEST.
+     *
+     * @return the previous {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     */
     public Heading prev() {
         return values()[(this.ordinal() + values().length - 1) % values().length];
     }

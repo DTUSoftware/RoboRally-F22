@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,20 +25,29 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 /**
- * ...
+ * A 'field' on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board} which
+ * the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}s can be on.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Space extends Subject {
-
+    /** The Board the Space is on */
     public final Board board;
 
+    /** The x-coordinate of the Space */
     public final int x;
+    /** The y-coordinate of the Space */
     public final int y;
 
     private Player player;
 
+    /**
+     * Initializes a Space on a {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
+     *
+     * @param board the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board} the Space belongs to.
+     * @param x the x-coordinate of the Space.
+     * @param y the y-coordinate of the Space.
+     */
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
@@ -45,10 +55,20 @@ public class Space extends Subject {
         player = null;
     }
 
+    /**
+     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} currently on the Space.
+     *
+     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Sets the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to be on the space.
+     *
+     * @param player the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.
+     */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&

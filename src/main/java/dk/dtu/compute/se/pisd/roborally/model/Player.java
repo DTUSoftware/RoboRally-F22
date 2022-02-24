@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,19 +28,22 @@ import org.jetbrains.annotations.NotNull;
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
 /**
- * ...
+ * A Player in the game.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class Player extends Subject {
-
+    /** The number of registers the player can have */
     final public static int NO_REGISTERS = 5;
+    /** The number of cards the player can have */
     final public static int NO_CARDS = 8;
 
+    /** The Board the Player is playing on */
     final public Board board;
 
+    /** The name of the Player */
     private String name;
+    /** The color of the Player */
     private String color;
 
     private Space space;
@@ -48,6 +52,13 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
+    /**
+     * Initializes a Player.
+     *
+     * @param board The board which the player belongs to.
+     * @param color The color of the player.
+     * @param name The name of the player.
+     */
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
@@ -66,10 +77,20 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Gets the name of the player.
+     *
+     * @return the name of the player.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the player.
+     *
+     * @param name the name of the player.
+     */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
@@ -80,10 +101,20 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Gets the color of the player.
+     *
+     * @return the color of the player.
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     * Sets the color of the player.
+     *
+     * @param color the color of the player.
+     */
     public void setColor(String color) {
         this.color = color;
         notifyChange();
@@ -92,10 +123,20 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} the player is currently on.
+     *
+     * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     */
     public Space getSpace() {
         return space;
     }
 
+    /**
+     * Moves the player to another {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     *
+     * @param space the new {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
         if (space != oldSpace &&
@@ -111,10 +152,20 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Gets the current {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading} of the player.
+     *
+     * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     */
     public Heading getHeading() {
         return heading;
     }
 
+    /**
+     * Changes the {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading} of the player.
+     *
+     * @param heading the new {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     */
     public void setHeading(@NotNull Heading heading) {
         if (heading != this.heading) {
             this.heading = heading;
@@ -125,10 +176,24 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} in the player's
+     * program, on the index i.
+     *
+     * @param i the index in the player's program to get the CommandCardField of.
+     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     */
     public CommandCardField getProgramField(int i) {
         return program[i];
     }
 
+    /**
+     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} in the player's
+     * cards, on the index i.
+     *
+     * @param i the index in the player's cards to get the CommandCardField of.
+     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     */
     public CommandCardField getCardField(int i) {
         return cards[i];
     }

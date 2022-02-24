@@ -4,6 +4,7 @@
  *  DTU Compute at the Technical University of Denmark.
  *
  *  Copyright (C) 2019, 2020: Ekkart Kindler, ekki@dtu.dk
+ *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,10 +43,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * ...
+ * Controls stuff that happens on the Application.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class AppController implements Observer {
 
@@ -56,10 +56,18 @@ public class AppController implements Observer {
 
     private GameController gameController;
 
+    /**
+     * The AppController constructor.
+     *
+     * @param roboRally the application instance.
+     */
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
+    /**
+     * Starts a new game.
+     */
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
@@ -90,10 +98,16 @@ public class AppController implements Observer {
         }
     }
 
+    /**
+     * Saves the game, to be continued later.
+     */
     public void saveGame() {
         // XXX needs to be implememged eventually
     }
 
+    /**
+     * Loads a saved game.
+     */
     public void loadGame() {
         // XXX needs to be implememged eventually
         // for now, we just create a new game
@@ -124,6 +138,10 @@ public class AppController implements Observer {
         return false;
     }
 
+    /**
+     * Exits the application.
+     * Note: not the game, the application itself.
+     */
     public void exit() {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -143,11 +161,21 @@ public class AppController implements Observer {
         }
     }
 
+    /**
+     * Checks whether a game is currently running.
+     *
+     * @return <code>true</code> if a game is running, else <code>false</code>.
+     */
     public boolean isGameRunning() {
         return gameController != null;
     }
 
 
+    /**
+     * The controller's update method, which is called when a subject changes.
+     *
+     * @param subject the subject which changed
+     */
     @Override
     public void update(Subject subject) {
         // XXX do nothing for now
