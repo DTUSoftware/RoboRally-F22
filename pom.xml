@@ -13,9 +13,20 @@
         Project in Software Development (PiSD) taught at
         DTU Compute.
     </description>
+    <url>https://github.com/${github.repo}</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License, version 2</name>
+            <url>https://raw.githubusercontent.com/${github.repo}/master/LICENSE</url>
+        </license>
+    </licenses>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <github.repo>DTUSoftware/RoboRally-F22</github.repo>
+        <encoding>UTF-8</encoding>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
         <jdk.version>17</jdk.version>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.release>${jdk.version}</maven.compiler.release>
@@ -151,7 +162,22 @@
                     <mainClass>${project.groupId}.${project.artifactId}.Main</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/${github.repo}</url>
+        </repository>
+    </distributionManagement>
 </project>
