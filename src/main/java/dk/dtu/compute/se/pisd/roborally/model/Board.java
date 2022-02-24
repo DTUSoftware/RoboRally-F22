@@ -56,6 +56,8 @@ public class Board extends Subject {
     private int step = 0;
     private boolean stepMode;
 
+    private int moveCount = 0;
+
     /**
      * Creates a new board with a board name.
      *
@@ -184,6 +186,14 @@ public class Board extends Subject {
     }
 
     /**
+     * Changes the current player to the next player - ends the turn of the current player.
+     */
+    public void endCurrentPlayerTurn() {
+        setCurrentPlayer(getPlayer((getPlayerNumber(getCurrentPlayer()) + 1) % getPlayersNumber()));
+        notifyChange();
+    }
+
+    /**
      * Gets the current {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
      *
      * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
@@ -307,11 +317,38 @@ public class Board extends Subject {
         //      which is counted up every time a player makes a move; the
         //      status line should show the current player and the number
         //      of the current move!
-        return "Player = " + getCurrentPlayer().getName();
+        String currentPlayer = "Current Player: " + getCurrentPlayer().getName();
+        String turns = "Move number: " + getMoveCount();
+        return currentPlayer + " - " + turns;
     }
 
-    // TODO Assignment V1: add a counter along with a getter and a setter, so the
+    /**
+     * Returns the current amount of moves.
+     *
+     * @return the current amount of moves.
+     */
+    // a counter along with a getter and a setter, so the
     //      state the board (game) contains the number of moves, which then can
     //      be used to extend the status message including the number of
+    public int getMoveCount() {
+        return moveCount;
+    }
 
+    /**
+     * Sets the current amount of moves.
+     *
+     * @param count the amount of moves.
+     */
+    public void setMoveCount(int count) {
+        moveCount = count;
+        notifyChange();
+    }
+
+    /**
+     * Raises the amount of moves by 1.
+     */
+    public void incrementMoveCount() {
+        moveCount++;
+        notifyChange();
+    }
 }

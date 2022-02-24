@@ -92,4 +92,13 @@ public class Space extends Subject {
         notifyChange();
     }
 
+    /**
+     * Checks whether a space is occupied by another player.
+     *
+     * @return <code>true</code> if not occupied, else <code>false</code>.
+     */
+    public boolean free() {
+        return getPlayer() == null;
+    }
+
 }
