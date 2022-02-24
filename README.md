@@ -2,8 +2,35 @@
 
 ## Taxonomy
 
-### Board
+### Objects (nouns)
+
+#### Board / Game
 The game board, consisting of fields for the Player to place their robots on.
 
-### Player
+#### Robot / Player
 The Player is usually represented by their 'robot' on the board.
+
+#### Command Card
+
+
+#### Field / Space
+
+#### Antenna
+
+#### Energy Cube
+
+#### Hand Card
+
+#### Program
+
+### Actions (verbs)
+
+#### Begin Game
+
+#### Move
+
+Move forward, turn right, turn left, etc...
+
+#### Activate Program / Robot
+
+#### Program Robots
