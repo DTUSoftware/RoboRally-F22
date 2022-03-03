@@ -1,8 +1,9 @@
 /*
  *  This file is part of the initial project provided for the
- *  course "Advanced Programming (02324)" held at
+ *  course "Project in Software Development (02362)" held at
  *  DTU Compute at the Technical University of Denmark.
  *
+ *  Copyright (C) 2019, 2020,2021: Ekkart Kindler, ekki@dtu.dk
  *  Copyright (C) 2022: Marcus Sand, mwasa@dtu.dk
  *
  *  This software is free software; you can redistribute it and/or modify
@@ -22,11 +23,18 @@
 package dk.dtu.compute.se.pisd.roborally;
 
 /**
- * The main class for the game.
+ * This is a class for starting up the RoboRally application. This is a
+ * workaround for a strange quirk in the Open JavaFX project launcher,
+ * which prevents starting a JavaFX application in IntelliJ directly:
+ *
+ *   https://stackoverflow.com/questions/52569724/javafx-11-create-a-jar-file-with-gradle/52571719#52571719
+ *
  * Makes the game able to compile and run through Maven,
  * without having to add JavaFX to the module-path.
+ *
+ * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class Main {
+public class StartRoboRally {
     /**
      * The main function - runs the main function in {@link dk.dtu.compute.se.pisd.roborally.RoboRally RoboRally}.
      *
@@ -35,4 +43,5 @@ public class Main {
     public static void main(String[] args) {
         RoboRally.main(args);
     }
+
 }

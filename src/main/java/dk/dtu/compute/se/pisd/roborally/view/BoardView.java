@@ -29,10 +29,14 @@ import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -44,9 +48,11 @@ public class BoardView extends VBox implements ViewObserver {
 
     private Board board;
 
+    private ScrollPane mainBoardScrollPane;
     private GridPane mainBoardPane;
     private SpaceView[][] spaces;
 
+    private ScrollPane playersViewScrollPane;
     private PlayersView playersView;
 
     private Label statusLabel;
@@ -62,12 +68,23 @@ public class BoardView extends VBox implements ViewObserver {
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
+        mainBoardScrollPane = new ScrollPane();
+        HBox mainBoardPaneHBox = new HBox();
         mainBoardPane = new GridPane();
+        mainBoardPaneHBox.getChildren().add(mainBoardPane);
+        mainBoardPaneHBox.setAlignment(Pos.CENTER);
+        mainBoardScrollPane.setContent(mainBoardPaneHBox);
+        mainBoardScrollPane.setFitToWidth(true);
+//        mainBoardPane.setClip(new Rectangle(400, 400));
+        playersViewScrollPane = new ScrollPane();
+        playersViewScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         playersView = new PlayersView(gameController);
+        playersViewScrollPane.setContent(playersView);
+        playersViewScrollPane.setFitToWidth(true);
         statusLabel = new Label("<no status>");
 
-        this.getChildren().add(mainBoardPane);
-        this.getChildren().add(playersView);
+        this.getChildren().add(mainBoardScrollPane);
+        this.getChildren().add(playersViewScrollPane);
         this.getChildren().add(statusLabel);
 
         spaces = new SpaceView[board.width][board.height];
