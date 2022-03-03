@@ -116,7 +116,7 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>${project.groupId}.${project.artifactId}.Main</Main-Class>
+                                        <Main-Class>${project.groupId}.${project.artifactId}.StartRoboRally</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
@@ -131,7 +131,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>${project.groupId}.${project.artifactId}.Main</mainClass>
+                            <mainClass>${project.groupId}.${project.artifactId}.StartRoboRally</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -159,7 +159,7 @@
                 <configuration>
                     <jlinkImageName>roborally</jlinkImageName>
                     <launcher>launcher</launcher>
-                    <mainClass>${project.groupId}.${project.artifactId}.Main</mainClass>
+                    <mainClass>${project.groupId}.${project.artifactId}.StartRoboRally</mainClass>
                 </configuration>
             </plugin>
             <plugin>

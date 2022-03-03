@@ -28,7 +28,6 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import javafx.application.Platform;
@@ -93,7 +92,10 @@ public class AppController implements Observer {
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-            board.setCurrentPlayer(board.getPlayer(0));
+            // XXX: V2
+            // board.setCurrentPlayer(board.getPlayer(0));
+            gameController.startProgrammingPhase();
+
             roboRally.createBoardView(gameController, null);
         }
     }
@@ -102,14 +104,14 @@ public class AppController implements Observer {
      * Saves the game, to be continued later.
      */
     public void saveGame() {
-        // XXX needs to be implememged eventually
+        // XXX needs to be implemented eventually
     }
 
     /**
      * Loads a saved game.
      */
     public void loadGame() {
-        // XXX needs to be implememged eventually
+        // XXX needs to be implememted eventually
         // for now, we just create a new game
         if (gameController == null) {
             newGame();

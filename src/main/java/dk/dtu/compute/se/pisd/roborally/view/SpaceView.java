@@ -42,9 +42,9 @@ import org.jetbrains.annotations.NotNull;
 public class SpaceView extends StackPane implements ViewObserver {
 
     /** the height of the space view */
-    final public static int SPACE_HEIGHT = 75; // 60; // 75;
+    final public static int SPACE_HEIGHT = 60; // 60; // 75;
     /** the width of the space view */
-    final public static int SPACE_WIDTH = 75;  // 60; // 75;
+    final public static int SPACE_WIDTH = 60;  // 60; // 75;
 
     /** the Space that is linked to the view */
     public final Space space;

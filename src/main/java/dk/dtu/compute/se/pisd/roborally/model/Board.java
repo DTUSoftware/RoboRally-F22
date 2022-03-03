@@ -307,48 +307,13 @@ public class Board extends Subject {
      * @return The current status of the game.
      */
     public String getStatusMessage() {
-        // This is actually a view aspect, but for making the first task easy for
+        // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current
         // status of the game
 
-        // TODO Assignment V1: this string could eventually be refined
-        //      The status line should show more information based on
-        //      situation; for now, introduce a counter to the Board,
-        //      which is counted up every time a player makes a move; the
-        //      status line should show the current player and the number
-        //      of the current move!
-        String currentPlayer = "Current Player: " + getCurrentPlayer().getName();
-        String turns = "Move number: " + getMoveCount();
-        return currentPlayer + " - " + turns;
-    }
-
-    /**
-     * Returns the current amount of moves.
-     *
-     * @return the current amount of moves.
-     */
-    // a counter along with a getter and a setter, so the
-    //      state the board (game) contains the number of moves, which then can
-    //      be used to extend the status message including the number of
-    public int getMoveCount() {
-        return moveCount;
-    }
-
-    /**
-     * Sets the current amount of moves.
-     *
-     * @param count the amount of moves.
-     */
-    public void setMoveCount(int count) {
-        moveCount = count;
-        notifyChange();
-    }
-
-    /**
-     * Raises the amount of moves by 1.
-     */
-    public void incrementMoveCount() {
-        moveCount++;
-        notifyChange();
+        // XXX: V2 changed the status so that it shows the phase, the player and the step
+        return "Phase: " + getPhase().name() +
+                ", Player = " + getCurrentPlayer().getName() +
+                ", Step: " + getStep();
     }
 }
