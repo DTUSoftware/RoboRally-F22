@@ -106,6 +106,7 @@ public class RoboRally extends Application {
      * Creates a new BoardView, and removes the old BoardView, if present.
      *
      * @param gameController The {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}.
+     * @param appController The {@link dk.dtu.compute.se.pisd.roborally.controller.AppController AppController}.
      */
     public void createBoardView(GameController gameController, AppController appController) {
         // if present, remove old BoardView
