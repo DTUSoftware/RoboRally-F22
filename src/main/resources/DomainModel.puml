@@ -1,0 +1,44 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class RoboRally {
+}
+
+class Board {
+    boardName
+    gameID
+    currentPlayer
+    phase
+    step
+    stepMode
+    moveCount
+}
+
+class Player {
+    name
+    color
+    heading
+
+    NO_REGISTERS
+    NO_CARDS
+}
+
+class Space {
+    x
+    y
+}
+
+class CommandCard {
+
+}
+
+class Command {
+}
+
+RoboRally *-- "*" Board
+Board *--r "2..6" Player
+Board *-- "*" Space
+Player *-- "*" CommandCard
+CommandCard "1" -- "1" Command
+Player "1" -- "1" Space
+@enduml
