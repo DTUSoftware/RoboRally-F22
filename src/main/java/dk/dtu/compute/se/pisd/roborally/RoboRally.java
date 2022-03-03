@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.view.BoardView;
 import dk.dtu.compute.se.pisd.roborally.view.RoboRallyMenuBar;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -76,10 +77,12 @@ public class RoboRally extends Application {
         VBox vbox = new VBox(menuBar, boardRoot);
 
         // aspt ratio - 2/3
-        vbox.prefWidthProperty().bind(stage.widthProperty().multiply(0.80));
-        vbox.prefHeightProperty().bind(stage.widthProperty().multiply(0.80).divide(2).multiply(3));
-        vbox.setMinWidth(stage.widthProperty().multiply(0.80).get());
-        vbox.setMinHeight(stage.widthProperty().multiply(0.80).divide(2).multiply(3).get());
+        double size_percent = 0.90;
+        boardRoot.prefWidthProperty().bind(stage.heightProperty().multiply(size_percent).divide(3).multiply(2));
+        boardRoot.prefHeightProperty().bind(stage.heightProperty().multiply(size_percent));
+        boardRoot.setMinWidth(stage.heightProperty().multiply(size_percent).divide(3).multiply(2).get());
+        boardRoot.setMinHeight(stage.heightProperty().multiply(size_percent).get());
+        createBoardView(null, appController);
 
         Scene primaryScene = new Scene(vbox);
 
@@ -95,6 +98,8 @@ public class RoboRally extends Application {
         stage.sizeToScene();
         stage.centerOnScreen();
         stage.show();
+        System.out.println(primaryScene.heightProperty());
+        System.out.println(primaryScene.widthProperty());
     }
 
     /**
@@ -102,7 +107,7 @@ public class RoboRally extends Application {
      *
      * @param gameController The {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}.
      */
-    public void createBoardView(GameController gameController) {
+    public void createBoardView(GameController gameController, AppController appController) {
         // if present, remove old BoardView
         boardRoot.getChildren().clear();
 
@@ -110,6 +115,13 @@ public class RoboRally extends Application {
             // create and add view for new board
             BoardView boardView = new BoardView(gameController);
             boardRoot.setCenter(boardView);
+        }
+        else {
+            if (appController != null) {
+                Button startButton = new Button("New Game");
+                startButton.setOnAction( e -> appController.newGame());
+                boardRoot.setCenter(startButton);
+            }
         }
 
         stage.sizeToScene();
