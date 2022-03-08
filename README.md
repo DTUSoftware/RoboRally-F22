@@ -41,21 +41,28 @@ The antenna is used to decide who has priority (who gets to start first).
 Used to purchase upgrade cards for the robots.
 
 #### Conveyor Belt
+Active at end of register, moves robot or turns robot
 
 #### Push Panel
+Robot ends register number on push panel with given number gets pushed
 
 #### Gear
 Starting positions for robots, and turns around on each round.
 
 #### Board Laser
+End of register shoots robot in their path
 
 #### Pit
+Fall off the map, reboot
 
 #### Energy Space
+Grab energy cube, ends on fifth register also gets one.
 
 #### Wall
+Blocks laser and robots 
 
 #### Checkpoint
+Use to win the game
 
 #### Racing Course
 A collection of Checkpoints, ended with a Goal.
@@ -68,6 +75,9 @@ SPAM, TROJAN HORSE, WORM, VIRUS
 #### Begin Game
 Begins the game.
 
+#### Win the game
+First player to make way over checkpoints in numerical order
+
 #### Move
 Move forward, turn right, turn left, etc...
 
@@ -78,3 +88,7 @@ Performs the program that the player programmed the robot to do.
 Assign Hand Cards to the Robot's Program.
 
 #### Rebooting
+Two spam cards, stop current program, place robot on reboot token
+
+#### Damage
+Do card action, then cards action from deck on same register
