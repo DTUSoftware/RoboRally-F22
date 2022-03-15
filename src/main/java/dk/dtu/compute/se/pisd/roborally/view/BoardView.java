@@ -75,6 +75,8 @@ public class BoardView extends VBox implements ViewObserver {
         mainBoardPaneHBox.setAlignment(Pos.CENTER);
         mainBoardScrollPane.setContent(mainBoardPaneHBox);
         mainBoardScrollPane.setFitToWidth(true);
+//        mainBoardScrollPane.minWidth(60*8);
+//        mainBoardScrollPane.setFitToHeight(true);
 //        mainBoardPane.setClip(new Rectangle(400, 400));
         playersViewScrollPane = new ScrollPane();
         playersViewScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
