@@ -262,27 +262,30 @@ public class GameController {
         player.setSpace(newSpace);
     }
 
-    // TODO Assignment V2
     /**
      * Fast forwards (the card).
      *
      * @param player The player to fast-forward.
      */
     public void fastForward(@NotNull Player player) {
-
+        for (int i = 2; i > 0; i--) {
+            moveForward(player);
+        }
     }
 
-    // TODO Assignment V2
     /**
      * Turns the player right.
      *
      * @param player The player to turn right.
      */
     public void turnRight(@NotNull Player player) {
-
+        switch (player.getHeading()) {
+            case NORTH -> player.setHeading(Heading.EAST);
+            case EAST -> player.setHeading(Heading.SOUTH);
+            case SOUTH -> player.setHeading(Heading.WEST);
+            case WEST -> player.setHeading(Heading.NORTH);
+        }
     }
-
-    // TODO Assignment V2
 
     /**
      * Turns the player left.
@@ -290,7 +293,12 @@ public class GameController {
      * @param player The player to turn left.
      */
     public void turnLeft(@NotNull Player player) {
-
+        switch (player.getHeading()) {
+            case NORTH -> player.setHeading(Heading.WEST);
+            case WEST -> player.setHeading(Heading.SOUTH);
+            case SOUTH -> player.setHeading(Heading.EAST);
+            case EAST -> player.setHeading(Heading.NORTH);
+        }
     }
 
     /**
