@@ -5,7 +5,8 @@ skinparam classAttributeIconSize 0
 
 package javafx {
     abstract class Node implements EventTarget, Styleable {}
-    class Tab implements EventTarget, Styleable
+    class Tab implements EventTarget, Styleable {}
+    class Window implements EventTarget {}
     abstract class Parent extends Node {}
     class Region extends Parent {}
     abstract class Control extends Region implements Skinnable {}
@@ -15,6 +16,9 @@ package javafx {
     class TabPane extends Control {}
     class MenuBar extends Control {}
     class StackPane extends Pane {}
+    class BorderPane extends Pane {}
+    class Stage extends Window {}
+    abstract class Application {}
 }
 
 package designpatterns.observer {
@@ -47,8 +51,8 @@ package roborally {
             moveCount
         }
         Board --> "1 -phase" Phase
-        Board *--r "2..6" Player
-        Board *-- "*" Space
+        Board --> "2..6 -players" Player
+        Board --> "* -spaces" Space
 
         enum Command {}
 
@@ -100,16 +104,21 @@ package roborally {
         interface ViewObserver {}
     }
 
-    class RoboRally {
+    class RoboRally extends Application {
         +main(args:String[]): void
+
+        +init(): void
+        +start(): void
+        +createBoardView(): void
+        +stop(): void
     }
+    RoboRally --> "1 -boardRoot" BorderPane
+    RoboRally --> "1 -stage" Stage
 
     class StartRoboRally {
         +main(args:String[]): void
     }
-
     StartRoboRally -> RoboRally
-    RoboRally *-- "*" Board
 }
 
 
