@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+    :Start the game;
+    :Create new game;
+    repeat
+        :Select number of players;
+        repeat
+            :Program robot;
+        repeat while(players need to program)
+        repeat
+            :Execute robot action;
+        repeat while(Robots need to execute)
+    repeat while(Want to play again)
+    :end game;
+stop
+
+@enduml
