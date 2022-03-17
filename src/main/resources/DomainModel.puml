@@ -28,6 +28,9 @@ class Space {
     y
 }
 
+class Object {
+}
+
 class CommandCard {
 
 }
@@ -38,6 +41,7 @@ class Command {
 RoboRally *-- "*" Board
 Board *--r "2..6" Player
 Board *-- "*" Space
+Space *-- "*" Object
 Player *-- "*" CommandCard
 CommandCard "1" -- "1" Command
 Player "1" -- "1" Space
