@@ -33,6 +33,20 @@ package roborally {
             moveCount
         }
 
+        enum Command {}
+
+        class CommandCard {
+
+        }
+
+        class CommandCardField {
+
+        }
+
+        enum Heading {}
+
+        enum Phase {}
+
         class Player {
             name
             color
@@ -50,15 +64,18 @@ package roborally {
         class Object {
         }
 
-        class CommandCard {
+        class Pit {}
 
-        }
-
-        class Command {
-        }
+        Pit <-- Object
     }
 
     package view {
+        class BoardView {}
+        class CardFieldView {}
+        class PlayersView {}
+        class PlayerView {}
+        class RoboRallyMenuBar {}
+        
     }
 
 
