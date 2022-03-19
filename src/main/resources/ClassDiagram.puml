@@ -3,6 +3,24 @@
 
 skinparam classAttributeIconSize 0
 
+package javafx {
+    abstract class Node implements EventTarget, Styleable {}
+    class Tab implements EventTarget, Styleable {}
+    class Window implements EventTarget {}
+    abstract class Parent extends Node {}
+    class Region extends Parent {}
+    abstract class Control extends Region implements Skinnable {}
+    class Pane extends Region {}
+    class VBox extends Pane {}
+    class GridPane extends Pane {}
+    class TabPane extends Control {}
+    class MenuBar extends Control {}
+    class StackPane extends Pane {}
+    class BorderPane extends Pane {}
+    class Stage extends Window {}
+    abstract class Application {}
+}
+
 package designpatterns.observer {
     interface Observer {
         ~update(subject:Subject): void
@@ -18,12 +36,12 @@ package designpatterns.observer {
 
 package roborally {
     package controller {
-        class AppController {}
+        class AppController implements Observer {}
         class GameController {}
     }
 
     package model {
-        class Board {
+        class Board extends Subject {
             boardName
             gameID
             currentPlayer
@@ -32,14 +50,18 @@ package roborally {
             stepMode
             moveCount
         }
+        Board --> "1 -phase" Phase
+        Board --> "2..6 -players" Player
+        Board --> "* -spaces" Space
 
         enum Command {}
 
-        class CommandCard {
+        class CommandCard extends Subject {
 
         }
+        CommandCard --> "1 -command" Command
 
-        class CommandCardField {
+        class CommandCardField extends Subject {
 
         }
 
@@ -47,51 +69,56 @@ package roborally {
 
         enum Phase {}
 
-        class Player {
+        class Player extends Subject {
             name
             color
-            heading
 
             NO_REGISTERS
             NO_CARDS
-        }
 
-        class Space {
+        }
+        Player --> "1 -heading" Heading
+        Player *-- "*" CommandCard
+        Player "1" -- "1" Space
+
+        class Space extends Subject {
             x
             y
         }
+        Space *-- "*" Object
 
-        class Object {
+        abstract class Object extends Subject {
         }
 
-        class Pit {}
+        class Pit extends Object {}
 
-        Pit <-- Object
     }
 
     package view {
-        class BoardView {}
-        class CardFieldView {}
-        class PlayersView {}
-        class PlayerView {}
-        class RoboRallyMenuBar {}
-        
+        class BoardView extends VBox implements ViewObserver {}
+        class CardFieldView extends GridPane implements ViewObserver {}
+        class PlayersView extends TabPane implements ViewObserver {}
+        class PlayerView extends Tab implements ViewObserver {}
+        class RoboRallyMenuBar extends MenuBar {}
+        class SpaceView extends StackPane implements ViewObserver {}
+        interface ViewObserver {}
     }
 
+    class RoboRally extends Application {
+        +main(args:String[]): void
 
-    class RoboRally {
+        +init(): void
+        +start(): void
+        +createBoardView(): void
+        +stop(): void
     }
+    RoboRally --> "1 -boardRoot" BorderPane
+    RoboRally --> "1 -stage" Stage
 
-
-
-    RoboRally *-- "*" Board
-    Board *--r "2..6" Player
-    Board *-- "*" Space
-    Space *-- "*" Object
-    Player *-- "*" CommandCard
-    CommandCard "1" -- "1" Command
-    Player "1" -- "1" Space
-
+    class StartRoboRally {
+        +main(args:String[]): void
+    }
+    StartRoboRally -> RoboRally
 }
 
 
