@@ -5,40 +5,9 @@ skinparam classAttributeIconSize 0
 skinparam linetype polyline
 skinparam linetype ortho
 
-package javafx {
-    abstract class Node implements EventTarget, Styleable {}
-    class Tab implements EventTarget, Styleable {}
-    class Window implements EventTarget {}
-    abstract class Parent extends Node {}
-    class Region extends Parent {}
-    abstract class Control extends Region implements Skinnable {}
-    class Pane extends Region {}
-    class VBox extends Pane {}
-    class GridPane extends Pane {}
-    class TabPane extends Control {}
-    class MenuBar extends Control {}
-    class StackPane extends Pane {}
-    class BorderPane extends Pane {}
-    class Stage extends Window {}
-    abstract class Application {}
-}
-
-package designpatterns.observer {
-    interface Observer {
-        ~update(subject:Subject): void
-    }
-    abstract class Subject {
-        -observers: Set<Observer>
-
-        +attach(observer:Observer): void
-        +detach(observer:Observer): void
-        #notifyChange(): void
-    }
-}
-
 package roborally {
     package controller {
-        class AppController implements Observer {
+        class AppController {
             -PLAYER_NUMBER_OPTIONS: List<Integer>
             -PLAYER_COLORS: List<String>
 
@@ -74,7 +43,7 @@ package roborally {
     }
 
     package model {
-        class Board extends Subject {
+        class Board {
             +boardName: String
             -gameID: Integer
             -current: Player
@@ -108,12 +77,12 @@ package roborally {
             FAST_FORWARD
         }
 
-        class CommandCard extends Subject {
+        class CommandCard {
             +getName(): String
         }
         CommandCard --> "1 -command" Command
 
-        class CommandCardField extends Subject {
+        class CommandCardField {
             -visible: boolean
 
             +getCard(): CommandCard
@@ -138,7 +107,7 @@ package roborally {
             PLAYER_INTERACTION
         }
 
-        class Player extends Subject {
+        class Player {
             -name: String
             -color: String
 
@@ -155,7 +124,7 @@ package roborally {
         Player --> " * -cards" CommandCardField
         Player "1" -- "1 -space" Space
 
-        class Space extends Subject {
+        class Space {
             -x: int
             -y: int
 
@@ -167,65 +136,25 @@ package roborally {
         Space --> "1 -player" Player
         Space --> "1 -board" Board
 
-        abstract class Object extends Subject {
+        abstract class Object {
         }
 
         class Pit extends Object {}
 
     }
 
-    package view {
-        class BoardView extends VBox implements ViewObserver {
-            -statusLabel: Label
-        }
-        BoardView --> "1 -board" Board
-        BoardView --> "1 -mainBoardScrollPane" ScrollPane
-        BoardView --> "1 -mainBoardPane" GridPane
-        BoardView --> " * -spaces" SpaceView
-        BoardView --> "1 -playersViewScrollPane" ScrollPane
-        BoardView --> "1 -playersView" PlayersView
-        BoardView --> "1 -spaceEventHandler" SpaceEventHandler
+    package view {}
 
-        class CardFieldView extends GridPane implements ViewObserver {
-            -label: Label
-        }
-        CardFieldView --> "1 -field" CommandCardField
-        CardFieldView --> "1 -gameController" GameController
-
-        class PlayersView extends TabPane implements ViewObserver {}
-        PlayersView --> "1 -board" Board
-        PlayersView --> " * -playerViews" PlayerView
-
-        class PlayerView extends Tab implements ViewObserver {}
-        PlayerView --> "1 -player" Player
-        PlayerView --> " * -programCardViews" CardFieldView
-        PlayerView --> " * -cardViews" CardFieldView
-        PlayerView --> "1 -gameController" GameController
-
-        class RoboRallyMenuBar extends MenuBar {}
-        RoboRallyMenuBar --> "1 -appController" AppController
-
-        class SpaceView extends StackPane implements ViewObserver {}
-        SpaceView --> "1 +space" Space
-
-        interface ViewObserver {}
-    }
-
-    class RoboRally extends Application {
+    class RoboRally {
         +main(args:String[]): void
+        -boardRoot: BorderPane
+        -stage: Stage
 
         +init(): void
         +start(): void
         +createBoardView(): void
         +stop(): void
     }
-    RoboRally --> "1 -boardRoot" BorderPane
-    RoboRally --> "1 -stage" Stage
-
-    class StartRoboRally {
-        +main(args:String[]): void
-    }
-    StartRoboRally --> RoboRally
 }
 
 
