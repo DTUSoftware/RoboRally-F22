@@ -99,7 +99,7 @@ package roborally {
         }
         Board --> "1 -phase" Phase
         Board --> "2..6 -players" Player
-        Board --> "* -spaces" Space
+        Board --> " * -spaces" Space
 
         enum Command {
             FORWARD
@@ -151,8 +151,8 @@ package roborally {
             +getCardField(i: int): CommandCardField
         }
         Player --> "1 -heading" Heading
-        Player --> "* -program" CommandCardField
-        Player --> "* -cards" CommandCardField
+        Player --> " * -program" CommandCardField
+        Player --> " * -cards" CommandCardField
         Player "1" -- "1 -space" Space
 
         class Space extends Subject {
@@ -163,7 +163,7 @@ package roborally {
             #playerChanged(): void
             +free(): boolean
         }
-        Space --> "* -objects" Object
+        Space --> " * -objects" Object
         Space --> "1 -player" Player
         Space --> "1 -board" Board
 
