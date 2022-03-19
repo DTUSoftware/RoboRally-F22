@@ -248,18 +248,7 @@ public class GameController {
      * @param player The player to move forward.
      */
     public void moveForward(@NotNull Player player) {
-        Heading heading = player.getHeading();
-        Space currentSpace = player.getSpace();
-        int x = currentSpace.x;
-        int y = currentSpace.y;
-        switch (heading) {
-            case NORTH -> y--;
-            case SOUTH -> y++;
-            case EAST -> x--;
-            case WEST -> x++;
-        }
-        Space newSpace = board.getSpace(x, y);
-        player.setSpace(newSpace);
+        player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
     }
 
     /**
