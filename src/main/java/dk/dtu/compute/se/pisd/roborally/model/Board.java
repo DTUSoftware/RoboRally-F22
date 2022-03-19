@@ -56,8 +56,6 @@ public class Board extends Subject {
     private int step = 0;
     private boolean stepMode;
 
-    private int moveCount = 0;
-
     /**
      * Creates a new board with a board name.
      *

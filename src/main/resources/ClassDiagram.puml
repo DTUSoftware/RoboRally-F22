@@ -2,6 +2,8 @@
 'https://plantuml.com/class-diagram
 
 skinparam classAttributeIconSize 0
+skinparam linetype polyline
+skinparam linetype ortho
 
 package javafx {
     abstract class Node implements EventTarget, Styleable {}
@@ -36,56 +38,134 @@ package designpatterns.observer {
 
 package roborally {
     package controller {
-        class AppController implements Observer {}
-        class GameController {}
+        class AppController implements Observer {
+            -PLAYER_NUMBER_OPTIONS: List<Integer>
+            -PLAYER_COLORS: List<String>
+
+            +newGame(): void
+            +saveGame(): void
+            +loadGame(): void
+            +stopGame(): boolean
+            +exit(): void
+            +isGameRunning(): boolean
+        }
+        AppController --> "1 -roboRally" RoboRally
+        AppController --> "1 -gameController" GameController
+
+        class GameController {
+            +moveCurrentPlayerToSpace(space:Space): void
+            +startProgrammingPhase(): void
+            -generateRandomCommandCard(): CommandCard
+            +finishProgrammingPhase(): void
+            -makeProgramFieldsVisible(register:int): void
+            -makeProgramFieldsInvisible(): void
+            +executePrograms(): void
+            +executeStep(): void
+            -continuePrograms(): void
+            -executeNextStep(): void
+            -executeCommand(player:Player, command:Command): void
+            +moveForward(player:Player): void
+            +fastForward(player:Player): void
+            +turnRight(player:Player): void
+            +turnLeft(player:Player): void
+            +moveCards(source:CommandCardField, target:CommandCardField): boolean
+        }
+        GameController --> "1 +board" Board
     }
 
     package model {
         class Board extends Subject {
-            boardName
-            gameID
-            currentPlayer
-            phase
-            step
-            stepMode
-            moveCount
+            +boardName: String
+            -gameID: Integer
+            -current: Player
+            -step: int
+            -stepMode: boolean
+
+            +getGameID(): Integer
+            +setGameID(gameId:int): void
+            +getSpace(x:int, y:int): Space
+            +getPlayersNumber(): int
+            +addPlayer(player:Player): void
+            +getPlayer(i:int): Player
+            +getCurrentPlayer(): Player
+            +endCurrentPlayerTurn(): void
+            +getPhase(): Phase
+            +setPhase(phase:Phase): void
+            +isStepMode(): boolean
+            +setStepMode(stepMode:boolean): void
+            +getPlayerNumber(player:Player): int
+            +getNeighbour(space:Space, heading:Heading): Space
+            +getStatusMessage(): String
         }
         Board --> "1 -phase" Phase
         Board --> "2..6 -players" Player
         Board --> "* -spaces" Space
 
-        enum Command {}
+        enum Command {
+            FORWARD
+            RIGHT
+            LEFT
+            FAST_FORWARD
+        }
 
         class CommandCard extends Subject {
-
+            +getName(): String
         }
         CommandCard --> "1 -command" Command
 
         class CommandCardField extends Subject {
+            -visible: boolean
 
+            +getCard(): CommandCard
+            +setCard(card:CommandCard): void
+            +isVisible(): boolean
+            +setVisible(visible:boolean): void
+        }
+        CommandCardField --> "1 -card" CommandCard
+        CommandCardField --> "1 -player" Player
+
+        enum Heading {
+            SOUTH
+            WEST
+            NORTH
+            EAST
         }
 
-        enum Heading {}
-
-        enum Phase {}
+        enum Phase {
+            INITIALISATION
+            PROGRAMMING
+            ACTIVATION
+            PLAYER_INTERACTION
+        }
 
         class Player extends Subject {
-            name
-            color
+            -name: String
+            -color: String
 
-            NO_REGISTERS
-            NO_CARDS
+            +{static} NO_REGISTERS: int
+            +{static} NO_CARDS: int
 
+            +getSpace(): Space
+            +setSpace(space:Space): void
+            +getProgramField(i: int): CommandCardField
+            +getCardField(i: int): CommandCardField
         }
         Player --> "1 -heading" Heading
-        Player *-- "*" CommandCard
-        Player "1" -- "1" Space
+        Player --> "* -program" CommandCardField
+        Player --> "* -cards" CommandCardField
+        Player "1" -- "1 -space" Space
 
         class Space extends Subject {
-            x
-            y
+            -x: int
+            -y: int
+
+            +setPlayer(player:Player): void
+            #playerChanged(): void
+            +free(): boolean
         }
-        Space *-- "*" Object
+        Space --> "* -objects" Object
+        Space --> "1 -player" Player
+        Space --> "1 -board" Board
 
         abstract class Object extends Subject {
         }
@@ -118,7 +198,7 @@ package roborally {
     class StartRoboRally {
         +main(args:String[]): void
     }
-    StartRoboRally -> RoboRally
+    StartRoboRally --> RoboRally
 }
 
 
