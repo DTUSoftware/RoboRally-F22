@@ -98,8 +98,8 @@ public class RoboRally extends Application {
         stage.sizeToScene();
         stage.centerOnScreen();
         stage.show();
-        System.out.println(primaryScene.heightProperty());
-        System.out.println(primaryScene.widthProperty());
+//        System.out.println(primaryScene.heightProperty());
+//        System.out.println(primaryScene.widthProperty());
     }
 
     /**
