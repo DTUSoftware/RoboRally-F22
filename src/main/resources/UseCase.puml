@@ -6,12 +6,12 @@ rectangle Game {
     left to right direction
 
     usecase "Play the game" as Play
-    usecase "Sav the game" as save
+    usecase "Save the game" as save
     usecase "Load the game" as load
 }
 
-Players "3..6" -- Play
-Players "3..6" -- save
-Players "3..6" -- load
+Players "2..6" -- Play
+Players  -- save
+Players  -- load
 
 @enduml
