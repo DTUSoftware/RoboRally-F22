@@ -62,6 +62,15 @@ public class GameController {
             board.endCurrentPlayerTurn();
         }
 
+        if (space != null && space.board == board) {
+            Player currentPlayer = board.getCurrentPlayer();
+            if (currentPlayer != null && space.getPlayer() == null) {
+                currentPlayer.setSpace(space);
+                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
+                board.setCurrentPlayer(board.getPlayer(playerNumber));
+            }
+        }
+
     }
 
     // XXX: V2
@@ -248,7 +257,17 @@ public class GameController {
      * @param player The player to move forward.
      */
     public void moveForward(@NotNull Player player) {
-        player.setSpace(board.getNeighbour(player.getSpace(), player.getHeading()));
+        Space space = player.getSpace();
+        if (player != null && player.board == board && space != null) {
+            Heading heading = player.getHeading();
+            Space target = board.getNeighbour(space, heading);
+            if (target != null) {
+                // XXX note that this removes an other player from the space, when there
+                //     is another player on the target. Eventually, this needs to be
+                //     implemented in a way so that other players are pushed away!
+                target.setPlayer(player);
+            }
+        }
     }
 
     /**
@@ -268,11 +287,8 @@ public class GameController {
      * @param player The player to turn right.
      */
     public void turnRight(@NotNull Player player) {
-        switch (player.getHeading()) {
-            case NORTH -> player.setHeading(Heading.EAST);
-            case EAST -> player.setHeading(Heading.SOUTH);
-            case SOUTH -> player.setHeading(Heading.WEST);
-            case WEST -> player.setHeading(Heading.NORTH);
+        if (player != null && player.board == board) {
+            player.setHeading(player.getHeading().next());
         }
     }
 
@@ -282,11 +298,8 @@ public class GameController {
      * @param player The player to turn left.
      */
     public void turnLeft(@NotNull Player player) {
-        switch (player.getHeading()) {
-            case NORTH -> player.setHeading(Heading.WEST);
-            case WEST -> player.setHeading(Heading.SOUTH);
-            case SOUTH -> player.setHeading(Heading.EAST);
-            case EAST -> player.setHeading(Heading.NORTH);
+        if (player != null && player.board == board) {
+            player.setHeading(player.getHeading().prev());
         }
     }
 

@@ -42,18 +42,38 @@ public enum Command {
     /** Turn left */
     LEFT("Turn Left"),
     /** Fast forward */
-    FAST_FORWARD("Fast Fwd");
+    FAST_FORWARD("Fast Fwd"),
+    // XXX Assignment P3
+    /** Left or Right */
+    OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
 
     /** The displayName of a command */
     final public String displayName;
 
+    // XXX Assignment P3
     /**
      * The Command constructor.
      *
      * @param displayName the displayName of the Command.
      */
-    Command(String displayName) {
+    // Command(String displayName) {
+    //     this.displayName = displayName;
+    // }
+    // replaced by the code below:
+
+    final private List<Command> options;
+
+    Command(String displayName, Command... options) {
         this.displayName = displayName;
+        this.options = Collections.unmodifiableList(Arrays.asList(options));
+    }
+
+    public boolean isInteractive() {
+        return !options.isEmpty();
+    }
+
+    public List<Command> getOptions() {
+        return options;
     }
 
 }
