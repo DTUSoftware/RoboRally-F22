@@ -1,0 +1,232 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam classAttributeIconSize 0
+skinparam linetype polyline
+skinparam linetype ortho
+
+package javafx {
+    abstract class Node implements EventTarget, Styleable {}
+    class Tab implements EventTarget, Styleable {}
+    class Window implements EventTarget {}
+    abstract class Parent extends Node {}
+    class Region extends Parent {}
+    abstract class Control extends Region implements Skinnable {}
+    class Pane extends Region {}
+    class VBox extends Pane {}
+    class GridPane extends Pane {}
+    class TabPane extends Control {}
+    class MenuBar extends Control {}
+    class StackPane extends Pane {}
+    class BorderPane extends Pane {}
+    class Stage extends Window {}
+    abstract class Application {}
+}
+
+package designpatterns.observer {
+    interface Observer {
+        ~update(subject:Subject): void
+    }
+    abstract class Subject {
+        -observers: Set<Observer>
+
+        +attach(observer:Observer): void
+        +detach(observer:Observer): void
+        #notifyChange(): void
+    }
+}
+
+package roborally {
+    package controller {
+        class AppController implements Observer {
+            -PLAYER_NUMBER_OPTIONS: List<Integer>
+            -PLAYER_COLORS: List<String>
+
+            +newGame(): void
+            +saveGame(): void
+            +loadGame(): void
+            +stopGame(): boolean
+            +exit(): void
+            +isGameRunning(): boolean
+        }
+        AppController --> "1 -roboRally" RoboRally
+        AppController --> "1 -gameController" GameController
+
+        class GameController {
+            +moveCurrentPlayerToSpace(space:Space): void
+            +startProgrammingPhase(): void
+            -generateRandomCommandCard(): CommandCard
+            +finishProgrammingPhase(): void
+            -makeProgramFieldsVisible(register:int): void
+            -makeProgramFieldsInvisible(): void
+            +executePrograms(): void
+            +executeStep(): void
+            -continuePrograms(): void
+            -executeNextStep(): void
+            -executeCommand(player:Player, command:Command): void
+            +moveForward(player:Player): void
+            +fastForward(player:Player): void
+            +turnRight(player:Player): void
+            +turnLeft(player:Player): void
+            +moveCards(source:CommandCardField, target:CommandCardField): boolean
+        }
+        GameController --> "1 +board" Board
+    }
+
+    package model {
+        class Board extends Subject {
+            +boardName: String
+            -gameID: Integer
+            -current: Player
+            -step: int
+            -stepMode: boolean
+
+            +getGameID(): Integer
+            +setGameID(gameId:int): void
+            +getSpace(x:int, y:int): Space
+            +getPlayersNumber(): int
+            +addPlayer(player:Player): void
+            +getPlayer(i:int): Player
+            +getCurrentPlayer(): Player
+            +endCurrentPlayerTurn(): void
+            +getPhase(): Phase
+            +setPhase(phase:Phase): void
+            +isStepMode(): boolean
+            +setStepMode(stepMode:boolean): void
+            +getPlayerNumber(player:Player): int
+            +getNeighbour(space:Space, heading:Heading): Space
+            +getStatusMessage(): String
+        }
+        Board --> "1 -phase" Phase
+        Board --> "2..6 -players" Player
+        Board --> " * -spaces" Space
+
+        enum Command {
+            FORWARD
+            RIGHT
+            LEFT
+            FAST_FORWARD
+        }
+
+        class CommandCard extends Subject {
+            +getName(): String
+        }
+        CommandCard --> "1 -command" Command
+
+        class CommandCardField extends Subject {
+            -visible: boolean
+
+            +getCard(): CommandCard
+            +setCard(card:CommandCard): void
+            +isVisible(): boolean
+            +setVisible(visible:boolean): void
+        }
+        CommandCardField --> "1 -card" CommandCard
+        CommandCardField --> "1 -player" Player
+
+        enum Heading {
+            SOUTH
+            WEST
+            NORTH
+            EAST
+        }
+
+        enum Phase {
+            INITIALISATION
+            PROGRAMMING
+            ACTIVATION
+            PLAYER_INTERACTION
+        }
+
+        class Player extends Subject {
+            -name: String
+            -color: String
+
+            +{static} NO_REGISTERS: int
+            +{static} NO_CARDS: int
+
+            +getSpace(): Space
+            +setSpace(space:Space): void
+            +getProgramField(i: int): CommandCardField
+            +getCardField(i: int): CommandCardField
+        }
+        Player --> "1 -heading" Heading
+        Player --> " * -program" CommandCardField
+        Player --> " * -cards" CommandCardField
+        Player "1" -- "1 -space" Space
+
+        class Space extends Subject {
+            -x: int
+            -y: int
+
+            +setPlayer(player:Player): void
+            #playerChanged(): void
+            +free(): boolean
+        }
+        Space --> " * -objects" Object
+        Space --> "1 -player" Player
+        Space --> "1 -board" Board
+
+        abstract class Object extends Subject {
+        }
+
+        class Pit extends Object {}
+
+    }
+
+    package view {
+        class BoardView extends VBox implements ViewObserver {
+            -statusLabel: Label
+        }
+        BoardView --> "1 -board" Board
+        BoardView --> "1 -mainBoardScrollPane" ScrollPane
+        BoardView --> "1 -mainBoardPane" GridPane
+        BoardView --> " * -spaces" SpaceView
+        BoardView --> "1 -playersViewScrollPane" ScrollPane
+        BoardView --> "1 -playersView" PlayersView
+        BoardView --> "1 -spaceEventHandler" SpaceEventHandler
+
+        class CardFieldView extends GridPane implements ViewObserver {
+            -label: Label
+        }
+        CardFieldView --> "1 -field" CommandCardField
+        CardFieldView --> "1 -gameController" GameController
+
+        class PlayersView extends TabPane implements ViewObserver {}
+        PlayersView --> "1 -board" Board
+        PlayersView --> " * -playerViews" PlayerView
+
+        class PlayerView extends Tab implements ViewObserver {}
+        PlayerView --> "1 -player" Player
+        PlayerView --> " * -programCardViews" CardFieldView
+        PlayerView --> " * -cardViews" CardFieldView
+        PlayerView --> "1 -gameController" GameController
+
+        class RoboRallyMenuBar extends MenuBar {}
+        RoboRallyMenuBar --> "1 -appController" AppController
+
+        class SpaceView extends StackPane implements ViewObserver {}
+        SpaceView --> "1 +space" Space
+
+        interface ViewObserver {}
+    }
+
+    class RoboRally extends Application {
+        +main(args:String[]): void
+
+        +init(): void
+        +start(): void
+        +createBoardView(): void
+        +stop(): void
+    }
+    RoboRally --> "1 -boardRoot" BorderPane
+    RoboRally --> "1 -stage" Stage
+
+    class StartRoboRally {
+        +main(args:String[]): void
+    }
+    StartRoboRally --> RoboRally
+}
+
+
+@enduml

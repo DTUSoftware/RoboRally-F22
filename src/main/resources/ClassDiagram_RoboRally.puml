@@ -1,0 +1,161 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam classAttributeIconSize 0
+skinparam linetype polyline
+skinparam linetype ortho
+
+package roborally {
+    package controller {
+        class AppController {
+            -PLAYER_NUMBER_OPTIONS: List<Integer>
+            -PLAYER_COLORS: List<String>
+
+            +newGame(): void
+            +saveGame(): void
+            +loadGame(): void
+            +stopGame(): boolean
+            +exit(): void
+            +isGameRunning(): boolean
+        }
+        AppController --> "1 -roboRally" RoboRally
+        AppController --> "1 -gameController" GameController
+
+        class GameController {
+            +moveCurrentPlayerToSpace(space:Space): void
+            +startProgrammingPhase(): void
+            -generateRandomCommandCard(): CommandCard
+            +finishProgrammingPhase(): void
+            -makeProgramFieldsVisible(register:int): void
+            -makeProgramFieldsInvisible(): void
+            +executePrograms(): void
+            +executeStep(): void
+            -continuePrograms(): void
+            -executeNextStep(): void
+            -executeCommand(player:Player, command:Command): void
+            +moveForward(player:Player): void
+            +fastForward(player:Player): void
+            +turnRight(player:Player): void
+            +turnLeft(player:Player): void
+            +moveCards(source:CommandCardField, target:CommandCardField): boolean
+        }
+        GameController --> "1 +board" Board
+    }
+
+    package model {
+        class Board {
+            +boardName: String
+            -gameID: Integer
+            -current: Player
+            -step: int
+            -stepMode: boolean
+
+            +getGameID(): Integer
+            +setGameID(gameId:int): void
+            +getSpace(x:int, y:int): Space
+            +getPlayersNumber(): int
+            +addPlayer(player:Player): void
+            +getPlayer(i:int): Player
+            +getCurrentPlayer(): Player
+            +endCurrentPlayerTurn(): void
+            +getPhase(): Phase
+            +setPhase(phase:Phase): void
+            +isStepMode(): boolean
+            +setStepMode(stepMode:boolean): void
+            +getPlayerNumber(player:Player): int
+            +getNeighbour(space:Space, heading:Heading): Space
+            +getStatusMessage(): String
+        }
+        Board --> "1 -phase" Phase
+        Board --> "2..6 -players" Player
+        Board --> " * -spaces" Space
+
+        enum Command {
+            FORWARD
+            RIGHT
+            LEFT
+            FAST_FORWARD
+        }
+
+        class CommandCard {
+            +getName(): String
+        }
+        CommandCard --> "1 -command" Command
+
+        class CommandCardField {
+            -visible: boolean
+
+            +getCard(): CommandCard
+            +setCard(card:CommandCard): void
+            +isVisible(): boolean
+            +setVisible(visible:boolean): void
+        }
+        CommandCardField --> "1 -card" CommandCard
+        CommandCardField --> "1 -player" Player
+
+        enum Heading {
+            SOUTH
+            WEST
+            NORTH
+            EAST
+        }
+
+        enum Phase {
+            INITIALISATION
+            PROGRAMMING
+            ACTIVATION
+            PLAYER_INTERACTION
+        }
+
+        class Player {
+            -name: String
+            -color: String
+
+            +{static} NO_REGISTERS: int
+            +{static} NO_CARDS: int
+
+            +getSpace(): Space
+            +setSpace(space:Space): void
+            +getProgramField(i: int): CommandCardField
+            +getCardField(i: int): CommandCardField
+        }
+        Player --> "1 -heading" Heading
+        Player --> " * -program" CommandCardField
+        Player --> " * -cards" CommandCardField
+        Player "1" -- "1 -space" Space
+
+        class Space {
+            -x: int
+            -y: int
+
+            +setPlayer(player:Player): void
+            #playerChanged(): void
+            +free(): boolean
+        }
+        Space --> " * -objects" Object
+        Space --> "1 -player" Player
+        Space --> "1 -board" Board
+
+        abstract class Object {
+        }
+
+        class Pit extends Object {}
+
+    }
+
+    package view {}
+
+    class RoboRally {
+        +main(args:String[]): void
+        -boardRoot: BorderPane
+        -stage: Stage
+
+        +init(): void
+        +start(): void
+        +createBoardView(): void
+        +stop(): void
+    }
+}
+
+
+@enduml
