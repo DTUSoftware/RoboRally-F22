@@ -245,6 +245,9 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
+                case OPTION_LEFT_RIGHT:
+                    this.LeftOrRight(player, "NULL");
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -300,6 +303,21 @@ public class GameController {
     public void turnLeft(@NotNull Player player) {
         if (player != null && player.board == board) {
             player.setHeading(player.getHeading().prev());
+        }
+    }
+
+    public void LeftOrRight(@NotNull Player player, String Turn) {
+        if (player != null && player.board == board) {
+            board.setPhase(Phase.PLAYER_INTERACTION);
+            switch (Turn) {
+                case "Right":
+                    turnRight(player);
+                    break;
+                case "Left":
+                    turnLeft(player);
+                    break;
+                default:
+            }
         }
     }
 
