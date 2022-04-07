@@ -33,9 +33,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 /**
  * The view that each separate {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} has.
  *
@@ -215,26 +212,20 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
                 playerInteractionPanel.getChildren().clear();
 
-                if (player.board.getCurrentPlayer() == player && player.board.getPhase() == Phase.PLAYER_INTERACTION) {
+                if (player.board.getCurrentPlayer() == player) {
                     // TODO Assignment P3: these buttons should be shown only when there is
                     //      an interactive command card, and the buttons should represent
                     //      the player's choices of the interactive command card. The
                     //      following is just a mockup showing two options
+                    Button optionButton = new Button("Option1");
+                    optionButton.setOnAction( e -> gameController.notImplemented());
+                    optionButton.setDisable(false);
+                    playerInteractionPanel.getChildren().add(optionButton);
 
-                    CommandCard currentCard = player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard();
-                    List<Command> cardOptions = currentCard.command.getOptions();
-                    System.out.println(cardOptions);
-
-                        for (int i = 0; i < cardOptions.size(); i++) {
-                        Button optionButton = new Button(cardOptions.get(i).toString());
-                        optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(cardOptions.get(cardOptions.indexOf(cardOptions))));
-                        optionButton.setDisable(false);
-                        playerInteractionPanel.getChildren().add(optionButton);
-
-                        System.out.println(cardOptions.get(i).toString());
-                        System.out.println(i + " = i");
-
-                    }
+                    optionButton = new Button("Option 2");
+                    optionButton.setOnAction( e -> gameController.notImplemented());
+                    optionButton.setDisable(false);
+                    playerInteractionPanel.getChildren().add(optionButton);
                 }
             }
         }
