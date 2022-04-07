@@ -187,12 +187,18 @@ public class GameController {
      */
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
+
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
+
+                    if (Command.OPTION_LEFT_RIGHT.isInteractive()){
+                        board.setPhase(Phase.PLAYER_INTERACTION);
+                    }
+
                     executeCommand(currentPlayer, command);
                 }
                 int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
@@ -244,6 +250,9 @@ public class GameController {
                     break;
                 case FAST_FORWARD:
                     this.fastForward(player);
+                    break;
+                case OPTION_LEFT_RIGHT:
+                    this.optionLeftRight(player, command);
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -303,6 +312,14 @@ public class GameController {
         }
     }
 
+    public void optionLeftRight (@NotNull Player player, Command command) {
+        if (command.equals("LEFT")){
+            turnLeft(player);
+        } else {
+            turnRight(player);
+        }
+    }
+
     /**
      * Moves a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} on a source
      * {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to
@@ -329,9 +346,27 @@ public class GameController {
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
      */
-    public void notImplemented() {
-        // XXX just for now to indicate that the actual method is not yet implemented
-        assert false;
+    public void  executeCommandOptionAndContinue(Command cardOptions) {
+        board.setPhase(Phase.ACTIVATION);
+        Player currentPlayer = board.getCurrentPlayer();
+        executeCommand(board.getCurrentPlayer(), cardOptions);
+        int step = board.getStep();
+
+        int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+        if (nextPlayerNumber < board.getPlayersNumber()) {
+            board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
+        } else {
+            step++;
+            if (step < Player.NO_REGISTERS) {
+                makeProgramFieldsVisible(step);
+                board.setStep(step);
+                board.setCurrentPlayer(board.getPlayer(0));
+            } else {
+                startProgrammingPhase();
+            }
+        }
+        continuePrograms();
     }
 
 }
+
