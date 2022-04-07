@@ -315,8 +315,10 @@ public class GameController {
     public void optionLeftRight (@NotNull Player player, Command command) {
         if (command.equals("LEFT")){
             turnLeft(player);
-        } else {
+        } else if (command.equals("RIGHT")) {
             turnRight(player);
+        } else {
+            // Should not get here
         }
     }
 
