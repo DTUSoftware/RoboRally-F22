@@ -195,7 +195,7 @@ public class GameController {
                 if (card != null) {
                     Command command = card.command;
 
-                    if (card.command.isInteractive() == true){
+                    if (Command.OPTION_LEFT_RIGHT.isInteractive()){
                         board.setPhase(Phase.PLAYER_INTERACTION);
                     }
 
