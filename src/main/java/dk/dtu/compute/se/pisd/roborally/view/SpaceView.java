@@ -22,17 +22,27 @@
  */
 package dk.dtu.compute.se.pisd.roborally.view;
 
+import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import dk.dtu.compute.se.pisd.roborally.view.elements.CheckpointView;
+import dk.dtu.compute.se.pisd.roborally.view.elements.ConveyorBeltView;
+import dk.dtu.compute.se.pisd.roborally.view.elements.GearView;
+import dk.dtu.compute.se.pisd.roborally.view.elements.WallView;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.StrokeLineCap;
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * A SpaceView is the visual representation of a {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
@@ -49,6 +59,17 @@ public class SpaceView extends StackPane implements ViewObserver {
     /** the Space that is linked to the view */
     public final Space space;
 
+    private static Image image;
+    private final ImageView imageView;
+
+    static {
+        try {
+            image = new Image(Resources.getResource("objects/field.jpg").openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Creates a new view for a {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
      *
@@ -56,6 +77,9 @@ public class SpaceView extends StackPane implements ViewObserver {
      */
     public SpaceView(@NotNull Space space) {
         this.space = space;
+        this.imageView = new ImageView(image);
+        this.imageView.fitWidthProperty().bind(this.widthProperty());
+        this.imageView.fitHeightProperty().bind(this.heightProperty());
 
         // XXX the following styling should better be done with styles
         this.setPrefWidth(SPACE_WIDTH);
@@ -65,6 +89,7 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.setPrefHeight(SPACE_HEIGHT);
         this.setMinHeight((double) SPACE_HEIGHT/2);
         this.setMaxHeight(SPACE_HEIGHT);
+
 
         if ((space.x + space.y) % 2 == 0) {
             this.setStyle("-fx-background-color: white;");
@@ -80,12 +105,51 @@ public class SpaceView extends StackPane implements ViewObserver {
     }
 
     /**
+     * Updates the view with the objects.
+     */
+    private void updateObjects() {
+        this.getChildren().add(imageView);
+        setAlignment(imageView, Pos.CENTER);
+
+        ArrayList<WallView> walls = new ArrayList<>();
+        ArrayList<CheckpointView> checkpoints = new ArrayList<>();
+        ArrayList<ConveyorBeltView> conveyorBelts = new ArrayList<>();
+        ArrayList<GearView> gears = new ArrayList<>();
+
+        for (FieldElement fieldElement : space.getFieldObjects()) {
+            if (fieldElement instanceof Wall) {
+                walls.add(new WallView((Wall) fieldElement));
+            }
+            else if (fieldElement instanceof Checkpoint) {
+                checkpoints.add(new CheckpointView((Checkpoint) fieldElement));
+            }
+            else if (fieldElement instanceof ConveyorBelt) {
+                conveyorBelts.add(new ConveyorBeltView((ConveyorBelt) fieldElement));
+            }
+            else if (fieldElement instanceof Gear) {
+                gears.add(new GearView((Gear) fieldElement));
+            }
+        }
+
+        for (CheckpointView checkpoint : checkpoints) {
+            this.getChildren().add(checkpoint);
+        }
+        for (ConveyorBeltView conveyorBelt : conveyorBelts) {
+            this.getChildren().add(conveyorBelt);
+        }
+        for (GearView gear : gears) {
+            this.getChildren().add(gear);
+        }
+        for (WallView wall : walls) {
+            this.getChildren().add(wall);
+        }
+    }
+
+    /**
      * Updates the view with headings and other effects on the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}
      * when the player interacts with the {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
      */
     private void updatePlayer() {
-        this.getChildren().clear();
-
         Player player = space.getPlayer();
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
@@ -110,6 +174,8 @@ public class SpaceView extends StackPane implements ViewObserver {
     @Override
     public void updateView(Subject subject) {
         if (subject == this.space) {
+            this.getChildren().clear();
+            updateObjects();
             updatePlayer();
         }
     }

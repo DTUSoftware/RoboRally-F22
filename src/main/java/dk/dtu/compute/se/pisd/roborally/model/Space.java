@@ -23,6 +23,9 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
+
+import java.util.ArrayList;
 
 /**
  * A 'field' on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board} which
@@ -40,6 +43,7 @@ public class Space extends Subject {
     public final int y;
 
     private Player player;
+    private ArrayList<FieldElement> objects = new ArrayList<>();
 
     /**
      * Initializes a Space on a {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
@@ -81,15 +85,38 @@ public class Space extends Subject {
             if (player != null) {
                 player.setSpace(this);
             }
-            notifyChange();
+            playerChanged();
         }
     }
 
     void playerChanged() {
+        if (getPlayer() != null) {
+            for (FieldElement fieldElement : objects) {
+                fieldElement.doLandingAction();
+            }
+        }
+
         // This is a minor hack; since some views that are registered with the space
         // also need to update when some player attributes change, the player can
         // notify the space of these changes by calling this method.
         notifyChange();
+    }
+
+    /**
+     * Add a field object to the space.
+     * @param fieldElement the field object.
+     */
+    public void addFieldObject(FieldElement fieldElement) {
+        objects.add(fieldElement);
+        notifyChange();
+    }
+
+    /**
+     * Gets all the field objects on the field.
+     * @return the field objects.
+     */
+    public FieldElement[] getFieldObjects() {
+        return objects.toArray(new FieldElement[0]);
     }
 
     /**

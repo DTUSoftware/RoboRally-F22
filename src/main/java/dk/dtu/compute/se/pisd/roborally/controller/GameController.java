@@ -22,8 +22,16 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.elements.ActionElement;
+import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 /**
  * Controls stuff that happens on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
@@ -33,6 +41,8 @@ import org.jetbrains.annotations.NotNull;
 public class GameController {
     /** The board linked to the controller */
     final public Board board;
+    /** The elements on the boards with actions **/
+    private Set<ActionElement> actionElements = Collections.newSetFromMap(new WeakHashMap<>());
 
     /**
      * The GameController constructor.
@@ -41,6 +51,34 @@ public class GameController {
      */
     public GameController(@NotNull Board board) {
         this.board = board;
+    }
+
+    /**
+     * Adds an action element to the game.
+     *
+     * @param actionElement the element to add
+     */
+    public void addElement(ActionElement actionElement) {
+        actionElements.add(actionElement);
+    }
+
+    /**
+     * Removes an action element from the game.
+     *
+     * @param actionElement the element to remove
+     */
+    public void removeElement(ActionElement actionElement) {
+        actionElements.remove(actionElement);
+    }
+
+    /**
+     * Activates all action elements on the board.
+     * Used after each round of register activations.
+     */
+    public void activateElements() {
+        for (ActionElement actionElement : actionElements) {
+            actionElement.activate();
+        }
     }
 
     /**
@@ -193,7 +231,7 @@ public class GameController {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
-                    if (card.command.isInteractive() == true) {
+                    if (card.command.isInteractive()) {
                         board.setPhase(Phase.PLAYER_INTERACTION);
                         return;
                     }
@@ -204,6 +242,9 @@ public class GameController {
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 } else {
+                    // Activate all elements on the board
+                    activateElements();
+
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
@@ -238,7 +279,7 @@ public class GameController {
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
             switch (command) {
-                case FORWARD:
+                case MOVE_1:
                     this.moveForward(player);
                     break;
                 case RIGHT:
@@ -247,8 +288,18 @@ public class GameController {
                 case LEFT:
                     this.turnLeft(player);
                     break;
-                case FAST_FORWARD:
+                case MOVE_2:
                     this.fastForward(player);
+                    break;
+                case MOVE_3:
+                    this.fastfastForward(player);
+                    break;
+                case MOVE_BACKWARDS:
+                    this.moveBackwards(player);
+                    break;
+                case U_TURN:
+                    this.turnRight(player);
+                    this.turnRight(player);
                     break;
                 case OPTION_LEFT_RIGHT:
                     this.optionLeftRight(player, command);
@@ -260,21 +311,110 @@ public class GameController {
     }
 
     /**
+     * Checks if a player can move in a certain direction.
+     * For example, you cannot move from a field into another field, if there is a wall.
+     *
+     * @param player The player to check if they can move.
+     */
+    private boolean canMove(@NotNull Player player, Heading direction) {
+        Space space = player.getSpace();
+        boolean canMove = false;
+        if (player != null && player.board == board && space != null) {
+            Space target = board.getNeighbour(space, direction);
+            if (target != null) {
+                canMove = true;
+                for (FieldElement fieldElement : space.getFieldObjects()) {
+                    if (fieldElement instanceof Wall) {
+                        if (((Wall) fieldElement).getDirection() == direction) {
+                            canMove = false;
+                        }
+                    }
+                }
+                if (canMove) {
+                    for (FieldElement fieldElement : target.getFieldObjects()) {
+                        if (fieldElement instanceof Wall) {
+                            if (((Wall) fieldElement).getDirection().next().next() == direction) {
+                                canMove = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return canMove;
+    }
+
+    /**
+     * Moves the player backwards.
+     *
+     * @param player The player to move backwards.
+     */
+    public void moveBackwards(@NotNull Player player) {
+        if (player != null && player.board == board) {
+            Heading heading = player.getHeading().next().next();
+            moveDirection(player, heading);
+        }
+    }
+
+    /**
+     * Moves a player in a certain direction WITHOUT CHANGING THE PLAYER'S HEADING.
+     *
+     * @param player the player
+     * @param direction the direction
+     */
+    public void moveDirection(@NotNull Player player, Heading direction) {
+        Space space = player.getSpace();
+        if (player != null && player.board == board && space != null && canMove(player, direction)) {
+            Space target = board.getNeighbour(space, direction);
+            if (target != null) {
+                // when there is another player on the target. The other player is pushed away!
+                if (target.free()) {
+                    target.setPlayer(player);
+                }
+                else {
+                    // check that we aren't trying to move the other player through a wall
+                    Player otherPlayer = target.getPlayer();
+                    if (canMove(otherPlayer, direction)) {
+                        moveDirection(target.getPlayer(), direction);
+                        target.setPlayer(player);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Moves the player forward, with the current heading.
      *
      * @param player The player to move forward.
      */
     public void moveForward(@NotNull Player player) {
-        Space space = player.getSpace();
-        if (player != null && player.board == board && space != null) {
+        if (player != null && player.board == board) {
             Heading heading = player.getHeading();
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                // XXX note that this removes an other player from the space, when there
-                //     is another player on the target. Eventually, this needs to be
-                //     implemented in a way so that other players are pushed away!
-                target.setPlayer(player);
-            }
+            moveDirection(player, heading);
+        }
+    }
+
+    /**
+     * Move forward an x amount of times.
+     * @param player the player to move forward
+     * @param times the amount of times to move forward
+     */
+    public void forwardX(@NotNull Player player, int times) {
+        for (int i = times; i > 0; i--) {
+            moveForward(player);
+        }
+    }
+
+    /**
+     * Move in a certain direction an x amount of times.
+     * @param player the player to move
+     * @param direction the direction to move
+     * @param times the amount of times to move
+     */
+    public void moveDirectionX(@NotNull Player player, Heading direction, int times) {
+        for (int i = times; i > 0; i--) {
+            moveDirection(player, direction);
         }
     }
 
@@ -284,11 +424,12 @@ public class GameController {
      * @param player The player to fast-forward.
      */
     public void fastForward(@NotNull Player player) {
-        for (int i = 2; i > 0; i--) {
-            moveForward(player);
-        }
+        forwardX(player, 2);
     }
 
+    public void fastfastForward(@NotNull Player player) {
+        forwardX(player, 3);
+    }
     /**
      * Turns the player right.
      *

@@ -76,12 +76,14 @@ public class RoboRally extends Application {
         boardRoot = new BorderPane();
         VBox vbox = new VBox(menuBar, boardRoot);
 
-        // aspt ratio - 2/3
-        double size_percent = 0.90;
-        boardRoot.prefWidthProperty().bind(stage.heightProperty().multiply(size_percent).divide(3).multiply(2));
-        boardRoot.prefHeightProperty().bind(stage.heightProperty().multiply(size_percent));
-        boardRoot.setMinWidth(stage.heightProperty().multiply(size_percent).divide(3).multiply(2).get());
-        boardRoot.setMinHeight(stage.heightProperty().multiply(size_percent).get());
+        // aspect ratio is broken, not gonna put back
+//        // aspt ratio - 2/3
+//        double size_percent = 0.90;
+//        boardRoot.prefWidthProperty().bind(stage.heightProperty().multiply(size_percent).divide(3).multiply(2));
+//        boardRoot.prefHeightProperty().bind(stage.heightProperty().multiply(size_percent));
+//        boardRoot.setMinWidth(stage.heightProperty().multiply(size_percent).divide(3).multiply(2).get());
+//        boardRoot.setMinHeight(stage.heightProperty().multiply(size_percent).get());
+
         createBoardView(null, appController);
 
         Scene primaryScene = new Scene(vbox);

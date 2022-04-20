@@ -23,6 +23,8 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class Board extends Subject {
     private final List<Player> players = new ArrayList<>();
 
     private Player current;
+    private Checkpoint[] checkpoints;
 
     private Phase phase = INITIALISATION;
 
@@ -311,7 +314,9 @@ public class Board extends Subject {
 
         // XXX: V2 changed the status so that it shows the phase, the player and the step
         return "Phase: " + getPhase().name() +
-                ", Player = " + getCurrentPlayer().getName() +
-                ", Step: " + getStep();
+                ", Player: " + getCurrentPlayer().getName() +
+                ", Step: " + getStep() +
+                ", Player checkpoint: " + getCurrentPlayer().getCurrentCheckpoint() +
+                ", Player power: " + getCurrentPlayer().getPower();
     }
 }
