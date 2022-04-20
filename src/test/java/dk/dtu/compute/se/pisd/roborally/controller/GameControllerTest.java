@@ -4,6 +4,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,5 +59,29 @@ class GameControllerTest {
         Assertions.assertEquals(Heading.SOUTH, current.getHeading(), "Player 0 should be heading SOUTH!");
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
     }
+
+    @Test
+    void moveWall() {
+        Board board = gameController.board;
+        Player currentPlayer = board.getCurrentPlayer();
+        board.getSpace(4, 4).setPlayer(currentPlayer);
+
+        Space spaceWall = board.getSpace(4,5);
+        new Wall(spaceWall, Heading.NORTH);
+
+        currentPlayer.setHeading(Heading.SOUTH);
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should not have moved!");
+        Assertions.assertEquals(4, currentPlayer.getSpace().y, "Player should not have moved!");
+    }
+
+    @Test
+    void pushRobot() {}
+
+    @Test
+    void pitFall() {}
+
+    @Test
+    void checkpoint() {}
 
 }
