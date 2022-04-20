@@ -1,4 +1,25 @@
-# RoboRally - DTU 02324 Advanced Programming course 
+# RoboRally - DTU 02324 Advanced Programming course
+
+## Playing the game
+
+To play the game, you'd first need a RoboRally executable JAR-file.
+If you don't already have one, you can either download it, or compile it yourself using one of the two provided methods below.
+
+When you have the RoboRally JAR-file, you simply need to double-click it to start playing!
+Have fun!
+
+### Downloading RoboRally (precompiled)
+
+You can download RoboRally from the [Releases tab](https://github.com/DTUSoftware/RoboRally/releases) on the RoboRally GitHub!
+
+### Compiling RoboRally
+
+To compile RoboRally, you need to have Java 17 and Maven installed.
+
+Instructions:
+1. Open a command prompt in the RoboRally root directory (where the README is located).
+2. Type `mvn` to run the default goal (creating executable and JavaDoc) - if you just want the executable, use `mvn clean package`.
+3. The compiled JAR-file can now be found in the `target` folder in the project directory - for example `roborally-1.0.0.jar`.
 
 ## Taxonomy
 
