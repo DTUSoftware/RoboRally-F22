@@ -23,7 +23,9 @@ abstract public class ElementView extends BorderPane {
     public int ELEMENT_HEIGHT = SpaceView.SPACE_HEIGHT;
     /** the width of the wall view */
     public int ELEMENT_WIDTH = SpaceView.SPACE_WIDTH;
-
+    /**
+     * imageview object
+     */
     private ImageView imageView;
 
     /**
@@ -37,6 +39,11 @@ abstract public class ElementView extends BorderPane {
         updateSize();
     }
 
+    /**
+     * sets the image
+     * @param image the image
+     * @param alignment where to allign
+     */
     public void setImage(Image image, String alignment) {
         this.imageView = new ImageView(image);
 
@@ -64,6 +71,9 @@ abstract public class ElementView extends BorderPane {
         this.imageView.fitHeightProperty().bind(this.heightProperty());
     }
 
+    /**
+     * updates the size of pic
+     */
     public void updateSize() {
         // XXX the following styling should better be done with styles
         this.setPrefWidth(ELEMENT_WIDTH);
@@ -75,6 +85,10 @@ abstract public class ElementView extends BorderPane {
         this.setMaxHeight(ELEMENT_HEIGHT);
     }
 
+    /**
+     * gets the imageview
+     * @return imageview
+     */
     public ImageView getImageView() {
         return imageView;
     }

@@ -2,6 +2,9 @@ package dk.dtu.compute.se.pisd.roborally.model.elements;
 
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
+/**
+ * checkpoint class, inherits from FieldElement
+ */
 public class Checkpoint extends FieldElement {
     /**
      * the number of the checkpoint
@@ -21,7 +24,7 @@ public class Checkpoint extends FieldElement {
     /**
      * sets the number which the checkpoint is
      *
-     * @param number
+     * @param number the number the checkpoint is
      */
     public void setNumber(int number) {
         this.number = number;
@@ -39,7 +42,7 @@ public class Checkpoint extends FieldElement {
     /**
      * checks if the checkpoint is reached in the correct order
      *
-     * @param checkpointReached
+     * @param checkpointReached what checkpoint has been reached
      * @return True if it is, False if not
      */
     public boolean checkCheckpoint(int checkpointReached) {
@@ -49,6 +52,9 @@ public class Checkpoint extends FieldElement {
         return false;
     }
 
+    /**
+     * does the landing action for the checkpoint card
+     */
     @Override
     public void doLandingAction() {
         if (checkCheckpoint(super.getSpace().getPlayer().getCurrentCheckpoint())) {
@@ -61,6 +67,9 @@ public class Checkpoint extends FieldElement {
         }
     }
 
+    /**
+     * activate (not used)
+     */
     @Override
     public void activate() {
 

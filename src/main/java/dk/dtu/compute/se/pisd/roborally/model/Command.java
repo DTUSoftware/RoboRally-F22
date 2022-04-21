@@ -66,7 +66,9 @@ public enum Command {
     //     this.displayName = displayName;
     // }
     // replaced by the code below:
-
+    /**
+     * list of options
+     */
     final private List<Command> options;
 
     Command(String displayName, Command... options) {
@@ -74,10 +76,18 @@ public enum Command {
         this.options = Collections.unmodifiableList(Arrays.asList(options));
     }
 
+    /**
+     * checks if it's interactive
+     * @return if its empty
+     */
     public boolean isInteractive() {
         return !options.isEmpty();
     }
 
+    /**
+     * gets the options
+     * @return options
+     */
     public List<Command> getOptions() {
         return options;
     }

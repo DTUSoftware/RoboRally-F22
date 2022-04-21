@@ -214,10 +214,18 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    /**
+     * gets current checkpoint
+     * @return currentcheckpoint
+     */
     public int getCurrentCheckpoint() {
         return currentCheckpoint;
     }
 
+    /**
+     * sets the checkpoint
+     * @param checkpoint sets the checkpoints :)
+     */
     public void setCurrentCheckpoint(int checkpoint) {
         this.currentCheckpoint = checkpoint;
         notifyChange();
