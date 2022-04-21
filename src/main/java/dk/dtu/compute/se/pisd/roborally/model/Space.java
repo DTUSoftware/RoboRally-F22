@@ -89,6 +89,14 @@ public class Space extends Subject {
         }
     }
 
+    public List<Heading> getWalls() {
+        return walls;
+    }
+
+    public List<FieldAction> getActions() {
+        return actions;
+    }
+
     void playerChanged() {
         if (getPlayer() != null) {
             for (FieldElement fieldElement : objects) {

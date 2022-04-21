@@ -22,9 +22,6 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
-import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
@@ -170,22 +167,7 @@ public class AppController implements Observer {
      * Note: not the game, the application itself.
      */
     public void exit() {
-        if (gameController != null) {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Exit RoboRally?");
-            alert.setContentText("Are you sure you want to exit RoboRally?");
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (!result.isPresent() || result.get() != ButtonType.OK) {
-                return; // return without exiting the application
-            }
-        }
-
-        // If the user did not cancel, the RoboRally application will exit
-        // after the option to save the game
-        if (gameController == null || stopGame()) {
-            Platform.exit();
-        }
+        // TODO needs to be implemented
     }
 
     /**
