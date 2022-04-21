@@ -487,8 +487,7 @@ public class GameController {
      * should eventually be removed.
      */
     public void  executeCommandOptionAndContinue(Command cardOptions) {
-
-        System.out.println(cardOptions);
+        
         board.setPhase(Phase.ACTIVATION);
         Player currentPlayer = board.getCurrentPlayer();
         executeCommand(board.getCurrentPlayer(), cardOptions);
