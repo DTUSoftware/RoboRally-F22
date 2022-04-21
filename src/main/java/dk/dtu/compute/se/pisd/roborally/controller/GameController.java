@@ -352,7 +352,14 @@ public class GameController {
     public void moveBackwards(@NotNull Player player) {
         if (player != null && player.board == board) {
             Heading heading = player.getHeading().next().next();
-            moveDirection(player, heading);
+            
+            try {
+                moveDirection(player, heading);
+            } catch (ImpossibleMoveException e) {
+                // we don't do anything here  for now; we just catch the
+                // exception so that we do no pass it on to the caller
+                // (which would be very bad style).
+            }
         }
     }
 
@@ -362,7 +369,7 @@ public class GameController {
      * @param player the player
      * @param direction the direction
      */
-    public void moveDirection(@NotNull Player player, Heading direction) {
+    public void moveDirection(@NotNull Player player, Heading direction) throws ImpossibleMoveException {
         Space space = player.getSpace();
         if (player != null && player.board == board && space != null && canMove(player, direction)) {
             Space target = board.getNeighbour(space, direction);
@@ -380,6 +387,23 @@ public class GameController {
                     }
                 }
             }
+            else {
+                throw new ImpossibleMoveException(player, space, heading);
+            }
+        }
+    }
+
+    class ImpossibleMoveException extends Exception {
+
+        private Player player;
+        private Space space;
+        private Heading heading;
+
+        public ImpossibleMoveException(Player player, Space space, Heading heading) {
+            super("Move impossible");
+            this.player = player;
+            this.space = space;
+            this.heading = heading;
         }
     }
 
@@ -391,7 +415,13 @@ public class GameController {
     public void moveForward(@NotNull Player player) {
         if (player != null && player.board == board) {
             Heading heading = player.getHeading();
-            moveDirection(player, heading);
+            try {
+                moveDirection(player, heading);
+            } catch (ImpossibleMoveException e) {
+                // we don't do anything here  for now; we just catch the
+                // exception so that we do no pass it on to the caller
+                // (which would be very bad style).
+            }
         }
     }
 
@@ -414,7 +444,13 @@ public class GameController {
      */
     public void moveDirectionX(@NotNull Player player, Heading direction, int times) {
         for (int i = times; i > 0; i--) {
-            moveDirection(player, direction);
+            try {
+                moveDirection(player, heading);
+            } catch (ImpossibleMoveException e) {
+                // we don't do anything here  for now; we just catch the
+                // exception so that we do no pass it on to the caller
+                // (which would be very bad style).
+            }
         }
     }
 
