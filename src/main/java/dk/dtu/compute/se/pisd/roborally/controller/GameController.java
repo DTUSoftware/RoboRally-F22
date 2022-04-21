@@ -388,7 +388,7 @@ public class GameController {
                 }
             }
             else {
-                throw new ImpossibleMoveException(player, space, heading);
+                throw new ImpossibleMoveException(player, space, direction);
             }
         }
     }
@@ -445,7 +445,7 @@ public class GameController {
     public void moveDirectionX(@NotNull Player player, Heading direction, int times) {
         for (int i = times; i > 0; i--) {
             try {
-                moveDirection(player, heading);
+                moveDirection(player, direction);
             } catch (ImpossibleMoveException e) {
                 // we don't do anything here  for now; we just catch the
                 // exception so that we do no pass it on to the caller

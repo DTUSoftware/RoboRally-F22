@@ -56,8 +56,9 @@ public class LoadBoard {
         }
 
 		// In simple cases, we can create a Gson object with new Gson():
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        GsonBuilder simpleBuilder = new GsonBuilder()
+                //.registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>())
+                ;
         Gson gson = simpleBuilder.create();
 
 		Board result;
@@ -71,10 +72,10 @@ public class LoadBoard {
 			result = new Board(template.width, template.height);
 			for (SpaceTemplate spaceTemplate: template.spaces) {
 			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-			    if (space != null) {
-                    space.getActions().addAll(spaceTemplate.actions);
-                    space.getWalls().addAll(spaceTemplate.walls);
-                }
+			    // if (space != null) {
+                //     space.getActions().addAll(spaceTemplate.actions);
+                //     space.getWalls().addAll(spaceTemplate.walls);
+                // }
             }
 			reader.close();
 			return result;
@@ -102,14 +103,14 @@ public class LoadBoard {
         for (int i=0; i<board.width; i++) {
             for (int j=0; j<board.height; j++) {
                 Space space = board.getSpace(i,j);
-                if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
-                    SpaceTemplate spaceTemplate = new SpaceTemplate();
-                    spaceTemplate.x = space.x;
-                    spaceTemplate.y = space.y;
-                    spaceTemplate.actions.addAll(space.getActions());
-                    spaceTemplate.walls.addAll(space.getWalls());
-                    template.spaces.add(spaceTemplate);
-                }
+                // if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
+                //     SpaceTemplate spaceTemplate = new SpaceTemplate();
+                //     spaceTemplate.x = space.x;
+                //     spaceTemplate.y = space.y;
+                //     spaceTemplate.actions.addAll(space.getActions());
+                //     spaceTemplate.walls.addAll(space.getWalls());
+                //     template.spaces.add(spaceTemplate);
+                // }
             }
         }
 
