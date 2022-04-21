@@ -11,6 +11,7 @@ Have fun!
 ### Downloading RoboRally (precompiled)
 
 You can download RoboRally from the [Releases tab](https://github.com/DTUSoftware/RoboRally-F22/releases) on the RoboRally GitHub!
+(There might not currently be any available release, as RoboRally is still in the development phase.)
 
 ### Compiling RoboRally
 
