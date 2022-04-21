@@ -28,8 +28,14 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.elements.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Gear;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -86,6 +92,25 @@ public class AppController implements Observer {
             //     here we just create an empty board with the required number of players.
             Board board = new Board(8,8);
             gameController = new GameController(board);
+
+            // debug adding
+            {
+                Space space = board.getSpace(1, 2);
+                new Wall(space, Heading.EAST);
+                new Checkpoint(space, 2);
+
+                space = board.getSpace(1,3);
+                new ConveyorBelt(gameController, space, true, Heading.SOUTH);
+
+                space = board.getSpace(1, 4);
+                new Checkpoint(space, 1);
+                new Wall(space, Heading.NORTH);
+
+                space = board.getSpace(3, 4);
+                new Gear(gameController, space, false);
+                new Wall(space, Heading.SOUTH);
+            }
+
             int no = result.get();
             for (int i = 0; i < no; i++) {
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));

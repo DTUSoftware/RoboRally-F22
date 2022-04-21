@@ -33,31 +33,47 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Player extends Subject {
-    /** The number of registers the player can have */
+    /**
+     * The number of registers the player can have
+     */
     final public static int NO_REGISTERS = 5;
-    /** The number of cards the player can have */
+    /**
+     * The number of cards the player can have
+     */
     final public static int NO_CARDS = 8;
 
-    /** The Board the Player is playing on */
+    /**
+     * The Board the Player is playing on
+     */
     final public Board board;
 
-    /** The name of the Player */
+    /**
+     * The name of the Player
+     */
     private String name;
-    /** The color of the Player */
+    /**
+     * The color of the Player
+     */
     private String color;
+    /**
+     * keep track of the power
+     */
+    private int power = 5;
 
     private Space space;
     private Heading heading = SOUTH;
+    private int currentCheckpoint;
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
+
 
     /**
      * Initializes a Player.
      *
      * @param board The board which the player belongs to.
      * @param color The color of the player.
-     * @param name The name of the player.
+     * @param name  The name of the player.
      */
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
@@ -198,4 +214,56 @@ public class Player extends Subject {
         return cards[i];
     }
 
+    /**
+     * gets current checkpoint
+     * @return currentcheckpoint
+     */
+    public int getCurrentCheckpoint() {
+        return currentCheckpoint;
+    }
+
+    /**
+     * sets the checkpoint
+     * @param checkpoint sets the checkpoints :)
+     */
+    public void setCurrentCheckpoint(int checkpoint) {
+        this.currentCheckpoint = checkpoint;
+        notifyChange();
+    }
+
+    /**
+     * set the players power
+     *
+     * @param power the power you want to set the players power to
+     */
+    public void setPower(int power) {
+        this.power = power;
+    }
+
+    /**
+     * gives the current power of the player
+     *
+     * @return the current power of the player
+     */
+    public int getPower() {
+        return this.power;
+    }
+
+    /**
+     * add x amount of power to the player
+     *
+     * @param toAdd how much you want to add to the player
+     */
+    public void addPower(int toAdd) {
+        this.power += toAdd;
+    }
+
+    /**
+     * subtracts x amount of power, when for example paying to get other cards
+     *
+     * @param toSubtract the power you wish to subtract
+     */
+    public void subtractPower(int toSubtract) {
+        this.power -= toSubtract;
+    }
 }

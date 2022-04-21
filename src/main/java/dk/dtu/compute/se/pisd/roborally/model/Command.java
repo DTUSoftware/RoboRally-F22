@@ -36,13 +36,19 @@ public enum Command {
     // This is a very simplistic way of realizing different commands.
 
     /** Move forward */
-    FORWARD("Fwd"),
+    MOVE_1("Fwd"),
+    /** Move 2 forward */
+    MOVE_2("Fwd x2"),
+    /** Move 3 forward */
+    MOVE_3("Fwd x3"),
+    /** Move backwards */
+    MOVE_BACKWARDS("Backwd"),
+    /** Do a u-turn*/
+    U_TURN("U-turn"),
     /** Turn right */
     RIGHT("Turn Right"),
     /** Turn left */
     LEFT("Turn Left"),
-    /** Fast forward */
-    FAST_FORWARD("Fast Fwd"),
     // XXX Assignment P3
     /** Left or Right */
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
@@ -60,7 +66,9 @@ public enum Command {
     //     this.displayName = displayName;
     // }
     // replaced by the code below:
-
+    /**
+     * list of options
+     */
     final private List<Command> options;
 
     Command(String displayName, Command... options) {
@@ -68,10 +76,18 @@ public enum Command {
         this.options = Collections.unmodifiableList(Arrays.asList(options));
     }
 
+    /**
+     * checks if it's interactive
+     * @return if its empty
+     */
     public boolean isInteractive() {
         return !options.isEmpty();
     }
 
+    /**
+     * gets the options
+     * @return options
+     */
     public List<Command> getOptions() {
         return options;
     }

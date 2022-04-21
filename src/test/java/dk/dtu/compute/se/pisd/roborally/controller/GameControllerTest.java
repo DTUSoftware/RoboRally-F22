@@ -4,6 +4,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,4 +61,69 @@ class GameControllerTest {
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
     }
 
+    @Test
+    void moveWall() {
+        Board board = gameController.board;
+        Player currentPlayer = board.getCurrentPlayer();
+        board.getSpace(4, 4).setPlayer(currentPlayer);
+
+        Space spaceWall = board.getSpace(4,5);
+        new Wall(spaceWall, Heading.NORTH);
+
+        currentPlayer.setHeading(Heading.SOUTH);
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should not have moved!");
+        Assertions.assertEquals(4, currentPlayer.getSpace().y, "Player should not have moved!");
+    }
+
+    @Test
+    void pushRobot() {
+        Board board = gameController.board;
+        Player currentPlayer = board.getCurrentPlayer();
+        Player otherPlayer = board.getPlayer(3);
+
+        board.getSpace(4, 4).setPlayer(currentPlayer);
+        board.getSpace(4, 5).setPlayer(otherPlayer);
+
+        Space spaceWall = board.getSpace(4,7);
+        new Wall(spaceWall, Heading.NORTH);
+
+        currentPlayer.setHeading(Heading.SOUTH);
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should not have moved in that direction!");
+        Assertions.assertEquals(5, currentPlayer.getSpace().y, "Player should have moved!");
+        Assertions.assertEquals(4, otherPlayer.getSpace().x, "Player should not have moved in that direction!");
+        Assertions.assertEquals(6, otherPlayer.getSpace().y, "Player should have moved!");
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should not have moved!");
+        Assertions.assertEquals(5, currentPlayer.getSpace().y, "Player should not have moved!");
+        Assertions.assertEquals(4, otherPlayer.getSpace().x, "Player should not have moved!");
+        Assertions.assertEquals(6, otherPlayer.getSpace().y, "Player should not have moved!");
+
+    }
+
+    @Test
+    void pitFall() {}
+
+    @Test
+    void checkpoint() {
+        Board board = gameController.board;
+        Player currentPlayer = board.getCurrentPlayer();
+        Assertions.assertEquals(0, currentPlayer.getCurrentCheckpoint(), "Player should not have reached a checkpoint!");
+
+        board.getSpace(4, 4).setPlayer(currentPlayer);
+
+        Space spaceCheckpoint2 = board.getSpace(4,5);
+        new Checkpoint(spaceCheckpoint2, 2);
+        Space spaceCheckpoint1 = board.getSpace(4,6);
+        new Checkpoint(spaceCheckpoint1, 1);
+
+        currentPlayer.setHeading(Heading.SOUTH);
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(0, currentPlayer.getCurrentCheckpoint(), "Player should not have reached that checkpoint!");
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(1, currentPlayer.getCurrentCheckpoint(), "Player should have reached that checkpoint!");
+        gameController.moveBackwards(currentPlayer);
+        Assertions.assertEquals(2, currentPlayer.getCurrentCheckpoint(), "Player should have reached that checkpoint!");
+    }
 }
