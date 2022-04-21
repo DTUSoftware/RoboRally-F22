@@ -6,6 +6,7 @@ To play the game, you'd first need a RoboRally executable JAR-file.
 If you don't already have one, you can either download it, or compile it yourself using one of the two provided methods below.
 
 When you have the RoboRally JAR-file, you simply need to double-click it to start playing!
+If you don't have the Java Runtime assigned to open JAR-files, please either assign it yourself, or run it with `java -jar roborally-x.x.x.jar` in the console.
 Have fun!
 
 ### Downloading RoboRally (precompiled)
@@ -21,6 +22,19 @@ Instructions:
 1. Open a command prompt in the RoboRally root directory (where the README is located).
 2. Type `mvn` to run the default goal (creating executable and JavaDoc) - if you just want the executable, use `mvn clean package`.
 3. The compiled JAR-file can now be found in the `target` folder in the project directory - for example `roborally-1.0.0.jar`.
+
+## Current Features
+
+- Checkpoints
+- Walls
+- Conveyor Belts
+- Robots
+- Gears
+- Pushing robots
+- A lot of programming cards (not all, not all special either)
+- Phases
+- Programming and activating robots
+- Some visual elements from the boardgame
 
 ## Taxonomy
 
