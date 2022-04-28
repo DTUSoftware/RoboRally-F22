@@ -41,7 +41,8 @@ import java.net.URL;
  */
 public class LoadBoard {
 
-    private static final String BOARDSFOLDER = "maps";
+    /** The folder where the maps are saved */
+    public static final String BOARDSFOLDER = "maps";
     private static final String DEFAULTBOARD = "defaultboard";
 
     public static Board loadBoard(GameController gameController, String boardname) {

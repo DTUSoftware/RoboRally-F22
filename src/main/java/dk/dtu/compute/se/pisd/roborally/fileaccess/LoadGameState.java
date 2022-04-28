@@ -15,11 +15,19 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
+
 public class LoadGameState {
 
     private static final String GAMESTATEFOLDER = "gamestates";
 
-    public static void loadGameState(Board board, String filename) {
+    /**
+     * Loads a map, players and board from a saved gamestate.
+     *
+     * @param gameController the game controller.
+     * @param filename the filename of the saved gamestate (without .json).
+     */
+    public static void loadGameState(GameController gameController, String filename) {
         InputStream inputStream = null;
         try {
             inputStream = Resources.getResource(GAMESTATEFOLDER + "/" + filename + ".json").openStream();
@@ -28,13 +36,14 @@ public class LoadGameState {
             e.printStackTrace();
         }
         if (inputStream == null) {
-            // TODO these constants should be defined somewhere
+            loadBoard(gameController, null);
             return;
         }
 
         JSONTokener tokener = new JSONTokener(inputStream);
         JSONObject gameState = new JSONObject(tokener);
 
+        Board board = loadBoard(gameController, gameState.getString("map"));
         board.setPhase(Phase.valueOf(gameState.getString("phase")));
 
         JSONArray players = gameState.getJSONArray("players");
@@ -73,9 +82,15 @@ public class LoadGameState {
         }
     }
 
+    /**
+     * Saves the current gamestate to a file.
+     *
+     * @param board the board.
+     */
     public static void saveGameState(Board board) {
         JSONObject gameState = new JSONObject();
 
+        gameState.put("map", board.getBoardName());
         gameState.put("phase", board.getPhase().name());
 
         JSONArray players = new JSONArray();
