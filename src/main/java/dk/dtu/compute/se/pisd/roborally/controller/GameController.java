@@ -40,7 +40,7 @@ import java.util.WeakHashMap;
  */
 public class GameController {
     /** The board linked to the controller */
-    final public Board board;
+    public Board board;
     /** The elements on the boards with actions **/
     private Set<ActionElement> actionElements = Collections.newSetFromMap(new WeakHashMap<>());
 
@@ -49,7 +49,17 @@ public class GameController {
      *
      * @param board the board to control.
      */
-    public GameController(@NotNull Board board) {
+    public GameController(Board board) {
+        this.board = board;
+    }
+
+    /**
+     * Set the board for the gamecontroller to control.
+     * Used for initialization that needs the gamecontroller.
+     *
+     * @param board the board.
+     */
+    public void setBoard(Board board) {
         this.board = board;
     }
 
@@ -76,6 +86,7 @@ public class GameController {
      * Used after each round of register activations.
      */
     public void activateElements() {
+        // TODO: activate the elements in the correct order/sequence
         for (ActionElement actionElement : actionElements) {
             actionElement.activate();
         }

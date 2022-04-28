@@ -66,12 +66,4 @@ public class Checkpoint extends FieldElement {
              */
         }
     }
-
-    /**
-     * activate (not used)
-     */
-    @Override
-    public void activate() {
-
-    }
 }

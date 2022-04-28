@@ -44,6 +44,8 @@ public class Board extends Subject {
     /** The height of the board */
     public final int height;
 
+    /** The name of the board */
+    public final String boardName;
     /** The ID of the board */
     private Integer gameId;
 
@@ -63,8 +65,10 @@ public class Board extends Subject {
      *
      * @param width the width of the board.
      * @param height the height of the board.
+     * @param boardName the name of the board.
      */
-    public Board(int width, int height) {
+    public Board(int width, int height, String boardName) {
+        this.boardName = boardName;
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
@@ -75,6 +79,16 @@ public class Board extends Subject {
             }
         }
         this.stepMode = false;
+    }
+
+    /**
+     * Creates a new board.
+     *
+     * @param width the width of the board.
+     * @param height the height of the board.
+     */
+    public Board(int width, int height) {
+        this(width, height, null);
     }
 
     /**
@@ -296,6 +310,14 @@ public class Board extends Subject {
         Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
         Space result = getSpace(x, y);
         return result;
+    }
+
+    /**
+     * Gets the name of the board.
+     * @return the name of the board.
+     */
+    public String getBoardName() {
+        return this.boardName;
     }
 
     /**
