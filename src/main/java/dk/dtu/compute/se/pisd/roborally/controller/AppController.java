@@ -55,6 +55,7 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
+    final private List<String> MAP_OPTIONS = Arrays.asList("Basis map", "Fun map", "Not fun map");
 
     final private RoboRally roboRally;
 
@@ -76,9 +77,14 @@ public class AppController implements Observer {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
-        Optional<Integer> result = dialog.showAndWait();
+        Optional<Integer> playerNumberResult = dialog.showAndWait();
 
-        if (result.isPresent()) {
+        ChoiceDialog<String> dialogMap = new ChoiceDialog<>(MAP_OPTIONS.get(0), MAP_OPTIONS);
+        dialogMap.setTitle("Maps");
+        dialogMap.setHeaderText("Select the map");
+        Optional<String> mapResult = dialogMap.showAndWait();
+
+        if (playerNumberResult.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
                 // give the user the option to save the game or abort this operation!
@@ -87,8 +93,12 @@ public class AppController implements Observer {
                 }
             }
 
+            //TODO
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
+            // Need to load file from game name -> playerNumberResult.get();
+
+            
             Board board = new Board(8,8);
             gameController = new GameController(board);
 
@@ -110,7 +120,7 @@ public class AppController implements Observer {
                 new Wall(space, Heading.SOUTH);
             }
 
-            int no = result.get();
+            int no = playerNumberResult.get();
             for (int i = 0; i < no; i++) {
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                 board.addPlayer(player);
@@ -169,7 +179,7 @@ public class AppController implements Observer {
      * Note: not the game, the application itself.
      */
     public void exit() {
-        // TODO needs to be implemented
+        System.exit(0);
     }
 
     /**
