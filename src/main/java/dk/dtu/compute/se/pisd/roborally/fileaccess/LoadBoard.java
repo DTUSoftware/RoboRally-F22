@@ -58,7 +58,7 @@ public class LoadBoard {
         }
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
-            return new Board(8,8);
+            return new Board(8,8, boardname);
         }
 
         JSONTokener tokener = new JSONTokener(inputStream);
@@ -163,7 +163,7 @@ public class LoadBoard {
         URL fileURL = Resources.getResource(BOARDSFOLDER + "/" + name + ".json");
         try (FileWriter file = new FileWriter(fileURL.getPath())) {
             //We can write any JSONArray or JSONObject instance to the file
-            file.write(boardJSON.toString(4));
+            file.write(boardJSON.toString(2));
             file.flush();
         } catch (IOException e) {
             e.printStackTrace();

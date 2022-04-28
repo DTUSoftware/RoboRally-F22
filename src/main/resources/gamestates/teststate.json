@@ -1,0 +1,30 @@
+{
+  "phase": "PROGRAMMING",
+  "players": [
+    {
+      "name": "Test",
+      "color": "red",
+      "power": 5,
+      "energy": 5,
+      "health": 10,
+      "currentCheckpoint": 1,
+      "position": {
+        "x": 1,
+        "y": 1,
+        "heading": "NORTH"
+      },
+      "program": [
+        {
+          "command": "MOVE_1",
+          "visible": true
+        }
+      ],
+      "cards": [
+        {
+          "command": "MOVE_1",
+          "visible": true
+        }
+      ]
+    }
+  ]
+}
