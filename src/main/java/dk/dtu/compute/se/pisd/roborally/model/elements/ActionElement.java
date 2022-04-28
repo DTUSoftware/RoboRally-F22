@@ -22,6 +22,11 @@ public abstract class ActionElement extends FieldElement {
     }
 
     /**
+     * activate method
+     */
+    public abstract void activate();
+
+    /**
      * game controller getterclass
      * @return gamecontroller
      */

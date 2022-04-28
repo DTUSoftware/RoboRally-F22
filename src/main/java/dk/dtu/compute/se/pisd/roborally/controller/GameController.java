@@ -76,6 +76,7 @@ public class GameController {
      * Used after each round of register activations.
      */
     public void activateElements() {
+        // TODO: activate the elements in the correct order/sequence
         for (ActionElement actionElement : actionElements) {
             actionElement.activate();
         }
