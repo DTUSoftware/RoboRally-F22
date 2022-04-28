@@ -22,10 +22,13 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -40,11 +43,21 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import net.harawata.appdirs.AppDirs;
+import net.harawata.appdirs.AppDirsFactory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.loadGameState;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.saveGameState;
 
 /**
  * Controls stuff that happens on the Application.
@@ -55,6 +68,7 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
+    final private AppDirs appDirs = AppDirsFactory.getInstance();
 
     final private RoboRally roboRally;
 
@@ -69,6 +83,80 @@ public class AppController implements Observer {
         this.roboRally = roboRally;
     }
 
+    private List<String> getFolderJSON(String foldername) {
+        List<String> folderFiles = new ArrayList<>();
+
+        // Resource folder files
+        List<String> resourceFolderFiles = new ArrayList<>();
+        URL mapsFolderURL = Resources.getResource(foldername);
+        File mapsFolder = new File(mapsFolderURL.getFile());
+//        System.out.println("got folder - " + mapsFolder.getPath());
+
+        if (!mapsFolder.getPath().contains(".jar")) {
+            for (File file : Objects.requireNonNull(mapsFolder.listFiles())) {
+                String filename = file.getName();
+                System.out.println(filename);
+                if (filename.contains(".json")) {
+                    resourceFolderFiles.add(file.getName().replace(".json", ""));
+                }
+            }
+        }
+        else {
+            // when we have a .jar file
+            // https://mkyong.com/java/java-read-a-file-from-resources-folder/
+            try {
+                // get path of the current running JAR
+                String jarPath = getClass().getProtectionDomain()
+                        .getCodeSource()
+                        .getLocation()
+                        .toURI()
+                        .getPath();
+                System.out.println("JAR Path :" + jarPath);
+
+                // file walks JAR
+                URI uri = URI.create("jar:file:" + jarPath);
+                try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
+                    resourceFolderFiles = Files.walk(fs.getPath(foldername))
+                            .filter(Files::isRegularFile)
+                            .map(p -> p.toString().replace(foldername+"/", "").replace(foldername+"\\", "").replace(".json", ""))
+                            .collect(Collectors.toList());
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        folderFiles.addAll(resourceFolderFiles);
+
+        // Appdata folder files
+        List<String> appdataFolderFiles = new ArrayList<>();
+        String appdataFolder = appDirs.getUserDataDir("RoboRally", "prod", "DTU");
+        mapsFolder = new File(appdataFolder + "/" + foldername);
+        if (mapsFolder.listFiles() != null) {
+            for (File file : Objects.requireNonNull(mapsFolder.listFiles())) {
+                String filename = file.getName();
+                System.out.println(filename);
+                if (filename.contains(".json")) {
+                    appdataFolderFiles.add(file.getName().replace(".json", ""));
+                }
+            }
+        }
+        folderFiles.addAll(appdataFolderFiles);
+
+        return folderFiles;
+    }
+
+    private List<String> getMapOptions() {
+        return getFolderJSON(LoadBoard.BOARDSFOLDER);
+    }
+
+    private List<String> getGameStateOptions() {
+        return getFolderJSON(LoadGameState.GAMESTATEFOLDER);
+    }
+
     /**
      * Starts a new game.
      */
@@ -76,9 +164,9 @@ public class AppController implements Observer {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
         dialog.setHeaderText("Select number of players");
-        Optional<Integer> result = dialog.showAndWait();
+        Optional<Integer> playerNumberResult = dialog.showAndWait();
 
-        if (result.isPresent()) {
+        if (playerNumberResult.isPresent()) {
             if (gameController != null) {
                 // The UI should not allow this, but in case this happens anyway.
                 // give the user the option to save the game or abort this operation!
@@ -87,58 +175,85 @@ public class AppController implements Observer {
                 }
             }
 
+            //TODO
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
-            Board board = new Board(8,8);
-            gameController = new GameController(board);
+            // Need to load file from game name -> playerNumberResult.get();
+            List<String> mapOptions = getMapOptions();
+            ChoiceDialog<String> dialogMap = new ChoiceDialog<>(mapOptions.get(0), mapOptions);
+            dialogMap.setTitle("Maps");
+            dialogMap.setHeaderText("Select the map");
+            Optional<String> mapResult = dialogMap.showAndWait();
 
-            // debug adding
-            {
-                Space space = board.getSpace(1, 2);
-                new Wall(space, Heading.EAST);
-                new Checkpoint(space, 2);
+            if (mapResult.isPresent()) {
+                gameController = new GameController(null);
+                Board board = loadBoard(gameController, mapResult.get());
 
-                space = board.getSpace(1,3);
-                new ConveyorBelt(gameController, space, true, Heading.SOUTH);
+                // debug adding
+//                {
+//                    Space space = board.getSpace(1, 2);
+//                    new Wall(space, Heading.EAST);
+//                    new Checkpoint(space, 2);
+//
+//                    space = board.getSpace(1,3);
+//                    new ConveyorBelt(gameController, space, true, Heading.SOUTH);
+//
+//                    space = board.getSpace(1, 4);
+//                    new Checkpoint(space, 1);
+//                    new Wall(space, Heading.NORTH);
+//
+//                    space = board.getSpace(3, 4);
+//                    new Gear(gameController, space, false);
+//                    new Wall(space, Heading.SOUTH);
+//                }
 
-                space = board.getSpace(1, 4);
-                new Checkpoint(space, 1);
-                new Wall(space, Heading.NORTH);
+                int no = playerNumberResult.get();
+                for (int i = 0; i < no; i++) {
+                    Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                    board.addPlayer(player);
+                    player.setSpace(board.getSpace(i % board.width, i));
+                }
+                // XXX: V2
+                // board.setCurrentPlayer(board.getPlayer(0));
+                gameController.startProgrammingPhase();
 
-                space = board.getSpace(3, 4);
-                new Gear(gameController, space, false);
-                new Wall(space, Heading.SOUTH);
+                roboRally.createBoardView(gameController, null);
             }
-
-            int no = result.get();
-            for (int i = 0; i < no; i++) {
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                board.addPlayer(player);
-                player.setSpace(board.getSpace(i % board.width, i));
-            }
-            // XXX: V2
-            // board.setCurrentPlayer(board.getPlayer(0));
-            gameController.startProgrammingPhase();
-
-            roboRally.createBoardView(gameController, null);
         }
     }
 
     /**
-     * Saves the game, to be continued later.
+     * Saves the game.
      */
     public void saveGame() {
-        // XXX needs to be implemented eventually
+        if (gameController != null) {
+            saveGameState(gameController.board);
+        }
     }
 
     /**
      * Loads a saved game.
      */
     public void loadGame() {
-        // XXX needs to be implememted eventually
-        // for now, we just create a new game
-        if (gameController == null) {
-            newGame();
+        List<String> gameStateOptions = getGameStateOptions();
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(gameStateOptions.get(0), gameStateOptions);
+        dialog.setTitle("Game Load");
+        dialog.setHeaderText("Select a saved game to continue");
+        Optional<String> gameStateResult = dialog.showAndWait();
+
+        if (gameStateResult.isPresent()) {
+            if (gameController != null) {
+                // The UI should not allow this, but in case this happens anyway.
+                // give the user the option to save the game or abort this operation!
+                if (!stopGame()) {
+                    return;
+                }
+            }
+
+            gameController = new GameController(null);
+            loadGameState(gameController, gameStateResult.get());
+
+            roboRally.createBoardView(gameController, null);
         }
     }
 
@@ -153,7 +268,6 @@ public class AppController implements Observer {
      */
     public boolean stopGame() {
         if (gameController != null) {
-
             // here we save the game (without asking the user).
             saveGame();
 
@@ -169,7 +283,7 @@ public class AppController implements Observer {
      * Note: not the game, the application itself.
      */
     public void exit() {
-        // TODO needs to be implemented
+        System.exit(0);
     }
 
     /**

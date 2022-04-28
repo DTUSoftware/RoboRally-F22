@@ -23,11 +23,6 @@ public abstract class FieldElement {
     public abstract void doLandingAction();
 
     /**
-     * activate method
-     */
-    public abstract void activate();
-
-    /**
      * gets the space the field is on
      * @return space where the field is on
      */

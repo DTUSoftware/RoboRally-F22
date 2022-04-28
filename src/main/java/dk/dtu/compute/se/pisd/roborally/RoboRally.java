@@ -121,6 +121,10 @@ public class RoboRally extends Application {
                 Button startButton = new Button("New Game");
                 startButton.setOnAction( e -> appController.newGame());
                 boardRoot.setCenter(startButton);
+
+                Button loadButton = new Button("Load Game");
+                loadButton.setOnAction( e -> appController.loadGame());
+                boardRoot.getChildren().add(loadButton);
             }
         }
 

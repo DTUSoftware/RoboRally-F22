@@ -21,16 +21,18 @@
  */
 package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
+import com.google.common.io.Resources;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.*;
+import java.net.URL;
 
 /**
  * ...
@@ -39,120 +41,138 @@ import java.io.*;
  */
 public class LoadBoard {
 
-    private static final String BOARDSFOLDER = "maps";
+    /** The folder where the maps are saved */
+    public static final String BOARDSFOLDER = "maps";
     private static final String DEFAULTBOARD = "defaultboard";
-    private static final String JSON_EXT = "json";
 
-    public static Board loadBoard(String boardname) {
+    public static Board loadBoard(GameController gameController, String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
         }
 
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
+        InputStream inputStream = null;
+        try {
+            inputStream = Resources.getResource(BOARDSFOLDER + "/" + boardname + ".json").openStream();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
-            return new Board(8,8);
+            Board board = new Board(8,8, boardname);
+            gameController.setBoard(board);
+            return board;
         }
 
-		// In simple cases, we can create a Gson object with new Gson():
-        GsonBuilder simpleBuilder = new GsonBuilder()
-                //.registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>())
-                ;
-        Gson gson = simpleBuilder.create();
+        JSONTokener tokener = new JSONTokener(inputStream);
+        JSONObject boardJSON = new JSONObject(tokener);
 
-		Board result;
-		// FileReader fileReader = null;
-        JsonReader reader = null;
+		Board board = null;
 		try {
-			// fileReader = new FileReader(filename);
-			reader = gson.newJsonReader(new InputStreamReader(inputStream));
-			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+            JSONObject size = boardJSON.getJSONObject("size");
+            board = new Board(size.getInt("width"), size.getInt("height"), boardname);
 
-			result = new Board(template.width, template.height);
-			for (SpaceTemplate spaceTemplate: template.spaces) {
-			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-			    // if (space != null) {
-                //     space.getActions().addAll(spaceTemplate.actions);
-                //     space.getWalls().addAll(spaceTemplate.walls);
-                // }
+            // Add the board to the gamecontroller
+            gameController.setBoard(board);
+
+            // add all spaces
+            JSONArray boardObjects = boardJSON.getJSONArray("board");
+            for (int i = 0; i < boardObjects.length(); i++) {
+                JSONObject spaceJSON = boardObjects.getJSONObject(i);
+
+                JSONObject positionJSON = spaceJSON.getJSONObject("position");
+                Space space = board.getSpace(positionJSON.getInt("x"), positionJSON.getInt("y"));
+
+                JSONArray elementsJSON = spaceJSON.getJSONArray("elements");
+                for (int j = 0; j < elementsJSON.length(); j++) {
+                    JSONObject elementJSON = elementsJSON.getJSONObject(j);
+                    switch (elementJSON.getString("type")) {
+                        case "checkpoint":
+                            new Checkpoint(space, elementJSON.getInt("number"));
+                            break;
+                        case "conveyorbelt":
+                            new ConveyorBelt(
+                                    gameController,
+                                    space,
+                                    elementJSON.getBoolean("color"),
+                                    Heading.valueOf(elementJSON.getString("direction"))
+                            );
+                            break;
+                        case "gear":
+                            new Gear(gameController, space, elementJSON.getBoolean("direction"));
+                            break;
+                        case "wall":
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
+                            break;
+                    }
+                }
             }
-			reader.close();
-			return result;
-		} catch (IOException e1) {
-            if (reader != null) {
-                try {
-                    reader.close();
-                    inputStream = null;
-                } catch (IOException e2) {}
-            }
-            if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e2) {}
-			}
-		}
-		return null;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return board;
     }
 
     public static void saveBoard(Board board, String name) {
-        BoardTemplate template = new BoardTemplate();
-        template.width = board.width;
-        template.height = board.height;
+        JSONObject boardJSON = new JSONObject();
 
-        for (int i=0; i<board.width; i++) {
-            for (int j=0; j<board.height; j++) {
-                Space space = board.getSpace(i,j);
-                // if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
-                //     SpaceTemplate spaceTemplate = new SpaceTemplate();
-                //     spaceTemplate.x = space.x;
-                //     spaceTemplate.y = space.y;
-                //     spaceTemplate.actions.addAll(space.getActions());
-                //     spaceTemplate.walls.addAll(space.getWalls());
-                //     template.spaces.add(spaceTemplate);
-                // }
+        JSONObject size = new JSONObject();
+        size.put("width", board.width);
+        size.put("height", board.height);
+        boardJSON.put("size", size);
+
+        JSONArray boardObjects = new JSONArray();
+        for (int x=0; x<board.width; x++) {
+            for (int y=0; y<board.height; y++) {
+                JSONObject spaceJSON = new JSONObject();
+                Space space = board.getSpace(x,y);
+
+                JSONObject positionJSON = new JSONObject();
+                positionJSON.put("x", space.x);
+                positionJSON.put("y", space.y);
+                spaceJSON.put("position", positionJSON);
+
+                JSONArray elementsJSON = new JSONArray();
+                for (FieldElement element : space.getFieldObjects()) {
+                    JSONObject elementJSON = new JSONObject();
+                    if (element instanceof Checkpoint) {
+                        elementJSON.put("type", "checkpoint");
+                        elementJSON.put("number", ((Checkpoint) element).getNumber());
+                    }
+                    else if (element instanceof ConveyorBelt) {
+                        elementJSON.put("type", "conveyorbelt");
+                        elementJSON.put("color", ((ConveyorBelt) element).getColor());
+                        elementJSON.put("direction", ((ConveyorBelt) element).getDirection().name());
+                    }
+                    else if (element instanceof Gear) {
+                        elementJSON.put("type", "gear");
+                        elementJSON.put("direction", ((Gear) element).getDirection());
+                    }
+                    else if (element instanceof Wall) {
+                        elementJSON.put("type", "wall");
+                        elementJSON.put("direction", ((Wall) element).getDirection().name());
+                    }
+                    else {
+                        elementJSON.put("type", "undefined");
+                    }
+                    elementsJSON.put(elementJSON);
+                }
+                spaceJSON.put("elements", elementsJSON);
+
+                boardObjects.put(spaceJSON);
             }
         }
 
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        // TODO: this is not very defensive, and will result in a NullPointerException
-        //       when the folder "resources" does not exist! But, it does not need
-        //       the file "simpleCards.json" to exist!
-        String filename =
-                classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
+        boardJSON.put("board", boardObjects);
 
-        // In simple cases, we can create a Gson object with new:
-        //
-        //   Gson gson = new Gson();
-        //
-        // But, if you need to configure it, it is better to create it from
-        // a builder (here, we want to configure the JSON serialisation with
-        // a pretty printer):
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                //registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
-                setPrettyPrinting();
-        Gson gson = simpleBuilder.create();
-
-        FileWriter fileWriter = null;
-        JsonWriter writer = null;
-        try {
-            fileWriter = new FileWriter(filename);
-            writer = gson.newJsonWriter(fileWriter);
-            gson.toJson(template, template.getClass(), writer);
-            writer.close();
-        } catch (IOException e1) {
-            if (writer != null) {
-                try {
-                    writer.close();
-                    fileWriter = null;
-                } catch (IOException e2) {}
-            }
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e2) {}
-            }
+        URL fileURL = Resources.getResource(BOARDSFOLDER + "/" + name + ".json");
+        try (FileWriter file = new FileWriter(fileURL.getPath())) {
+            //We can write any JSONArray or JSONObject instance to the file
+            file.write(boardJSON.toString(2));
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
 }

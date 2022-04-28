@@ -34,12 +34,4 @@ public class Wall extends FieldElement {
     public void doLandingAction() {
 
     }
-
-    /**
-     * activate not used
-     */
-    @Override
-    public void activate() {
-
-    }
 }
