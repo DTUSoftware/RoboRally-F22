@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -48,6 +49,7 @@ import java.io.File;
 import java.util.*;
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.loadGameState;
 
 /**
  * Controls stuff that happens on the Application.
@@ -78,6 +80,19 @@ public class AppController implements Observer {
 
         List<String> mapOptions = new ArrayList<>();
         for (File file : Objects.requireNonNull(mapsFolder.listFiles())) {
+            String filename = file.getName();
+            if (filename.contains(".json")) {
+                mapOptions.add(file.getName().replace(".json", ""));
+            }
+        }
+        return mapOptions;
+    }
+
+    private List<String> getGameStateOptions() {
+        File gameStateFolder = new File(Resources.getResource(LoadGameState.GAMESTATEFOLDER).getFile());
+
+        List<String> mapOptions = new ArrayList<>();
+        for (File file : Objects.requireNonNull(gameStateFolder.listFiles())) {
             String filename = file.getName();
             if (filename.contains(".json")) {
                 mapOptions.add(file.getName().replace(".json", ""));
@@ -117,7 +132,6 @@ public class AppController implements Observer {
             if (mapResult.isPresent()) {
                 gameController = new GameController(null);
                 Board board = loadBoard(gameController, mapResult.get());
-                gameController.setBoard(board);
 
                 // debug adding
 //                {
@@ -163,10 +177,25 @@ public class AppController implements Observer {
      * Loads a saved game.
      */
     public void loadGame() {
-        // XXX needs to be implememted eventually
-        // for now, we just create a new game
-        if (gameController == null) {
-            newGame();
+        List<String> gameStateOptions = getGameStateOptions();
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(gameStateOptions.get(0), gameStateOptions);
+        dialog.setTitle("Game Load");
+        dialog.setHeaderText("Select a saved game to continue");
+        Optional<String> gameStateResult = dialog.showAndWait();
+
+        if (gameStateResult.isPresent()) {
+            if (gameController != null) {
+                // The UI should not allow this, but in case this happens anyway.
+                // give the user the option to save the game or abort this operation!
+                if (!stopGame()) {
+                    return;
+                }
+            }
+
+            gameController = new GameController(null);
+            loadGameState(gameController, gameStateResult.get());
+
+            roboRally.createBoardView(gameController, null);
         }
     }
 

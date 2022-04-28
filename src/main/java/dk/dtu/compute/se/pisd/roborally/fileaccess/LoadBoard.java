@@ -59,7 +59,9 @@ public class LoadBoard {
         }
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
-            return new Board(8,8, boardname);
+            Board board = new Board(8,8, boardname);
+            gameController.setBoard(board);
+            return board;
         }
 
         JSONTokener tokener = new JSONTokener(inputStream);
@@ -69,6 +71,9 @@ public class LoadBoard {
 		try {
             JSONObject size = boardJSON.getJSONObject("size");
             board = new Board(size.getInt("width"), size.getInt("height"));
+
+            // Add the board to the gamecontroller
+            gameController.setBoard(board);
 
             // add all spaces
             JSONArray boardObjects = boardJSON.getJSONArray("board");

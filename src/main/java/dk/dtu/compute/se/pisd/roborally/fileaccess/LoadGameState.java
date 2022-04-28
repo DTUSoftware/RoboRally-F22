@@ -19,7 +19,8 @@ import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
 
 public class LoadGameState {
 
-    private static final String GAMESTATEFOLDER = "gamestates";
+    /** Where we save the game state */
+    public static final String GAMESTATEFOLDER = "gamestates";
 
     /**
      * Loads a map, players and board from a saved gamestate.
@@ -45,6 +46,7 @@ public class LoadGameState {
 
         Board board = loadBoard(gameController, gameState.getString("map"));
         board.setPhase(Phase.valueOf(gameState.getString("phase")));
+        board.setStep(gameState.getInt("step"));
 
         JSONArray players = gameState.getJSONArray("players");
         for (int i = 0; i < players.length(); i++) {
@@ -80,6 +82,8 @@ public class LoadGameState {
 
             board.addPlayer(player);
         }
+        
+        board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
     }
 
     /**
