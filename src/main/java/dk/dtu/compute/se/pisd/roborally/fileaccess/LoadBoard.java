@@ -70,7 +70,7 @@ public class LoadBoard {
 		Board board = null;
 		try {
             JSONObject size = boardJSON.getJSONObject("size");
-            board = new Board(size.getInt("width"), size.getInt("height"));
+            board = new Board(size.getInt("width"), size.getInt("height"), boardname);
 
             // Add the board to the gamecontroller
             gameController.setBoard(board);

@@ -43,13 +43,21 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import net.harawata.appdirs.AppDirs;
+import net.harawata.appdirs.AppDirsFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.loadGameState;
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.saveGameState;
 
 /**
  * Controls stuff that happens on the Application.
@@ -60,7 +68,7 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
-    final private List<String> MAP_OPTIONS = Arrays.asList("Basis map", "Fun map", "Not fun map");
+    final private AppDirs appDirs = AppDirsFactory.getInstance();
 
     final private RoboRally roboRally;
 
@@ -75,30 +83,78 @@ public class AppController implements Observer {
         this.roboRally = roboRally;
     }
 
-    private List<String> getMapOptions() {
-        File mapsFolder = new File(Resources.getResource(LoadBoard.BOARDSFOLDER).getFile());
+    private List<String> getFolderJSON(String foldername) {
+        List<String> folderFiles = new ArrayList<>();
 
-        List<String> mapOptions = new ArrayList<>();
-        for (File file : Objects.requireNonNull(mapsFolder.listFiles())) {
-            String filename = file.getName();
-            if (filename.contains(".json")) {
-                mapOptions.add(file.getName().replace(".json", ""));
+        // Resource folder files
+        List<String> resourceFolderFiles = new ArrayList<>();
+        URL mapsFolderURL = Resources.getResource(foldername);
+        File mapsFolder = new File(mapsFolderURL.getFile());
+//        System.out.println("got folder - " + mapsFolder.getPath());
+
+        if (!mapsFolder.getPath().contains(".jar")) {
+            for (File file : Objects.requireNonNull(mapsFolder.listFiles())) {
+                String filename = file.getName();
+                System.out.println(filename);
+                if (filename.contains(".json")) {
+                    resourceFolderFiles.add(file.getName().replace(".json", ""));
+                }
             }
         }
-        return mapOptions;
+        else {
+            // when we have a .jar file
+            // https://mkyong.com/java/java-read-a-file-from-resources-folder/
+            try {
+                // get path of the current running JAR
+                String jarPath = getClass().getProtectionDomain()
+                        .getCodeSource()
+                        .getLocation()
+                        .toURI()
+                        .getPath();
+                System.out.println("JAR Path :" + jarPath);
+
+                // file walks JAR
+                URI uri = URI.create("jar:file:" + jarPath);
+                try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
+                    resourceFolderFiles = Files.walk(fs.getPath(foldername))
+                            .filter(Files::isRegularFile)
+                            .map(p -> p.toString().replace(foldername+"/", "").replace(foldername+"\\", "").replace(".json", ""))
+                            .collect(Collectors.toList());
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        folderFiles.addAll(resourceFolderFiles);
+
+        // Appdata folder files
+        List<String> appdataFolderFiles = new ArrayList<>();
+        String appdataFolder = appDirs.getUserDataDir("RoboRally", "prod", "DTU");
+        mapsFolder = new File(appdataFolder + "/" + foldername);
+        if (mapsFolder.listFiles() != null) {
+            for (File file : Objects.requireNonNull(mapsFolder.listFiles())) {
+                String filename = file.getName();
+                System.out.println(filename);
+                if (filename.contains(".json")) {
+                    appdataFolderFiles.add(file.getName().replace(".json", ""));
+                }
+            }
+        }
+        folderFiles.addAll(appdataFolderFiles);
+
+        return folderFiles;
+    }
+
+    private List<String> getMapOptions() {
+        return getFolderJSON(LoadBoard.BOARDSFOLDER);
     }
 
     private List<String> getGameStateOptions() {
-        File gameStateFolder = new File(Resources.getResource(LoadGameState.GAMESTATEFOLDER).getFile());
-
-        List<String> mapOptions = new ArrayList<>();
-        for (File file : Objects.requireNonNull(gameStateFolder.listFiles())) {
-            String filename = file.getName();
-            if (filename.contains(".json")) {
-                mapOptions.add(file.getName().replace(".json", ""));
-            }
-        }
-        return mapOptions;
+        return getFolderJSON(LoadGameState.GAMESTATEFOLDER);
     }
 
     /**
@@ -167,10 +223,12 @@ public class AppController implements Observer {
     }
 
     /**
-     * Saves the game, to be continued later.
+     * Saves the game.
      */
     public void saveGame() {
-        // XXX needs to be implemented eventually
+        if (gameController != null) {
+            saveGameState(gameController.board);
+        }
     }
 
     /**

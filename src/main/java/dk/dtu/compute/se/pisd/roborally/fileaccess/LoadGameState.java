@@ -4,13 +4,13 @@ import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import net.harawata.appdirs.AppDirs;
+import net.harawata.appdirs.AppDirsFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +21,7 @@ public class LoadGameState {
 
     /** Where we save the game state */
     public static final String GAMESTATEFOLDER = "gamestates";
+    static final private AppDirs appDirs = AppDirsFactory.getInstance();
 
     /**
      * Loads a map, players and board from a saved gamestate.
@@ -34,11 +35,23 @@ public class LoadGameState {
             inputStream = Resources.getResource(GAMESTATEFOLDER + "/" + filename + ".json").openStream();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            if (!e.toString().contains("not found")) {
+                e.printStackTrace();
+            }
         }
         if (inputStream == null) {
-            loadBoard(gameController, null);
-            return;
+            String appdataFolder = appDirs.getUserDataDir("RoboRally", "prod", "DTU");
+            appdataFolder = appdataFolder + "/" + GAMESTATEFOLDER + "/" + filename + ".json";
+            try {
+                inputStream = new FileInputStream(appdataFolder);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (inputStream == null) {
+                loadBoard(gameController, null);
+                return;
+            }
         }
 
         JSONTokener tokener = new JSONTokener(inputStream);
@@ -82,7 +95,7 @@ public class LoadGameState {
 
             board.addPlayer(player);
         }
-        
+
         board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
     }
 
@@ -96,6 +109,8 @@ public class LoadGameState {
 
         gameState.put("map", board.getBoardName());
         gameState.put("phase", board.getPhase().name());
+        gameState.put("step", board.getStep());
+        gameState.put("currentPlayer", board.getPlayerNumber(board.getCurrentPlayer()));
 
         JSONArray players = new JSONArray();
         for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -119,9 +134,11 @@ public class LoadGameState {
             for (int j = 0; j < Player.NO_REGISTERS; j++) {
                 JSONObject programCard = new JSONObject();
                 CommandCardField field = player.getProgramField(j);
-                programCard.put("command", field.getCard().command.name());
-                programCard.put("visible", field.isVisible());
-                program.put(programCard);
+                if (field != null && field.getCard() != null) {
+                    programCard.put("command", field.getCard().command.name());
+                    programCard.put("visible", field.isVisible());
+                    program.put(programCard);
+                }
             }
             playerJSON.put("program", program);
 
@@ -129,9 +146,11 @@ public class LoadGameState {
             for (int j = 0; j < Player.NO_CARDS; j++) {
                 JSONObject cardsJSON = new JSONObject();
                 CommandCardField field = player.getCardField(j);
-                cardsJSON.put("command", field.getCard().command.name());
-                cardsJSON.put("visible", field.isVisible());
-                cards.put(cardsJSON);
+                if (field != null && field.getCard() != null) {
+                    cardsJSON.put("command", field.getCard().command.name());
+                    cardsJSON.put("visible", field.isVisible());
+                    cards.put(cardsJSON);
+                }
             }
             playerJSON.put("cards", cards);
 
@@ -139,12 +158,16 @@ public class LoadGameState {
         }
         gameState.put("players", players);
 
-        String name = board.getBoardName() + "_" + new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        URL fileURL = Resources.getResource(GAMESTATEFOLDER + "/" + name + ".json");
-        try (FileWriter file = new FileWriter(fileURL.getPath())) {
+        String name = board.getBoardName() + " (" + new SimpleDateFormat("dd-MM-yyyy HH-mm-ss").format(new Date()) + ")";
+        String appdataFolder = appDirs.getUserDataDir("RoboRally", "prod", "DTU");
+        String filePath = appdataFolder + "/" + GAMESTATEFOLDER + "/" + name + ".json";
+        File file = new File(filePath);
+        file.getParentFile().mkdirs();
+        try (FileWriter writer = new FileWriter(file)) {
+            System.out.println("Saving game to " + filePath);
             //We can write any JSONArray or JSONObject instance to the file
-            file.write(gameState.toString(2));
-            file.flush();
+            writer.write(gameState.toString(2));
+            writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
