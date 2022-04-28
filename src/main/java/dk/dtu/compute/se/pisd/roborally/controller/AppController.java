@@ -88,11 +88,21 @@ public class AppController implements Observer {
 
         // Resource folder files
         List<String> resourceFolderFiles = new ArrayList<>();
-        URL mapsFolderURL = Resources.getResource(foldername);
-        File mapsFolder = new File(mapsFolderURL.getFile());
+        URL mapsFolderURL = null;
+        File mapsFolder = null;
+        try {
+            mapsFolderURL = Resources.getResource(foldername);
+            mapsFolder = new File(mapsFolderURL.getFile());
+        }
+        catch (Exception e) {
+            if (!e.toString().contains("gamestates not found")) {
+                e.printStackTrace();
+            }
+        }
+
 //        System.out.println("got folder - " + mapsFolder.getPath());
 
-        if (!mapsFolder.getPath().contains(".jar")) {
+        if (mapsFolder != null && !mapsFolder.getPath().contains(".jar")) {
             for (File file : Objects.requireNonNull(mapsFolder.listFiles())) {
                 String filename = file.getName();
                 System.out.println(filename);
@@ -120,6 +130,11 @@ public class AppController implements Observer {
                             .filter(Files::isRegularFile)
                             .map(p -> p.toString().replace(foldername+"/", "").replace(foldername+"\\", "").replace(".json", ""))
                             .collect(Collectors.toList());
+                }
+                catch (NoSuchFileException e) {
+                    if (!e.toString().contains("gamestates")) {
+                        e.printStackTrace();
+                    }
                 }
                 catch (Exception e) {
                     e.printStackTrace();
