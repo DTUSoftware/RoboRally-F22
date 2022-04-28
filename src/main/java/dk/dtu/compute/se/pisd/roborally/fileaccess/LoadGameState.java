@@ -43,11 +43,31 @@ public class LoadGameState {
             Player player = new Player(board, playerJSON.getString("color"), playerJSON.getString("name"));
 
             player.setPower(playerJSON.getInt("power"));
-            // player.setEnergy(playerJSON.getInt("energy"));
-            // player.setHP(playerJSON.getInt("health"));
+            player.setEnergy(playerJSON.getInt("energy"));
+            player.setHP(playerJSON.getInt("health"));
             player.setCurrentCheckpoint(playerJSON.getInt("currentCheckpoint"));
 
-            // TODO: add position and program and card
+            JSONObject positionJSON = playerJSON.getJSONObject("position");
+            player.setSpace(board.getSpace(positionJSON.getInt("x"), positionJSON.getInt("y")));
+            player.setHeading(Heading.valueOf(positionJSON.getString("heading")));
+
+            JSONArray program = playerJSON.getJSONArray("program");
+            for (int j = 0; j < program.length(); j++) {
+                JSONObject programJSON = program.getJSONObject(j);
+                CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("command")));
+                CommandCardField field = player.getProgramField(j);
+                field.setCard(commandCard);
+                field.setVisible(programJSON.getBoolean("visible"));
+            }
+
+            JSONArray cards = playerJSON.getJSONArray("cards");
+            for (int j = 0; j < cards.length(); j++) {
+                JSONObject card = cards.getJSONObject(j);
+                CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("command")));
+                CommandCardField field = player.getCardField(j);
+                field.setCard(commandCard);
+                field.setVisible(card.getBoolean("visible"));
+            }
 
             board.addPlayer(player);
         }
@@ -66,8 +86,8 @@ public class LoadGameState {
             playerJSON.put("name", player.getName());
             playerJSON.put("color", player.getColor());
             playerJSON.put("power", player.getPower());
-            // playerJSON.put("energy", player.getEnergy());
-            // playerJSON.put("health", player.getHP());
+            playerJSON.put("energy", player.getEnergy());
+            playerJSON.put("health", player.getHP());
             playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
 
             JSONObject position = new JSONObject();

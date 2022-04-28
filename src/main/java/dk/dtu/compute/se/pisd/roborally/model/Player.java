@@ -59,6 +59,10 @@ public class Player extends Subject {
      * keep track of the power
      */
     private int power = 5;
+    /** keep track of the energy */
+    private int energy = 5;
+    /** keep track of the health */
+    private int health = 5;
 
     private Space space;
     private Heading heading = SOUTH;
@@ -265,5 +269,41 @@ public class Player extends Subject {
      */
     public void subtractPower(int toSubtract) {
         this.power -= toSubtract;
+    }
+
+    /**
+     * set the players energy
+     *
+     * @param energy the energy you want to set the players energy to
+     */
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    /**
+     * gives the current energy of the player
+     *
+     * @return the current energy of the player
+     */
+    public int getEnergy() {
+        return this.energy;
+    }
+
+    /**
+     * set the players health
+     *
+     * @param health the health you want to set the players health to
+     */
+    public void setHP(int health) {
+        this.health = health;
+    }
+
+    /**
+     * gives the current health of the player
+     *
+     * @return the current health of the player
+     */
+    public int getHP() {
+        return this.health;
     }
 }
