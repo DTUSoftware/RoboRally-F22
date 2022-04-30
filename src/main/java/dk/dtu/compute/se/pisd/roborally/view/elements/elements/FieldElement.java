@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.model.elements;
+package dk.dtu.compute.se.pisd.roborally.view.elements.elements;
 
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 

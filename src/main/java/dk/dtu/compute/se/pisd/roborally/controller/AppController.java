@@ -30,25 +30,14 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
-import dk.dtu.compute.se.pisd.roborally.model.Space;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.elements.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Gear;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import net.harawata.appdirs.AppDirs;
 import net.harawata.appdirs.AppDirsFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;

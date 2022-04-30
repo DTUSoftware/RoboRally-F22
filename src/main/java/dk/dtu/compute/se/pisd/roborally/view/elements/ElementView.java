@@ -1,20 +1,14 @@
 package dk.dtu.compute.se.pisd.roborally.view.elements;
 
-import com.google.common.io.Resources;
-import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
+import dk.dtu.compute.se.pisd.roborally.view.elements.elements.FieldElement;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.Locale;
 
 /**
- * An ElementView is the visual representation of a {@link dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement FieldElement}.
+ * An ElementView is the visual representation of a {@link FieldElement FieldElement}.
  */
 abstract public class ElementView extends BorderPane {
 

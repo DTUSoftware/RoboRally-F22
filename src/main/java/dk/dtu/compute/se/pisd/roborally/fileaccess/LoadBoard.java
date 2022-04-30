@@ -27,6 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import dk.dtu.compute.se.pisd.roborally.view.elements.elements.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
