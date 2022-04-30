@@ -99,22 +99,22 @@ public class LoadBoard {
                             );
                             break;
                         case "energy_space":
-                            new EnergySpaces(gameController, space);
+                            new EnergySpace(gameController, space);
                             break;
                         case "gear":
                             new Gear(gameController, space, elementJSON.getBoolean("direction"));
                             break;
                         case "laser":
-                            new Lasers(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
+                            new Laser(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
                         case "pit":
-                            new Pits(gameController, space);
+                            new Pit(gameController, space);
                             break;
                         case "priority_antenna":
                             new PriorityAntenna(space);
                             break;
                         case "push_panel":
-                            new PushPanels(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
+                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
                         case "wall":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
@@ -160,26 +160,26 @@ public class LoadBoard {
                         elementJSON.put("color", ((ConveyorBelt) element).getColor());
                         elementJSON.put("direction", ((ConveyorBelt) element).getDirection().name());
                     }
-                    else if (element instanceof EnergySpaces) {
+                    else if (element instanceof EnergySpace) {
                         elementJSON.put("type", "energy_space");
                     }
                     else if (element instanceof Gear) {
                         elementJSON.put("type", "gear");
                         elementJSON.put("direction", ((Gear) element).getDirection());
                     }
-                    else if (element instanceof Lasers) {
+                    else if (element instanceof Laser) {
                         elementJSON.put("type", "laser");
-                        elementJSON.put("direction", ((Lasers) element).getDirection().name());
+                        elementJSON.put("direction", ((Laser) element).getDirection().name());
                     }
-                    else if (element instanceof Pits) {
+                    else if (element instanceof Pit) {
                         elementJSON.put("type", "pit");
                     }
                     else if (element instanceof PriorityAntenna) {
                         elementJSON.put("type", "priority_antenna");
                     }
-                    else if (element instanceof PushPanels) {
+                    else if (element instanceof PushPanel) {
                         elementJSON.put("type", "push_panel");
-                        elementJSON.put("direction", ((PushPanels) element).getDirection().name());
+                        elementJSON.put("direction", ((PushPanel) element).getDirection().name());
                     }
                     else if (element instanceof Wall) {
                         elementJSON.put("type", "wall");
