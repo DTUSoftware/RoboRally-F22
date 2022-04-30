@@ -23,7 +23,10 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
@@ -70,6 +73,7 @@ public class Player extends Subject {
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
+    private ArrayList<CommandCardField> upgrades;
 
 
     /**
@@ -95,6 +99,8 @@ public class Player extends Subject {
         for (int i = 0; i < cards.length; i++) {
             cards[i] = new CommandCardField(this);
         }
+
+        upgrades = new ArrayList<>();
     }
 
     /**
@@ -216,6 +222,28 @@ public class Player extends Subject {
      */
     public CommandCardField getCardField(int i) {
         return cards[i];
+    }
+
+    /**
+     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} in the player's
+     * installed upgrades, on the index i.
+     *
+     * @param i the index in the player's upgrades to get the CommandCardField of.
+     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     */
+    public CommandCardField getUpgradeField(int i) {
+        if (i >= upgrades.size()) {
+            return null;
+        }
+        return upgrades.get(i);
+    }
+
+    public int getUpgradesNum() {
+        int size = upgrades.size();
+        if (size < 8) {
+            return 8;
+        }
+        return size;
     }
 
     /**
