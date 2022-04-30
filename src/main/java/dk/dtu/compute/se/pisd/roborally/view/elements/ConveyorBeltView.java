@@ -42,7 +42,7 @@ public class ConveyorBeltView extends ElementView {
             }
         }
 
-        super.setImage(this.image, "center");
+        super.setImage(this.image);
 
         switch (conveyorBelt.getDirection()) {
             case NORTH:
