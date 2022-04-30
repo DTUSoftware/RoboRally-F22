@@ -26,6 +26,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.elements.ActionElement;
 import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
+import dk.dtu.compute.se.pisd.roborally.model.elements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,9 +40,13 @@ import java.util.WeakHashMap;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class GameController {
-    /** The board linked to the controller */
+    /**
+     * The board linked to the controller
+     */
     public Board board;
-    /** The elements on the boards with actions **/
+    /**
+     * The elements on the boards with actions
+     **/
     private Set<ActionElement> actionElements = Collections.newSetFromMap(new WeakHashMap<>());
 
     /**
@@ -95,17 +100,17 @@ public class GameController {
     /**
      * This is just some dummy controller operation to make a simple move to see something
      * happening on the board. This method should eventually be deleted!
-     *
+     * <p>
      * - the current player should be moved to the given space
-     *   (if it is free()
+     * (if it is free()
      * - and the current player should be set to the player
-     *   following the current player
+     * following the current player
      * - the counter of moves in the game should be increased by one
-     *   if the player is moved
+     * if the player is moved
      *
      * @param space the space to which the current player should move
      */
-    public void moveCurrentPlayerToSpace(@NotNull Space space)  {
+    public void moveCurrentPlayerToSpace(@NotNull Space space) {
         if (space.free()) {
             space.setPlayer(board.getCurrentPlayer());
             board.endCurrentPlayerTurn();
@@ -123,6 +128,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Starts the programming phase.
      */
@@ -149,6 +155,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Generates a random command card.
      *
@@ -161,6 +168,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Ends the programming phase.
      */
@@ -173,6 +181,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Make the programming field visible.
      *
@@ -189,6 +198,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Hides the program fields.
      */
@@ -203,6 +213,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Executes programs (disables step mode).
      */
@@ -212,6 +223,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Execute steps (enables step mode).
      */
@@ -221,6 +233,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Continue programs.
      */
@@ -231,6 +244,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Executes the next step.
      */
@@ -280,7 +294,7 @@ public class GameController {
     /**
      * Executes a command.
      *
-     * @param player the player to execute the command on
+     * @param player  the player to execute the command on
      * @param command the command to execute
      */
     private void executeCommand(@NotNull Player player, Command command) {
@@ -335,6 +349,9 @@ public class GameController {
             if (target != null) {
                 canMove = true;
                 for (FieldElement fieldElement : space.getFieldObjects()) {
+                    if (fieldElement instanceof PriorityAntenna) {
+                        canMove = false;
+                    }
                     if (fieldElement instanceof Wall) {
                         if (((Wall) fieldElement).getDirection() == direction) {
                             canMove = false;
@@ -363,7 +380,7 @@ public class GameController {
     public void moveBackwards(@NotNull Player player) {
         if (player != null && player.board == board) {
             Heading heading = player.getHeading().next().next();
-            
+
             try {
                 moveDirection(player, heading);
             } catch (ImpossibleMoveException e) {
@@ -377,7 +394,7 @@ public class GameController {
     /**
      * Moves a player in a certain direction WITHOUT CHANGING THE PLAYER'S HEADING.
      *
-     * @param player the player
+     * @param player    the player
      * @param direction the direction
      */
     public void moveDirection(@NotNull Player player, Heading direction) throws ImpossibleMoveException {
@@ -388,8 +405,7 @@ public class GameController {
                 // when there is another player on the target. The other player is pushed away!
                 if (target.free()) {
                     target.setPlayer(player);
-                }
-                else {
+                } else {
                     // check that we aren't trying to move the other player through a wall
                     Player otherPlayer = target.getPlayer();
                     if (canMove(otherPlayer, direction)) {
@@ -397,8 +413,7 @@ public class GameController {
                         target.setPlayer(player);
                     }
                 }
-            }
-            else {
+            } else {
                 throw new ImpossibleMoveException(player, space, direction);
             }
         }
@@ -438,8 +453,9 @@ public class GameController {
 
     /**
      * Move forward an x amount of times.
+     *
      * @param player the player to move forward
-     * @param times the amount of times to move forward
+     * @param times  the amount of times to move forward
      */
     public void forwardX(@NotNull Player player, int times) {
         for (int i = times; i > 0; i--) {
@@ -449,9 +465,10 @@ public class GameController {
 
     /**
      * Move in a certain direction an x amount of times.
-     * @param player the player to move
+     *
+     * @param player    the player to move
      * @param direction the direction to move
-     * @param times the amount of times to move
+     * @param times     the amount of times to move
      */
     public void moveDirectionX(@NotNull Player player, Heading direction, int times) {
         for (int i = times; i > 0; i--) {
@@ -477,6 +494,7 @@ public class GameController {
     public void fastfastForward(@NotNull Player player) {
         forwardX(player, 3);
     }
+
     /**
      * Turns the player right.
      *
@@ -499,8 +517,8 @@ public class GameController {
         }
     }
 
-    public void optionLeftRight (@NotNull Player player, Command command) {
-        if (command.equals("LEFT")){
+    public void optionLeftRight(@NotNull Player player, Command command) {
+        if (command.equals("LEFT")) {
             turnLeft(player);
         } else if (command.equals("RIGHT")) {
             turnRight(player);
@@ -533,8 +551,8 @@ public class GameController {
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
      */
-    public void  executeCommandOptionAndContinue(Command cardOptions) {
-        
+    public void executeCommandOptionAndContinue(Command cardOptions) {
+
         board.setPhase(Phase.ACTIVATION);
         Player currentPlayer = board.getCurrentPlayer();
         executeCommand(board.getCurrentPlayer(), cardOptions);
