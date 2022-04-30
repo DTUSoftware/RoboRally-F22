@@ -1,7 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.view.elements;
 
 import com.google.common.io.Resources;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.elements.ConveyorBelt;
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
