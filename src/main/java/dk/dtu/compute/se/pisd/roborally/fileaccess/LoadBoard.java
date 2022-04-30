@@ -116,6 +116,13 @@ public class LoadBoard {
                         case "push_panel":
                             new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
+                        case "reboot_token":
+                            JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
+                            new RebootToken(space, rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2"));
+                            break;
+                        case "spawn_gear":
+                            new SpawnGear(space, Heading.valueOf(elementJSON.getString("direction")));
+                            break;
                         case "wall":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
@@ -180,6 +187,19 @@ public class LoadBoard {
                     else if (element instanceof PushPanel) {
                         elementJSON.put("type", "push_panel");
                         elementJSON.put("direction", ((PushPanel) element).getDirection().name());
+                    }
+                    else if (element instanceof RebootToken) {
+                        elementJSON.put("type", "reboot_token");
+                        JSONObject rebootBounds = new JSONObject();
+                        rebootBounds.put("x1", ((RebootToken) element).getx1());
+                        rebootBounds.put("y1", ((RebootToken) element).gety1());
+                        rebootBounds.put("x2", ((RebootToken) element).getx2());
+                        rebootBounds.put("y2", ((RebootToken) element).gety2());
+                        elementJSON.put("bounds", rebootBounds);
+                    }
+                    else if (element instanceof SpawnGear) {
+                        elementJSON.put("type", "spawn_gear");
+                        elementJSON.put("direction", ((SpawnGear) element).getDirection().name());
                     }
                     else if (element instanceof Wall) {
                         elementJSON.put("type", "wall");
