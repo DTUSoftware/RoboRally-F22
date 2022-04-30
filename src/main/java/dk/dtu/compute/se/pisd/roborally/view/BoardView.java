@@ -33,9 +33,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,13 +66,19 @@ public class BoardView extends VBox implements ViewObserver {
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
-        mainBoardScrollPane = new ScrollPane();
-        HBox mainBoardPaneHBox = new HBox();
+
         mainBoardPane = new GridPane();
+        HBox mainBoardPaneHBox = new HBox();
         mainBoardPaneHBox.getChildren().add(mainBoardPane);
         mainBoardPaneHBox.setAlignment(Pos.CENTER);
-        mainBoardScrollPane.setContent(mainBoardPaneHBox);
+        VBox mainBoardPaneVBox = new VBox();
+        mainBoardPaneVBox.getChildren().add(mainBoardPaneHBox);
+        mainBoardPaneVBox.setAlignment(Pos.CENTER);
+        mainBoardScrollPane = new ScrollPane();
+        mainBoardScrollPane.setContent(mainBoardPaneVBox);
         mainBoardScrollPane.setFitToWidth(true);
+        mainBoardScrollPane.setFitToHeight(true);
+
 //        mainBoardScrollPane.minWidth(60*8);
 //        mainBoardScrollPane.setFitToHeight(true);
 //        mainBoardPane.setClip(new Rectangle(400, 400));
@@ -85,7 +89,15 @@ public class BoardView extends VBox implements ViewObserver {
         playersViewScrollPane.setFitToWidth(true);
         statusLabel = new Label("<no status>");
 
+//        BorderPane borderPane = new BorderPane();
+//        borderPane.setTop(mainBoardScrollPane);
+//        VBox bottomChildren = new VBox(playersViewScrollPane, statusLabel);
+//        borderPane.setBottom(bottomChildren);
+//        borderPane.prefHeightProperty().bind(this.heightProperty());
+//        this.getChildren().add(borderPane);
+
         this.getChildren().add(mainBoardScrollPane);
+        VBox.setVgrow(mainBoardScrollPane, Priority.ALWAYS);
         this.getChildren().add(playersViewScrollPane);
         this.getChildren().add(statusLabel);
 
