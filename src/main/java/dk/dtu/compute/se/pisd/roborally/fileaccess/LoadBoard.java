@@ -90,7 +90,7 @@ public class LoadBoard {
                         case "checkpoint":
                             new Checkpoint(space, elementJSON.getInt("number"));
                             break;
-                        case "conveyorbelt":
+                        case "conveyor_belt":
                             new ConveyorBelt(
                                     gameController,
                                     space,
@@ -98,8 +98,23 @@ public class LoadBoard {
                                     Heading.valueOf(elementJSON.getString("direction"))
                             );
                             break;
+                        case "energy_space":
+                            new EnergySpaces(gameController, space);
+                            break;
                         case "gear":
                             new Gear(gameController, space, elementJSON.getBoolean("direction"));
+                            break;
+                        case "laser":
+                            new Lasers(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
+                            break;
+                        case "pit":
+                            new Pits(gameController, space);
+                            break;
+                        case "priority_antenna":
+                            new PriorityAntenna(space);
+                            break;
+                        case "push_panel":
+                            new PushPanels(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
                         case "wall":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
@@ -141,13 +156,30 @@ public class LoadBoard {
                         elementJSON.put("number", ((Checkpoint) element).getNumber());
                     }
                     else if (element instanceof ConveyorBelt) {
-                        elementJSON.put("type", "conveyorbelt");
+                        elementJSON.put("type", "conveyor_belt");
                         elementJSON.put("color", ((ConveyorBelt) element).getColor());
                         elementJSON.put("direction", ((ConveyorBelt) element).getDirection().name());
+                    }
+                    else if (element instanceof EnergySpaces) {
+                        elementJSON.put("type", "energy_space");
                     }
                     else if (element instanceof Gear) {
                         elementJSON.put("type", "gear");
                         elementJSON.put("direction", ((Gear) element).getDirection());
+                    }
+                    else if (element instanceof Lasers) {
+                        elementJSON.put("type", "laser");
+                        elementJSON.put("direction", ((Lasers) element).getDirection().name());
+                    }
+                    else if (element instanceof Pits) {
+                        elementJSON.put("type", "pit");
+                    }
+                    else if (element instanceof PriorityAntenna) {
+                        elementJSON.put("type", "priority_antenna");
+                    }
+                    else if (element instanceof PushPanels) {
+                        elementJSON.put("type", "push_panel");
+                        elementJSON.put("direction", ((PushPanels) element).getDirection().name());
                     }
                     else if (element instanceof Wall) {
                         elementJSON.put("type", "wall");
