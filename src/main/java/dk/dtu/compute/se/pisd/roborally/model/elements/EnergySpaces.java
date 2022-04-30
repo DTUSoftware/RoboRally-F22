@@ -19,6 +19,7 @@ public class EnergySpaces extends ActionElement {
 
     @Override
     public void activate() {
+        // TODO make the thingy with the specific register reached
         Player player = super.getSpace().getPlayer();
         if (hasEnergy) {player.addPower(1);}
 
