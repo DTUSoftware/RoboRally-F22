@@ -32,13 +32,11 @@ import dk.dtu.compute.se.pisd.roborally.view.elements.ConveyorBeltView;
 import dk.dtu.compute.se.pisd.roborally.view.elements.GearView;
 import dk.dtu.compute.se.pisd.roborally.view.elements.WallView;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
