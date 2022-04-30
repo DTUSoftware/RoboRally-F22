@@ -33,19 +33,11 @@ abstract public class ElementView extends BorderPane {
      */
     public ElementView(Image image, String alignment) {
         if (image != null) {
-            setImage(image, alignment);
+            this.imageView = new ImageView(image);
         }
-
-        updateSize();
-    }
-
-    /**
-     * sets the image
-     * @param image the image
-     * @param alignment where to allign
-     */
-    public void setImage(Image image, String alignment) {
-        this.imageView = new ImageView(image);
+        else {
+            this.imageView = new ImageView();
+        }
 
         switch (alignment.toLowerCase()) {
             case "top":
@@ -69,6 +61,16 @@ abstract public class ElementView extends BorderPane {
 
         this.imageView.fitWidthProperty().bind(this.widthProperty());
         this.imageView.fitHeightProperty().bind(this.heightProperty());
+
+        updateSize();
+    }
+
+    /**
+     * sets the image
+     * @param image the image
+     */
+    public void setImage(Image image) {
+        this.imageView.setImage(image);
     }
 
     /**
