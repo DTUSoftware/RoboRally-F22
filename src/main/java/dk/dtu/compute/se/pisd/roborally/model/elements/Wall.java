@@ -19,6 +19,7 @@ public class Wall extends FieldElement {
         this.direction = direction;
     }
 
+
     /**
      * gets the heading
      * @return directioon

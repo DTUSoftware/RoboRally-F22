@@ -4,8 +4,8 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 // TODO make this stuff
-public class Pits  extends ActionElement{
-    public Pits(GameController gameController, Space space){
+public class Pit extends ActionElement{
+    public Pit(GameController gameController, Space space){
         super(gameController,space);
 
     }

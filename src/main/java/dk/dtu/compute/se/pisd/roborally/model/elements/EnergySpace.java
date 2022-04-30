@@ -4,10 +4,10 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-public class EnergySpaces extends ActionElement {
+public class EnergySpace extends ActionElement {
     boolean hasEnergy = true;
 
-    public EnergySpaces(GameController gameController, Space space) {
+    public EnergySpace(GameController gameController, Space space) {
         super(gameController, space);
 
     }

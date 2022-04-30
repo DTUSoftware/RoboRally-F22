@@ -3,7 +3,7 @@ package dk.dtu.compute.se.pisd.roborally.model.elements;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-public class PushPanels extends ActionElement{
+public class PushPanel extends ActionElement{
 // TODO make this stuff
     /**
      * Constructer for action element
@@ -11,8 +11,10 @@ public class PushPanels extends ActionElement{
      * @param gameController the game controller
      * @param space          the space
      */
-    public PushPanels(GameController gameController, Space space, Heading direction) {
+    public PushPanel(GameController gameController, Space space, Heading direction) {
+
         super(gameController, space);
+        Wall wallOn = new Wall(space,direction);
     }
 
     @Override
