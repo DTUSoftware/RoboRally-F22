@@ -27,10 +27,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
-import dk.dtu.compute.se.pisd.roborally.view.elements.CheckpointView;
-import dk.dtu.compute.se.pisd.roborally.view.elements.ConveyorBeltView;
-import dk.dtu.compute.se.pisd.roborally.view.elements.GearView;
-import dk.dtu.compute.se.pisd.roborally.view.elements.WallView;
+import dk.dtu.compute.se.pisd.roborally.view.elements.*;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -109,37 +106,84 @@ public class SpaceView extends StackPane implements ViewObserver {
         this.getChildren().add(imageView);
         setAlignment(imageView, Pos.CENTER);
 
-        ArrayList<WallView> walls = new ArrayList<>();
         ArrayList<CheckpointView> checkpoints = new ArrayList<>();
         ArrayList<ConveyorBeltView> conveyorBelts = new ArrayList<>();
+        ArrayList<EnergySpaceView> energySpaces = new ArrayList<>();
         ArrayList<GearView> gears = new ArrayList<>();
+        ArrayList<LaserView> lasers = new ArrayList<>();
+        ArrayList<PitView> pits = new ArrayList<>();
+        ArrayList<PriorityAntennaView> priorityAntennas = new ArrayList<>();
+        ArrayList<PushPanelView> pushPanels = new ArrayList<>();
+        ArrayList<RebootTokenView> rebootTokens = new ArrayList<>();
+        ArrayList<SpawnGearView> spawnGears = new ArrayList<>();
+        ArrayList<WallView> walls = new ArrayList<>();
 
+        // we do this because we need to be able to control which elements are added to the spaceview first (overlap control in JavaFX)
         for (FieldElement fieldElement : space.getFieldObjects()) {
-            if (fieldElement instanceof Wall) {
-                walls.add(new WallView((Wall) fieldElement));
-            }
-            else if (fieldElement instanceof Checkpoint) {
+            if (fieldElement instanceof Checkpoint) {
                 checkpoints.add(new CheckpointView((Checkpoint) fieldElement));
             }
             else if (fieldElement instanceof ConveyorBelt) {
                 conveyorBelts.add(new ConveyorBeltView((ConveyorBelt) fieldElement));
             }
+            else if (fieldElement instanceof EnergySpace) {
+                energySpaces.add(new EnergySpaceView((EnergySpace) fieldElement));
+            }
             else if (fieldElement instanceof Gear) {
                 gears.add(new GearView((Gear) fieldElement));
             }
+            else if (fieldElement instanceof Laser) {
+                lasers.add(new LaserView((Laser) fieldElement));
+            }
+            else if (fieldElement instanceof Pit) {
+                pits.add(new PitView((Pit) fieldElement));
+            }
+            else if (fieldElement instanceof PriorityAntenna) {
+                priorityAntennas.add(new PriorityAntennaView((PriorityAntenna) fieldElement));
+            }
+            else if (fieldElement instanceof PushPanel) {
+                pushPanels.add(new PushPanelView((PushPanel) fieldElement));
+            }
+            else if (fieldElement instanceof RebootToken) {
+                rebootTokens.add(new RebootTokenView((RebootToken) fieldElement));
+            }
+            else if (fieldElement instanceof SpawnGear) {
+                spawnGears.add(new SpawnGearView((SpawnGear) fieldElement));
+            }
+            else if (fieldElement instanceof Wall) {
+                walls.add(new WallView((Wall) fieldElement));
+            }
         }
 
+        for (ConveyorBeltView conveyorBelt : conveyorBelts) {
+            this.getChildren().add(conveyorBelt);
+        }
+        for (RebootTokenView rebootToken : rebootTokens) {
+            this.getChildren().add(rebootToken);
+        }
         for (CheckpointView checkpoint : checkpoints) {
             this.getChildren().add(checkpoint);
         }
-        for (ConveyorBeltView conveyorBelt : conveyorBelts) {
-            this.getChildren().add(conveyorBelt);
+        for (EnergySpaceView energySpace : energySpaces) {
+            this.getChildren().add(energySpace);
+        }
+        for (SpawnGearView spawnGear : spawnGears) {
+            this.getChildren().add(spawnGear);
         }
         for (GearView gear : gears) {
             this.getChildren().add(gear);
         }
+        for (LaserView laser : lasers) {
+            this.getChildren().add(laser);
+        }
+        for (PushPanelView pushPanel : pushPanels) {
+            this.getChildren().add(pushPanel);
+        }
         for (WallView wall : walls) {
             this.getChildren().add(wall);
+        }
+        for (PitView pit : pits) {
+            this.getChildren().add(pit);
         }
     }
 
