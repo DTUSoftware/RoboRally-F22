@@ -110,6 +110,7 @@ public class AppController implements Observer {
                         .getPath();
                 System.out.println("JAR Path :" + jarPath);
 
+                // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. fix it or smthn idk
                 // file walks JAR
                 URI uri = URI.create("jar:file:" + jarPath);
                 try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
@@ -149,7 +150,12 @@ public class AppController implements Observer {
     }
 
     private List<String> getMapOptions() {
-        return getFolderJSON(LoadBoard.BOARDSFOLDER);
+        List<String> mapOptions = getFolderJSON(LoadBoard.BOARDSFOLDER);
+        // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. this is a temp fix
+        if (!mapOptions.contains("dizzy_highway")) {
+            mapOptions.add("dizzy_highway");
+        }
+        return mapOptions;
     }
 
     private List<String> getGameStateOptions() {
