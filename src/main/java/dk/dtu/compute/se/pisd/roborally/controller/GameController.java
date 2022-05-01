@@ -247,6 +247,7 @@ public class GameController {
     /**
      * Executes the next step.
      */
+    // TODO the stuff with the PriorityAntenna
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
@@ -574,6 +575,10 @@ public class GameController {
             continuePrograms();
 
         }
+
+    }
+
+    public void winTheGame(Player player){
 
     }
 

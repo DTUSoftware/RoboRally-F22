@@ -92,7 +92,8 @@ public class RoboRally extends Application {
         stage.setOnCloseRequest(
                 e -> {
                     e.consume();
-                    appController.exit();} );
+                    appController.exit();
+                });
 //        stage.minWidthProperty().bind(primaryScene.heightProperty().multiply(2));
 //        stage.minHeightProperty().bind(primaryScene.widthProperty().divide(2));
         stage.setResizable(true);
@@ -107,7 +108,7 @@ public class RoboRally extends Application {
      * Creates a new BoardView, and removes the old BoardView, if present.
      *
      * @param gameController The {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}.
-     * @param appController The {@link dk.dtu.compute.se.pisd.roborally.controller.AppController AppController}.
+     * @param appController  The {@link dk.dtu.compute.se.pisd.roborally.controller.AppController AppController}.
      */
     public void createBoardView(GameController gameController, AppController appController) {
         // if present, remove old BoardView
@@ -117,15 +118,14 @@ public class RoboRally extends Application {
             // create and add view for new board
             BoardView boardView = new BoardView(gameController);
             boardRoot.setCenter(boardView);
-        }
-        else {
+        } else {
             if (appController != null) {
                 Button startButton = new Button("New Game");
-                startButton.setOnAction( e -> appController.newGame());
+                startButton.setOnAction(e -> appController.newGame());
                 boardRoot.setCenter(startButton);
 
                 Button loadButton = new Button("Load Game");
-                loadButton.setOnAction( e -> appController.loadGame());
+                loadButton.setOnAction(e -> appController.loadGame());
                 boardRoot.getChildren().add(loadButton);
             }
         }
@@ -146,6 +146,10 @@ public class RoboRally extends Application {
         //     but right now the only way for the user to exit the app
         //     is delegated to the exit() method in the AppController,
         //     so that the AppController can take care of that.
+    }
+
+    public void gameWon(GameController gameController, AppController appController) {
+
     }
 
     /**

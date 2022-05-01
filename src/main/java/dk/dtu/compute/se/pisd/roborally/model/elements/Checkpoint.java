@@ -65,7 +65,7 @@ public class Checkpoint extends FieldElement {
         if (checkCheckpoint(super.getSpace().getPlayer().getCurrentCheckpoint())) {
             super.getSpace().getPlayer().setCurrentCheckpoint(getNumber());
             if (allCheckpointsReached(super.getSpace().getPlayer().getCurrentCheckpoint())){
-                // win function
+                // TODO win function
 
             }
         }
