@@ -28,7 +28,7 @@ public class PushPanelView extends ElementView {
     /**
      * Creates a new view for a {@link PushPanel pushPanel}.
      *
-     * @param laser the {@link PushPanel pushPanel}.
+     * @param pushPanel the {@link PushPanel pushPanel}.
      */
     public PushPanelView(@NotNull PushPanel pushPanel) {
         super(image, "top");

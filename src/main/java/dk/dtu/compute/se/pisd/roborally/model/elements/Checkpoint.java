@@ -21,8 +21,8 @@ public class Checkpoint extends FieldElement {
      */
     public Checkpoint(Space space, int number) {
         super(space);
-        this.number = numberOfCheckpointsCreated;
         numberOfCheckpointsCreated++;
+        this.number = number;
     }
 
     /**

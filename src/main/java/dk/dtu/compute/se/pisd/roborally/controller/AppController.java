@@ -82,8 +82,7 @@ public class AppController implements Observer {
         try {
             mapsFolderURL = Resources.getResource(foldername);
             mapsFolder = new File(mapsFolderURL.getFile());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (!e.toString().contains("gamestates not found")) {
                 e.printStackTrace();
             }
@@ -91,7 +90,7 @@ public class AppController implements Observer {
 
 //        System.out.println("got folder - " + mapsFolder.getPath());
 
-        if (mapsFolder != null && !mapsFolder.getPath().contains(".jar")) {
+        if (mapsFolder != null && !mapsFolder.getPath().contains(".jar") && mapsFolder.listFiles() != null) {
             for (File file : Objects.requireNonNull(mapsFolder.listFiles())) {
                 String filename = file.getName();
                 System.out.println(filename);
@@ -99,8 +98,7 @@ public class AppController implements Observer {
                     resourceFolderFiles.add(file.getName().replace(".json", ""));
                 }
             }
-        }
-        else {
+        } else {
             // when we have a .jar file
             // https://mkyong.com/java/java-read-a-file-from-resources-folder/
             try {
@@ -117,19 +115,16 @@ public class AppController implements Observer {
                 try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                     resourceFolderFiles = Files.walk(fs.getPath(foldername))
                             .filter(Files::isRegularFile)
-                            .map(p -> p.toString().replace(foldername+"/", "").replace(foldername+"\\", "").replace(".json", ""))
+                            .map(p -> p.toString().replace(foldername + "/", "").replace(foldername + "\\", "").replace(".json", ""))
                             .collect(Collectors.toList());
-                }
-                catch (NoSuchFileException e) {
+                } catch (NoSuchFileException e) {
                     if (!e.toString().contains("gamestates")) {
                         e.printStackTrace();
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
