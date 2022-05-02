@@ -385,7 +385,7 @@ public class GameController {
                 moveDirection(player, heading);
             } catch (ImpossibleMoveException e) {
                 // we don't do anything here  for now; we just catch the
-                // exception so that we do no pass it on to the caller
+                // exception so that we do not pass it on to the caller
                 // (which would be very bad style).
             }
         }
@@ -579,7 +579,12 @@ public class GameController {
     }
 
     public void winTheGame(Player player){
-
+        if (command.equals("Play Again")) {
+            AppController.newGame();
+            
+        } else if (command.equals("Exit")) {
+            //Quit the game
+        }
     }
 
 }

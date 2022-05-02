@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.model.elements;
 
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 /**
@@ -65,9 +66,11 @@ public class Checkpoint extends FieldElement {
         if (checkCheckpoint(super.getSpace().getPlayer().getCurrentCheckpoint())) {
             super.getSpace().getPlayer().setCurrentCheckpoint(getNumber());
             if (allCheckpointsReached(super.getSpace().getPlayer().getCurrentCheckpoint())){
+                GameController.winTheGame(getSpace().getPlayer());
                 // TODO win function
                 //Use the button feature from left right, then find out how to quit / restart the game from scratch.
                 //brug evt. new game function for restart.
+                // Brug Wincondition nederst i Gamecontroller
 
             }
         }
