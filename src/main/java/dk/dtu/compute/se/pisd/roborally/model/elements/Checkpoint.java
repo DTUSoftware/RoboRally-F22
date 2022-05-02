@@ -66,6 +66,8 @@ public class Checkpoint extends FieldElement {
             super.getSpace().getPlayer().setCurrentCheckpoint(getNumber());
             if (allCheckpointsReached(super.getSpace().getPlayer().getCurrentCheckpoint())){
                 // TODO win function
+                //Use the button feature from left right, then find out how to quit / restart the game from scratch.
+                //brug evt. new game function for restart.
 
             }
         }
