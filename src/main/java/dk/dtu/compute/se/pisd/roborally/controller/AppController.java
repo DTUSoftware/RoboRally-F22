@@ -30,14 +30,21 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import net.harawata.appdirs.AppDirs;
 import net.harawata.appdirs.AppDirsFactory;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
@@ -212,12 +219,49 @@ public class AppController implements Observer {
 //                    new Wall(space, Heading.SOUTH);
 //                }
 
+                final String BOARDSFOLDER = "maps";
+                InputStream inputStream = null;
+                try {
+                    inputStream = Resources.getResource(BOARDSFOLDER + "/" + mapResult.get() + ".json").openStream();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                JSONTokener tokener = new JSONTokener(inputStream);
+                JSONObject boardJSON = new JSONObject(tokener);
+                JSONArray boardObjects = boardJSON.getJSONArray("board");
+
+                String spawn_gear_element;
+                JSONArray elementsJSON = null;
+                Space space = null;
+
                 int no = playerNumberResult.get();
                 for (int i = 0; i < no; i++) {
                     Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                     board.addPlayer(player);
                     //TODO: skriv linjen under om til at skaffe et gear til hver spiller, og gem det
-                    player.setSpace(board.getSpace(i % board.width, i));
+
+                    outerloop:
+                    for (int l = 0; l < boardObjects.length(); l++) {
+                        JSONObject spaceJSON = boardObjects.getJSONObject(i);
+
+                        JSONObject positionJSON = spaceJSON.getJSONObject("position");
+                        space = board.getSpace(positionJSON.getInt("x"), positionJSON.getInt("y"));
+
+                        elementsJSON = spaceJSON.getJSONArray("elements");
+
+                        for (int j = 0; j < elementsJSON.length(); j++) {
+                            JSONObject elementJSON = elementsJSON.getJSONObject(j);
+                            spawn_gear_element = elementJSON.getString("type");
+                            System.out.println(spawn_gear_element);
+                            if (spawn_gear_element == "spawn_gear") {
+                                System.out.println("true");
+                                player.setSpace(space);
+                                break outerloop;
+                            }
+                        }
+                    }
+
                 }
                 // XXX: V2
                 // board.setCurrentPlayer(board.getPlayer(0));

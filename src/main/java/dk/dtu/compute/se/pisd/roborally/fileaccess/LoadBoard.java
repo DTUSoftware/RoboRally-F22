@@ -44,6 +44,8 @@ public class LoadBoard {
     /** The folder where the maps are saved */
     public static final String BOARDSFOLDER = "maps";
     private static final String DEFAULTBOARD = "defaultboard";
+    private static final int defaultBoardHeight = 8;
+    private static final int defaultBoardWidth = 8;
 
     public static Board loadBoard(GameController gameController, String boardname) {
         if (boardname == null) {
@@ -58,8 +60,7 @@ public class LoadBoard {
             e.printStackTrace();
         }
         if (inputStream == null) {
-            // TODO these constants should be defined somewhere
-            Board board = new Board(8,8, boardname);
+            Board board = new Board(defaultBoardWidth,defaultBoardHeight, boardname);
             gameController.setBoard(board);
             return board;
         }
