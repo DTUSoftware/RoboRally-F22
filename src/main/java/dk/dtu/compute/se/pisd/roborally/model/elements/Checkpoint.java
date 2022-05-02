@@ -6,7 +6,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 /**
  * checkpoint class, inherits from FieldElement
  */
-public class Checkpoint extends FieldElement {
+public class Checkpoint extends ActionElement {
     /**
      * the number of the checkpoint
      */
@@ -16,12 +16,12 @@ public class Checkpoint extends FieldElement {
 
     /**
      * constructer of the checkpoint class
-     *
+     * @param gamecontroller
      * @param space  takes the space the checkpoint is on
      * @param number the number that the checkpoint needs to be
      */
-    public Checkpoint(Space space, int number) {
-        super(space);
+    public Checkpoint(GameController gamecontroller, Space space, int number) {
+        super(gamecontroller, space);
         numberOfCheckpointsCreated++;
         this.number = number;
     }
@@ -66,7 +66,7 @@ public class Checkpoint extends FieldElement {
         if (checkCheckpoint(super.getSpace().getPlayer().getCurrentCheckpoint())) {
             super.getSpace().getPlayer().setCurrentCheckpoint(getNumber());
             if (allCheckpointsReached(super.getSpace().getPlayer().getCurrentCheckpoint())){
-                GameController.winTheGame(getSpace().getPlayer());
+                super.getGameController().winTheGame(getSpace().getPlayer());
                 // TODO win function
                 //Use the button feature from left right, then find out how to quit / restart the game from scratch.
                 //brug evt. new game function for restart.
@@ -74,5 +74,10 @@ public class Checkpoint extends FieldElement {
 
             }
         }
+    }
+
+    @Override
+    public void activate() {
+
     }
 }

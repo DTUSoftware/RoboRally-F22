@@ -88,7 +88,7 @@ public class LoadBoard {
                     JSONObject elementJSON = elementsJSON.getJSONObject(j);
                     switch (elementJSON.getString("type")) {
                         case "checkpoint":
-                            new Checkpoint(space, elementJSON.getInt("number"));
+                            new Checkpoint(gameController,space, elementJSON.getInt("number"));
                             break;
                         case "conveyor_belt":
                             new ConveyorBelt(

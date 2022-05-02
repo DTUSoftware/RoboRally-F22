@@ -114,9 +114,9 @@ class GameControllerTest {
         board.getSpace(4, 4).setPlayer(currentPlayer);
 
         Space spaceCheckpoint2 = board.getSpace(4,5);
-        new Checkpoint(spaceCheckpoint2, 2);
+        new Checkpoint(gameController, spaceCheckpoint2, 2);
         Space spaceCheckpoint1 = board.getSpace(4,6);
-        new Checkpoint(spaceCheckpoint1, 1);
+        new Checkpoint(gameController, spaceCheckpoint1, 1);
 
         currentPlayer.setHeading(Heading.SOUTH);
         gameController.moveForward(currentPlayer);
