@@ -583,7 +583,7 @@ public class GameController {
             AppController.newGame();
             
         } else if (command.equals("Exit")) {
-            //Quit the game
+            //AppController.Stopgame (Rent hypotetisk)
         }
     }
 
