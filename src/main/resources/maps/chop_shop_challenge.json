@@ -236,8 +236,8 @@
           "type": "push_panel",
           "direction": "SOUTH",
           "registers": {
-            "register1": null,
-            "register2": null
+            "register1": 6,
+            "register2": 6
           }
         }
       ]
@@ -311,10 +311,10 @@
       "elements": [
         {
           "type": "push_panel",
-          "direction": "SOUTH",
+          "direction": "EAST",
           "registers": {
-            "register1": null,
-            "register2": null
+            "register1": 6,
+            "register2": 6
           }
         }
       ]
@@ -327,7 +327,7 @@
       "elements": [
         {
           "type": "wall",
-          "direction": "SOUTH"
+          "direction": "WEST"
         }
       ]
     },
