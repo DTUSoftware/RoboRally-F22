@@ -256,6 +256,7 @@ public class AppController implements Observer {
                             if (elementJSON.getString("type").equals("spawn_gear")) {
 
                                 player.setSpace(space);
+                                player.setHeading(Heading.valueOf(elementJSON.getString("direction")));
                                 player.setStartGearSpace(space, Heading.valueOf(elementJSON.getString("direction")));
                                 l++;
                                 break outerloop;
