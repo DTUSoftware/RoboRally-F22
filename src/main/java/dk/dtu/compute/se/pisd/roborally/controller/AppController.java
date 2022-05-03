@@ -119,7 +119,7 @@ public class AppController implements Observer {
 
                 // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. fix it or smthn idk
                 // file walks JAR
-                URI uri = URI.create("jar:file:" + jarPath);
+                URI uri = URI.create("jar:file:" + jarPath.replace(" ","%20"));
                 try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                     resourceFolderFiles = Files.walk(fs.getPath(foldername))
                             .filter(Files::isRegularFile)
