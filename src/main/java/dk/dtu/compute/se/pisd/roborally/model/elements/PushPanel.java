@@ -8,6 +8,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class PushPanel extends ActionElement {
     private Heading direction;
+    private int register1;
+    private int register2;
 
 // TODO change push panels so it takes in the register
 
@@ -21,11 +23,13 @@ public class PushPanel extends ActionElement {
     public Board board;
     int step = board.getStep();
 
-    public PushPanel(GameController gameController, Space space, Heading direction) {
+    public PushPanel(GameController gameController, Space space, Heading direction, int register1, int register2) {
 
         super(gameController, space);
 
         this.direction = direction;
+        this.register1 = register1;
+        this.register2 = register2;
         Wall wallOn = new Wall(space, direction.next().next());
 
     }

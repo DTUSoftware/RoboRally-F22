@@ -115,7 +115,8 @@ public class LoadBoard {
                             new PriorityAntenna(space);
                             break;
                         case "push_panel":
-                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
+                            JSONObject pushPanel = elementJSON.getJSONObject("registers");
+                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
                             break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
