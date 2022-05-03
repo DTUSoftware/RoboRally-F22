@@ -43,6 +43,14 @@ public class PushPanel extends ActionElement {
         return direction;
     }
 
+    public int getRegister1() {
+        return register1;
+    }
+
+    public int getRegister2() {
+        return register2;
+    }
+
     @Override
     public void activate() {
         Player player = super.getSpace().getPlayer();
