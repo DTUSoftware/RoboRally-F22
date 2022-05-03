@@ -21,7 +21,7 @@ public class PushPanel extends ActionElement {
      */
     //Function that pulls the current step from Board. Should be the register.
     public Board board;
-    int step = board.getStep();
+//    int step = board.getStep();
 
     public PushPanel(GameController gameController, Space space, Heading direction, int register1, int register2) {
 

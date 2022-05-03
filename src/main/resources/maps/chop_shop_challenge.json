@@ -315,6 +315,7 @@
       "elements": [
         {
           "type": "reboot_token",
+          "direction": "EAST",
           "bounds": {
             "x1": 3,
             "y1": 0,
