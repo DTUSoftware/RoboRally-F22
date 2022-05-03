@@ -42,7 +42,7 @@ public class CheckpointView extends ElementView {
         text.setLayoutY(27);
         text.setLayoutX(28);
         text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 13));
-        text.setFill(Color.RED);
+        text.setFill(Color.YELLOW);
         super.getChildren().add(text);
 
         super.ELEMENT_HEIGHT = super.ELEMENT_HEIGHT /5 * 4;
