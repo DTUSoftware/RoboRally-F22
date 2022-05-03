@@ -30,7 +30,7 @@ public class PushPanel extends ActionElement {
         this.direction = direction;
         this.register1 = register1;
         this.register2 = register2;
-        Wall wallOn = new Wall(space, direction.next().next());
+
 
     }
 

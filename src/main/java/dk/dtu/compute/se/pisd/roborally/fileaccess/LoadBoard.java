@@ -114,10 +114,6 @@ public class LoadBoard {
                         case "priority_antenna":
                             new PriorityAntenna(space);
                             break;
-                        case "push_panel":
-                            JSONObject pushPanel = elementJSON.getJSONObject("registers");
-                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
-                            break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
                             new RebootToken(space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2"));
@@ -127,6 +123,11 @@ public class LoadBoard {
                             break;
                         case "wall":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
+                            break;
+                        case "push_panel":
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
+                            JSONObject pushPanel = elementJSON.getJSONObject("registers");
+                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
                             break;
                     }
                 }
