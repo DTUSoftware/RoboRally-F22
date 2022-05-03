@@ -252,15 +252,15 @@ public class AppController implements Observer {
 
                         for (int j = 0; j < elementsJSON.length(); j++) {
                             JSONObject elementJSON = elementsJSON.getJSONObject(j);
-                            spawn_gear_element = elementJSON.getString("type").toString();
-                            System.out.println(spawn_gear_element);
-                            if (spawn_gear_element == "spawn_gear") {
+                            System.out.println(elementJSON.getString("type"));
+                            if (elementJSON.getString("type") == "spawn_gear") {
                                 System.out.println("true");
                                 player.setSpace(space);
                                 break outerloop;
                             }
                         }
                     }
+                    player.setSpace(board.getSpace(i % board.width, i));
 
                 }
                 // XXX: V2
