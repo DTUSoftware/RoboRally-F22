@@ -1,0 +1,443 @@
+{
+  "size": {
+    "width": 23,
+    "height": 10
+  },
+  "board": [
+    {
+      "position":{
+        "x": 0,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "spawn_gear",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 0,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "priority_antenna"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 0,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "spawn_gear",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 1,
+        "y": 1
+      },
+      "elements": [
+        {
+          "type": "spawn_gear",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 1,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "NORTH"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 1,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "spawn_gear",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 1,
+        "y": 5
+      },
+      "elements": [
+        {
+          "type": "spawn_gear",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 1,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "SOUTH"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 1,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "spawn_gear",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 2,
+        "y": 0
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 2,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 2,
+        "y": 5
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 2,
+        "y": 9
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 3,
+        "y": 5
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 3,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 3,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 3,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 4,
+        "y": 0
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 4,
+        "y": 1
+      },
+      "elements": [
+        {
+          "type": "push_panel",
+          "direction": "SOUTH",
+          "registers": {
+            "register1": null,
+            "register2": null
+          }
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 4,
+        "y": 1
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "NORTH"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 4,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "pit"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 4,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 4,
+        "y": 5
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 4,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 4,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "push_panel",
+          "direction": "SOUTH",
+          "registers": {
+            "register1": null,
+            "register2": null
+          }
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 4,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "SOUTH"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 4,
+        "y": 9
+      },
+      "elements": [
+        {
+          "type": "reboot_token",
+          "bounds": {
+            "x1": 3,
+            "y1": 0,
+            "x2": 12,
+            "y2": 9
+          }
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 5,
+        "y": 0
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 5,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "push_panel",
+          "direction": "EAST",
+          "registers": {
+            "register1": 1,
+            "register2": 4
+          }
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 5,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 5,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "energy_space"
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 5,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "pit"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 5,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "push_panel",
+          "direction": "NORTH",
+          "registers": {
+            "register1": 1,
+            "register2": 4
+          }
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 5,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "NORTH"
+        }
+      ]
+    }
+  ]  
+}
