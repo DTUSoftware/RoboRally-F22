@@ -931,5 +931,101 @@
         }
       ]
     },
+    {
+      "position": {
+        "x": 13,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "gear",
+          "direction": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 14,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "NORTH"
+        },
+        {
+          "type": "laser",
+          "direction": "SOUTH"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 14,
+        "y": 5
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "SOUTH"
+        },
+        {
+          "type": "laser",
+          "direction": "NORTH"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 14,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "energy_space"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 14,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "checkpoint",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 4,
+        "y": 9
+      },
+      "elements": [
+        {
+          "type": "reboot_token",
+          "direction": "WEST",
+          "bounds": {
+            "x1": 13,
+            "y1": 0,
+            "x2": 22,
+            "y2": 9
+          }
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 11,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "pit"
+        }
+      ]
+    },
   ]  
 }
