@@ -167,6 +167,9 @@ public class SpaceView extends StackPane implements ViewObserver {
         for (EnergySpaceView energySpace : energySpaces) {
             this.getChildren().add(energySpace);
         }
+        for (PriorityAntennaView priorityAntenna : priorityAntennas) {
+            this.getChildren().add(priorityAntenna);
+        }
         for (SpawnGearView spawnGear : spawnGears) {
             this.getChildren().add(spawnGear);
         }
