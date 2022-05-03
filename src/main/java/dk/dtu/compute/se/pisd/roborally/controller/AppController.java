@@ -253,16 +253,15 @@ public class AppController implements Observer {
 
                         for (int j = 0; j < elementsJSON.length(); j++) {
                             JSONObject elementJSON = elementsJSON.getJSONObject(j);
-                            System.out.println(elementJSON.getString("type"));
-                            if (elementJSON.getString("type") == "spawn_gear") { //TODO why does this not work >:(
-                                System.out.println("true");
+                            if (elementJSON.getString("type").equals("spawn_gear")) {
+
                                 player.setSpace(space);
+                                player.setStartGearSpace(space, Heading.valueOf(elementJSON.getString("direction")));
                                 l++;
                                 break outerloop;
                             }
                         }
                     }
-                    player.setSpace(board.getSpace(i % board.width, i));
 
                 }
                 // XXX: V2

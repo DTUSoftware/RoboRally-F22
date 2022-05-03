@@ -68,6 +68,8 @@ public class Player extends Subject {
     private int health = 5;
 
     private Space space;
+    private Space startGearSpace;
+    private Heading startGearHeading = SOUTH;
     private Heading heading = SOUTH;
     private int currentCheckpoint;
 
@@ -88,6 +90,7 @@ public class Player extends Subject {
         this.name = name;
         this.color = color;
 
+        this.startGearSpace = null;
         this.space = null;
 
         program = new CommandCardField[NO_REGISTERS];
@@ -176,6 +179,34 @@ public class Player extends Subject {
             }
             notifyChange();
         }
+    }
+
+    /**
+     * Sets the players startGear {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     */
+    public void setStartGearSpace(Space startGear, @NotNull Heading heading) {
+            this.startGearSpace = space;
+        if (heading != this.startGearHeading) {
+            this.startGearHeading = heading;
+        }
+    }
+
+    /**
+     * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} the startGear is on.
+     *
+     * @return the players startGearPosition {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     */
+    public Space getStartGearSpacePosition() {
+        return startGearSpace;
+    }
+
+    /**
+     * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading} the startGear is.
+     *
+     * @return the players startGearHeading {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     */
+    public Heading getStartGearHeading() {
+        return startGearHeading;
     }
 
     /**
