@@ -243,7 +243,7 @@ public class AppController implements Observer {
 
                     outerloop:
                     for (int l = 0; l < boardObjects.length(); l++) {
-                        JSONObject spaceJSON = boardObjects.getJSONObject(i);
+                        JSONObject spaceJSON = boardObjects.getJSONObject(l);
 
                         JSONObject positionJSON = spaceJSON.getJSONObject("position");
                         space = board.getSpace(positionJSON.getInt("x"), positionJSON.getInt("y"));
@@ -252,7 +252,7 @@ public class AppController implements Observer {
 
                         for (int j = 0; j < elementsJSON.length(); j++) {
                             JSONObject elementJSON = elementsJSON.getJSONObject(j);
-                            spawn_gear_element = elementJSON.getString("type");
+                            spawn_gear_element = elementJSON.getString("type").toString();
                             System.out.println(spawn_gear_element);
                             if (spawn_gear_element == "spawn_gear") {
                                 System.out.println("true");
