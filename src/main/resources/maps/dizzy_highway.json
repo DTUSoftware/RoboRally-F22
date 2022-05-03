@@ -290,6 +290,7 @@
       "elements": [
         {
           "type": "reboot_token",
+          "direction": "SOUTH",
           "bounds": {
             "x1": 3,
             "y1": 0,

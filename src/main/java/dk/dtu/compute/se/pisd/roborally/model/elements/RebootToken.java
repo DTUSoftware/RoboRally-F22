@@ -1,8 +1,10 @@
 package dk.dtu.compute.se.pisd.roborally.model.elements;
 
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class RebootToken extends FieldElement {
+    private Heading direction;
     private int x1;
     private int y1;
     private int x2;
@@ -13,8 +15,9 @@ public class RebootToken extends FieldElement {
      *
      * @param space the space
      */
-    public RebootToken(Space space, int x1, int y1, int x2, int y2) {
+    public RebootToken(Space space, Heading direction, int x1, int y1, int x2, int y2) {
         super(space);
+        this.direction = direction;
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -24,6 +27,10 @@ public class RebootToken extends FieldElement {
     @Override
     public void doLandingAction() {
 
+    }
+
+    public Heading getDirection() {
+        return direction;
     }
 
     public int getx1() {

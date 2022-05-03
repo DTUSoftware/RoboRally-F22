@@ -772,6 +772,7 @@
       "elements": [
         {
           "type": "reboot_token",
+          "direction": "NORTH",
           "bounds": {
             "x1": 3,
             "y1": 0,

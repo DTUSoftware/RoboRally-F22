@@ -119,7 +119,7 @@ public class LoadBoard {
                             break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
-                            new RebootToken(space, rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2"));
+                            new RebootToken(space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2"));
                             break;
                         case "spawn_gear":
                             new SpawnGear(space, Heading.valueOf(elementJSON.getString("direction")));
