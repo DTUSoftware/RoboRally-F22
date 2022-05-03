@@ -234,6 +234,7 @@ public class AppController implements Observer {
                 String spawn_gear_element;
                 JSONArray elementsJSON = null;
                 Space space = null;
+                int l = 0;
 
                 int no = playerNumberResult.get();
                 for (int i = 0; i < no; i++) {
@@ -242,7 +243,7 @@ public class AppController implements Observer {
                     //TODO: skriv linjen under om til at skaffe et gear til hver spiller, og gem det
 
                     outerloop:
-                    for (int l = 0; l < boardObjects.length(); l++) {
+                    for (; l < boardObjects.length(); l++) {
                         JSONObject spaceJSON = boardObjects.getJSONObject(l);
 
                         JSONObject positionJSON = spaceJSON.getJSONObject("position");
@@ -253,9 +254,10 @@ public class AppController implements Observer {
                         for (int j = 0; j < elementsJSON.length(); j++) {
                             JSONObject elementJSON = elementsJSON.getJSONObject(j);
                             System.out.println(elementJSON.getString("type"));
-                            if (elementJSON.getString("type") == "spawn_gear") {
+                            if (elementJSON.getString("type") == "spawn_gear") { //TODO why does this not work >:(
                                 System.out.println("true");
                                 player.setSpace(space);
+                                l++;
                                 break outerloop;
                             }
                         }
