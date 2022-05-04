@@ -122,10 +122,10 @@ public class LoadBoard {
                             new SpawnGear(space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
                         case "wall":
-                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")), false);
                             break;
                         case "push_panel":
-                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
                             JSONObject pushPanel = elementJSON.getJSONObject("registers");
                             new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
                             break;

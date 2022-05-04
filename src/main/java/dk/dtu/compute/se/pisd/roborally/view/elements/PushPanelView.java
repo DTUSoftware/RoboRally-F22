@@ -41,16 +41,16 @@ public class PushPanelView extends ElementView {
         //TODO chance text so it fits pushPanel
         Text text = new Text(Integer.toString(this.pushPanel.getRegister1()));
         text.setLayoutY(27);
-        text.setLayoutX(28);
-        text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 13));
-        text.setFill(Color.YELLOW);
+        text.setLayoutX(15);
+        text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
+        text.setFill(Color.WHITE);
         super.getChildren().add(text);
 
         text = new Text(Integer.toString(this.pushPanel.getRegister2()));
         text.setLayoutY(27);
         text.setLayoutX(38);
-        text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 13));
-        text.setFill(Color.YELLOW);
+        text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
+        text.setFill(Color.WHITE);
         super.getChildren().add(text);
 
         switch (pushPanel.getDirection()) {

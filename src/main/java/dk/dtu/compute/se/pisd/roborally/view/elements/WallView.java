@@ -30,10 +30,15 @@ public class WallView extends ElementView {
      * @param wall the {@link Wall Wall}.
      */
     public WallView(@NotNull Wall wall) {
+
         super(image, "top");
         this.wall = wall;
         super.getImageView().fitHeightProperty().unbind();
 
+        if (wall.getBooleanInvisible()) {
+            setVisible (false);
+        }
+        
         switch (wall.getDirection()) {
             case NORTH:
                 super.getImageView().fitWidthProperty().bind(this.widthProperty());

@@ -8,15 +8,17 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
  */
 public class Wall extends FieldElement {
     Heading direction;
+    boolean invisible;
 
     /**
      * constructer for the wall objct
      * @param space where its located
      * @param direction the direction of the wall
      */
-    public Wall(Space space, Heading direction) {
+    public Wall(Space space, Heading direction, boolean invisible) {
         super(space);
         this.direction = direction;
+        this.invisible = invisible;
     }
 
 
@@ -27,6 +29,13 @@ public class Wall extends FieldElement {
     public Heading getDirection() {
         return direction;
     }
+
+    /**
+     * gets if invisible
+     * @return invisible
+     */
+
+    public boolean getBooleanInvisible() {return invisible;}
 
     /**
      * landingaction (not used)

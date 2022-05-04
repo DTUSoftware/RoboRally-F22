@@ -38,14 +38,18 @@ public class RebootTokenView extends ElementView {
 
         switch (rebootToken.getDirection()) {
             case NORTH:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
                 break;
             case SOUTH:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
                 this.setRotate(180);
                 break;
             case EAST:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
                 this.setRotate(90);
                 break;
             case WEST:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
                 this.setRotate(-90);
                 break;
         }
