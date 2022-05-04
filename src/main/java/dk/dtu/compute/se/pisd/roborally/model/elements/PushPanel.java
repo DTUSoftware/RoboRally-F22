@@ -8,25 +8,32 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 public class PushPanel extends ActionElement {
     private Heading direction;
+    private int register1;
+    private int register2;
 
 // TODO change push panels so it takes in the register
+
+//Function that pulls the current step from Board. Should be the register.
+public Board board;
+//    int step = board.getStep();
 
     /**
      * Constructer for action element
      *
      * @param gameController the game controller
      * @param space          the space
+     * @param direction the direction
+     * @param register1 register 1
+     * @param register2 register 2
      */
-    //Function that pulls the current step from Board. Should be the register.
-    public Board board;
-    int step = board.getStep();
-
-    public PushPanel(GameController gameController, Space space, Heading direction) {
+    public PushPanel(GameController gameController, Space space, Heading direction, int register1, int register2) {
 
         super(gameController, space);
 
         this.direction = direction;
-        Wall wallOn = new Wall(space, direction.next().next());
+        this.register1 = register1;
+        this.register2 = register2;
+
 
     }
 
@@ -37,6 +44,14 @@ public class PushPanel extends ActionElement {
      */
     public Heading getDirection() {
         return direction;
+    }
+
+    public int getRegister1() {
+        return register1;
+    }
+
+    public int getRegister2() {
+        return register2;
     }
 
     @Override

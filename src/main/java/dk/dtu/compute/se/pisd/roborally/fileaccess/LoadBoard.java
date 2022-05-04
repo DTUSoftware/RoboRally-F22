@@ -44,6 +44,8 @@ public class LoadBoard {
     /** The folder where the maps are saved */
     public static final String BOARDSFOLDER = "maps";
     private static final String DEFAULTBOARD = "defaultboard";
+    private static final int defaultBoardHeight = 8;
+    private static final int defaultBoardWidth = 8;
 
     public static Board loadBoard(GameController gameController, String boardname) {
         if (boardname == null) {
@@ -58,8 +60,7 @@ public class LoadBoard {
             e.printStackTrace();
         }
         if (inputStream == null) {
-            // TODO these constants should be defined somewhere
-            Board board = new Board(8,8, boardname);
+            Board board = new Board(defaultBoardWidth,defaultBoardHeight, boardname);
             gameController.setBoard(board);
             return board;
         }
@@ -113,18 +114,20 @@ public class LoadBoard {
                         case "priority_antenna":
                             new PriorityAntenna(space);
                             break;
-                        case "push_panel":
-                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
-                            break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
-                            new RebootToken(space, rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2"));
+                            new RebootToken(space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2"));
                             break;
                         case "spawn_gear":
                             new SpawnGear(space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
                         case "wall":
-                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")));
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")), false);
+                            break;
+                        case "push_panel":
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
+                            JSONObject pushPanel = elementJSON.getJSONObject("registers");
+                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
                             break;
                     }
                 }

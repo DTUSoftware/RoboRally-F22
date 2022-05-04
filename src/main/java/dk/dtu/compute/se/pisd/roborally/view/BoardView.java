@@ -111,7 +111,8 @@ public class BoardView extends VBox implements ViewObserver {
                 SpaceView spaceView = new SpaceView(space);
                 spaces[x][y] = spaceView;
                 mainBoardPane.add(spaceView, x, y);
-                spaceView.setOnMouseClicked(spaceEventHandler);
+                // disable the debug click when clicking on a space
+//                spaceView.setOnMouseClicked(spaceEventHandler);
             }
         }
 

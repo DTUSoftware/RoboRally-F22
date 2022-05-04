@@ -32,25 +32,26 @@
     },
     {
       "position": {
-        "x": 5,
+        "x": 10,
         "y": 0
       },
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "SOUTH",
+          "direction": "NORTH",
           "color": true
         }
       ]
     },
     {
       "position": {
-        "x": 12,
+        "x": 11,
         "y": 0
       },
       "elements": [
         {
-          "type": "energy_space"
+          "type": "checkpoint",
+          "number": 2
         }
       ]
     },
@@ -81,27 +82,14 @@
     },
     {
       "position": {
-        "x": 5,
-        "y": 1
-      },
-      "elements": [
-        {
-          "type": "conveyor_belt",
-          "direction": "WEST",
-          "color": true
-        }
-      ]
-    },
-    {
-      "position": {
         "x": 6,
         "y": 1
       },
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "WEST",
-          "color": true
+          "direction": "SOUTH",
+          "color": false
         }
       ]
     },
@@ -114,7 +102,7 @@
         {
           "type": "conveyor_belt",
           "direction": "WEST",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -127,20 +115,7 @@
         {
           "type": "conveyor_belt",
           "direction": "WEST",
-          "color": true
-        }
-      ]
-    },
-    {
-      "position": {
-        "x": 9,
-        "y": 1
-      },
-      "elements": [
-        {
-          "type": "conveyor_belt",
-          "direction": "WEST",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -152,7 +127,7 @@
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "WEST",
+          "direction": "NORTH",
           "color": true
         }
       ]
@@ -197,20 +172,46 @@
     },
     {
       "position": {
-        "x": 4,
+        "x": 3,
         "y": 2
       },
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "SOUTH",
+          "direction": "WEST",
           "color": true
         }
       ]
     },
     {
       "position": {
-        "x": 5,
+        "x": 4,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 6,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 7,
         "y": 2
       },
       "elements": [
@@ -221,27 +222,14 @@
     },
     {
       "position": {
-        "x": 11,
+        "x": 8,
         "y": 2
       },
       "elements": [
         {
           "type": "conveyor_belt",
           "direction": "NORTH",
-          "color": true
-        }
-      ]
-    },
-    {
-      "position": {
-        "x": 12,
-        "y": 2
-      },
-      "elements": [
-        {
-          "type": "conveyor_belt",
-          "direction": "WEST",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -259,14 +247,14 @@
     },
     {
       "position": {
-        "x": 4,
+        "x": 5,
         "y": 3
       },
       "elements": [
         {
           "type": "conveyor_belt",
           "direction": "SOUTH",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -277,26 +265,9 @@
       },
       "elements": [
         {
-          "type": "wall",
-          "direction": "NORTH"
-        }
-      ]
-    },
-    {
-      "position": {
-        "x": 7,
-        "y": 3
-      },
-      "elements": [
-        {
-          "type": "reboot_token",
-          "direction": "SOUTH",
-          "bounds": {
-            "x1": 3,
-            "y1": 0,
-            "x2": 12,
-            "y2": 9
-          }
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
         }
       ]
     },
@@ -307,12 +278,9 @@
       },
       "elements": [
         {
-          "type": "wall",
-          "direction": "WEST"
-        },
-        {
-          "type": "laser",
-          "direction": "EAST"
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
         }
       ]
     },
@@ -323,8 +291,22 @@
       },
       "elements": [
         {
-          "type": "wall",
-          "direction": "EAST"
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 10,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": false
         }
       ]
     },
@@ -336,20 +318,8 @@
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "NORTH",
-          "color": true
-        }
-      ]
-    },
-    {
-      "position": {
-        "x": 12,
-        "y": 3
-      },
-      "elements": [
-        {
-          "type": "checkpoint",
-          "number": 1
+          "direction": "WEST",
+          "color": false
         }
       ]
     },
@@ -397,29 +367,26 @@
         {
           "type": "conveyor_belt",
           "direction": "SOUTH",
-          "color": true
+          "color": false
         }
       ]
     },
     {
       "position": {
-        "x": 6,
+        "x": 5,
         "y": 4
       },
       "elements": [
         {
-          "type": "wall",
-          "direction": "SOUTH"
-        },
-        {
-          "type": "laser",
-          "direction": "NORTH"
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
         }
       ]
     },
     {
       "position": {
-        "x": 8,
+        "x": 9,
         "y": 4
       },
       "elements": [
@@ -437,7 +404,7 @@
         {
           "type": "conveyor_belt",
           "direction": "NORTH",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -474,13 +441,13 @@
         {
           "type": "conveyor_belt",
           "direction": "SOUTH",
-          "color": true
+          "color": false
         }
       ]
     },
     {
       "position": {
-        "x": 7,
+        "x": 6,
         "y": 5
       },
       "elements": [
@@ -491,17 +458,14 @@
     },
     {
       "position": {
-        "x": 9,
+        "x": 10,
         "y": 5
       },
       "elements": [
         {
-          "type": "wall",
-          "direction": "NORTH"
-        },
-        {
-          "type": "laser",
-          "direction": "SOUTH"
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
         }
       ]
     },
@@ -514,7 +478,7 @@
         {
           "type": "conveyor_belt",
           "direction": "NORTH",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -538,8 +502,21 @@
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "SOUTH",
-          "color": true
+          "direction": "EAST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 5,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
         }
       ]
     },
@@ -550,8 +527,9 @@
       },
       "elements": [
         {
-          "type": "wall",
-          "direction": "WEST"
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
         }
       ]
     },
@@ -562,12 +540,9 @@
       },
       "elements": [
         {
-          "type": "wall",
-          "direction": "EAST"
-        },
-        {
-          "type": "laser",
-          "direction": "WEST"
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": false
         }
       ]
     },
@@ -578,21 +553,22 @@
       },
       "elements": [
         {
-          "type": "wall",
-          "direction": "SOUTH"
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
         }
       ]
     },
     {
       "position": {
-        "x": 11,
+        "x": 10,
         "y": 6
       },
       "elements": [
         {
           "type": "conveyor_belt",
           "direction": "NORTH",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -610,7 +586,45 @@
     },
     {
       "position": {
-        "x": 3,
+        "x": 7,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 8,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "checkpoint",
+          "number": 1
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 9,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 11,
         "y": 7
       },
       "elements": [
@@ -623,37 +637,13 @@
     },
     {
       "position": {
-        "x": 4,
+        "x": 12,
         "y": 7
       },
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "SOUTH",
-          "color": true
-        }
-      ]
-    },
-    {
-      "position": {
-        "x": 10,
-        "y": 7
-      },
-      "elements": [
-        {
-          "type": "energy_space"
-        }
-      ]
-    },
-    {
-      "position": {
-        "x": 11,
-        "y": 7
-      },
-      "elements": [
-        {
-          "type": "conveyor_belt",
-          "direction": "NORTH",
+          "direction": "EAST",
           "color": true
         }
       ]
@@ -704,20 +694,7 @@
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "EAST",
-          "color": true
-        }
-      ]
-    },
-    {
-      "position": {
-        "x": 6,
-        "y": 8
-      },
-      "elements": [
-        {
-          "type": "conveyor_belt",
-          "direction": "EAST",
+          "direction": "SOUTH",
           "color": true
         }
       ]
@@ -731,7 +708,7 @@
         {
           "type": "conveyor_belt",
           "direction": "EAST",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -744,7 +721,7 @@
         {
           "type": "conveyor_belt",
           "direction": "EAST",
-          "color": true
+          "color": false
         }
       ]
     },
@@ -756,21 +733,8 @@
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "EAST",
-          "color": true
-        }
-      ]
-    },
-    {
-      "position": {
-        "x": 10,
-        "y": 8
-      },
-      "elements": [
-        {
-          "type": "conveyor_belt",
-          "direction": "EAST",
-          "color": true
+          "direction": "NORTH",
+          "color": false
         }
       ]
     },
@@ -802,24 +766,31 @@
     },
     {
       "position": {
-        "x": 3,
+        "x": 4,
         "y": 9
       },
       "elements": [
         {
-          "type": "energy_space"
+          "type": "reboot_token",
+          "direction": "NORTH",
+          "bounds": {
+            "x1": 3,
+            "y1": 0,
+            "x2": 12,
+            "y2": 12
+          }
         }
       ]
     },
     {
       "position": {
-        "x": 10,
+        "x": 5,
         "y": 9
       },
       "elements": [
         {
           "type": "conveyor_belt",
-          "direction": "NORTH",
+          "direction": "SOUTH",
           "color": true
         }
       ]

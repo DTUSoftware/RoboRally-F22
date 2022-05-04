@@ -33,5 +33,26 @@ public class RebootTokenView extends ElementView {
     public RebootTokenView(@NotNull RebootToken rebootToken) {
         super(image, "center");
         this.rebootToken = rebootToken;
+
+        super.setImage(this.image);
+
+        switch (rebootToken.getDirection()) {
+            case NORTH:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
+                break;
+            case SOUTH:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
+                this.setRotate(180);
+                break;
+            case EAST:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
+                this.setRotate(90);
+                break;
+            case WEST:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
+                this.setRotate(-90);
+                break;
+        }
+
     }
 }

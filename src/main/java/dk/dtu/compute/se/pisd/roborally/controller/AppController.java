@@ -30,15 +30,21 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
-import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import net.harawata.appdirs.AppDirs;
 import net.harawata.appdirs.AppDirsFactory;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
@@ -113,7 +119,7 @@ public class AppController implements Observer {
 
                 // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. fix it or smthn idk
                 // file walks JAR
-                URI uri = URI.create("jar:file:" + jarPath);
+                URI uri = URI.create("jar:file:" + jarPath.replace(" ","%20"));
                 try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                     resourceFolderFiles = Files.walk(fs.getPath(foldername))
                             .filter(Files::isRegularFile)
@@ -214,11 +220,51 @@ public class AppController implements Observer {
 //                    new Wall(space, Heading.SOUTH);
 //                }
 
+                final String BOARDSFOLDER = "maps";
+                InputStream inputStream = null;
+                try {
+                    inputStream = Resources.getResource(BOARDSFOLDER + "/" + mapResult.get() + ".json").openStream();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                JSONTokener tokener = new JSONTokener(inputStream);
+                JSONObject boardJSON = new JSONObject(tokener);
+                JSONArray boardObjects = boardJSON.getJSONArray("board");
+
+                String spawn_gear_element;
+                JSONArray elementsJSON = null;
+                Space space = null;
+                int l = 0;
+
                 int no = playerNumberResult.get();
                 for (int i = 0; i < no; i++) {
                     Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                     board.addPlayer(player);
-                    player.setSpace(board.getSpace(i % board.width, i));
+                    //TODO: skriv linjen under om til at skaffe et gear til hver spiller, og gem det
+
+                    outerloop:
+                    for (; l < boardObjects.length(); l++) {
+                        JSONObject spaceJSON = boardObjects.getJSONObject(l);
+
+                        JSONObject positionJSON = spaceJSON.getJSONObject("position");
+                        space = board.getSpace(positionJSON.getInt("x"), positionJSON.getInt("y"));
+
+                        elementsJSON = spaceJSON.getJSONArray("elements");
+
+                        for (int j = 0; j < elementsJSON.length(); j++) {
+                            JSONObject elementJSON = elementsJSON.getJSONObject(j);
+                            if (elementJSON.getString("type").equals("spawn_gear")) {
+
+                                player.setSpace(space);
+                                player.setHeading(Heading.valueOf(elementJSON.getString("direction")));
+                                player.setStartGearSpace(space, Heading.valueOf(elementJSON.getString("direction")));
+                                l++;
+                                break outerloop;
+                            }
+                        }
+                    }
+
                 }
                 // XXX: V2
                 // board.setCurrentPlayer(board.getPlayer(0));

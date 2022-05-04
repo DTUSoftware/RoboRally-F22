@@ -68,7 +68,7 @@ class GameControllerTest {
         board.getSpace(4, 4).setPlayer(currentPlayer);
 
         Space spaceWall = board.getSpace(4,5);
-        new Wall(spaceWall, Heading.NORTH);
+        new Wall(spaceWall, Heading.NORTH, false);
 
         currentPlayer.setHeading(Heading.SOUTH);
         gameController.moveForward(currentPlayer);
@@ -86,7 +86,7 @@ class GameControllerTest {
         board.getSpace(4, 5).setPlayer(otherPlayer);
 
         Space spaceWall = board.getSpace(4,7);
-        new Wall(spaceWall, Heading.NORTH);
+        new Wall(spaceWall, Heading.NORTH, false);
 
         currentPlayer.setHeading(Heading.SOUTH);
         gameController.moveForward(currentPlayer);
