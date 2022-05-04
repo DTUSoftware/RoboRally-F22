@@ -26,6 +26,10 @@ public class Checkpoint extends ActionElement {
         this.number = number;
     }
 
+    public static void setNumberOfCheckpointsCreated(int checkpoints) {
+        numberOfCheckpointsCreated = checkpoints;
+    }
+
     /**
      * sets the number which the checkpoint is
      *
