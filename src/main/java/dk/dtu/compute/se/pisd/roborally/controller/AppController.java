@@ -198,7 +198,8 @@ public class AppController implements Observer {
             Optional<String> mapResult = dialogMap.showAndWait();
 
             if (mapResult.isPresent()) {
-                gameController = new GameController(null);
+                Checkpoint.setNumberOfCheckpointsCreated(0);
+                gameController = new GameController(this.roboRally, null);
                 Board board = loadBoard(gameController, mapResult.get());
 
                 // debug adding
@@ -302,7 +303,7 @@ public class AppController implements Observer {
                 }
             }
 
-            gameController = new GameController(null);
+            gameController = new GameController(this.roboRally, null);
             loadGameState(gameController, gameStateResult.get());
 
             roboRally.createBoardView(gameController, null);

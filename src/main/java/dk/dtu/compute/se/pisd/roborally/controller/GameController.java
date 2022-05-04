@@ -22,16 +22,16 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.elements.ActionElement;
 import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
 import dk.dtu.compute.se.pisd.roborally.model.elements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
+import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * Controls stuff that happens on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
@@ -43,6 +43,9 @@ public class GameController {
      * The board linked to the controller
      */
     public Board board;
+
+    final private RoboRally roboRally;
+
     /**
      * The elements on the boards with actions
      **/
@@ -53,8 +56,9 @@ public class GameController {
      *
      * @param board the board to control.
      */
-    public GameController(Board board) {
+    public GameController(RoboRally roboRally, Board board) {
         this.board = board;
+        this.roboRally = roboRally;
     }
 
     /**
@@ -385,7 +389,7 @@ public class GameController {
                 moveDirection(player, heading);
             } catch (ImpossibleMoveException e) {
                 // we don't do anything here  for now; we just catch the
-                // exception so that we do no pass it on to the caller
+                // exception so that we do not pass it on to the caller
                 // (which would be very bad style).
             }
         }
@@ -579,7 +583,33 @@ public class GameController {
     }
 
     public void winTheGame(Player player){
+        // show popup
+        if (roboRally != null) {
+            List<String> yesno = new ArrayList<>();
+            yesno.add("Yes");
+            yesno.add("Yes, and reset the board");
+            yesno.add("No");
 
+            ChoiceDialog<String> dialogContinue = new ChoiceDialog<>(yesno.get(0), yesno);
+            dialogContinue.setTitle(player.getName() + " won the game!");
+            dialogContinue.setHeaderText("Do you want to continue playing?");
+            Optional<String> continueResult = dialogContinue.showAndWait();
+
+            if (continueResult.isPresent()) {
+                if (continueResult.get().equals("Yes")) {
+                    return;
+                }
+                else if (continueResult.get().equals("Yes, and reset the board")) {
+                    resetGame();
+                    return;
+                }
+            }
+            roboRally.createBoardView(null, null);
+        }
+    }
+
+    private void resetGame() {
+        // TODO: reset the game with same map and same players
     }
 
 }
