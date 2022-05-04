@@ -20,6 +20,7 @@ public class PushPanelView extends ElementView {
     /** the Wall that is linked to the view */
     public final PushPanel pushPanel;
     private static Image image;
+    private Text text;
 
     static {
         try {
@@ -38,20 +39,23 @@ public class PushPanelView extends ElementView {
         super(image, "top");
         this.pushPanel = pushPanel;
 
-        //TODO chance text so it fits pushPanel
-        Text text = new Text(Integer.toString(this.pushPanel.getRegister1()));
-        text.setLayoutY(27);
-        text.setLayoutX(15);
-        text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
-        text.setFill(Color.WHITE);
-        super.getChildren().add(text);
+        if (this.pushPanel.getRegister1() < 6) {
+            text = new Text(Integer.toString(this.pushPanel.getRegister1()));
+            text.setLayoutY(27);
+            text.setLayoutX(15);
+            text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
+            text.setFill(Color.WHITE);
+            super.getChildren().add(text);
+        }
 
-        text = new Text(Integer.toString(this.pushPanel.getRegister2()));
-        text.setLayoutY(27);
-        text.setLayoutX(38);
-        text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
-        text.setFill(Color.WHITE);
-        super.getChildren().add(text);
+        if (this.pushPanel.getRegister2() < 6) {
+            text = new Text(Integer.toString(this.pushPanel.getRegister2()));
+            text.setLayoutY(27);
+            text.setLayoutX(38);
+            text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
+            text.setFill(Color.WHITE);
+            super.getChildren().add(text);
+        }
 
         switch (pushPanel.getDirection()) {
             case NORTH:

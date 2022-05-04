@@ -38,7 +38,7 @@ public class WallView extends ElementView {
         if (wall.getBooleanInvisible()) {
             setVisible (false);
         }
-        
+
         switch (wall.getDirection()) {
             case NORTH:
                 super.getImageView().fitWidthProperty().bind(this.widthProperty());
