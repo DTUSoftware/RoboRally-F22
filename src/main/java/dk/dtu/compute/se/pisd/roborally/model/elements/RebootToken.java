@@ -1,10 +1,11 @@
 package dk.dtu.compute.se.pisd.roborally.model.elements;
 
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
-public class RebootToken extends FieldElement {
-    private Heading direction;
+public class RebootToken extends SpawnableElement {
     private int x1;
     private int y1;
     private int x2;
@@ -13,11 +14,16 @@ public class RebootToken extends FieldElement {
     /**
      * Creates a new reboot token.
      *
+     * @param gameController the gamecontroller
      * @param space the space
+     * @param direction the direction to put other players, and for players to face
+     * @param x1 The x-coordinate for the first corner of the bounds
+     * @param y1 The y-coordinate for the first corner of the bounds
+     * @param x2 The x-coordinate for the second corner of the bounds
+     * @param y2 The y-coordinate for the second corner of the bounds
      */
-    public RebootToken(Space space, Heading direction, int x1, int y1, int x2, int y2) {
-        super(space);
-        this.direction = direction;
+    public RebootToken(GameController gameController, Space space, Heading direction, int x1, int y1, int x2, int y2) {
+        super(gameController, space, direction);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -27,10 +33,6 @@ public class RebootToken extends FieldElement {
     @Override
     public void doLandingAction() {
 
-    }
-
-    public Heading getDirection() {
-        return direction;
     }
 
     public int getx1() {
@@ -69,5 +71,10 @@ public class RebootToken extends FieldElement {
                                 ((this.y1 > this.y2) && (space.y < this.y1 && space.y >= this.y2))
                         )
                 );
+    }
+
+    @Override
+    public void activate() {
+
     }
 }

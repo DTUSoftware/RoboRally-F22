@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class Board extends Subject {
 
     private Player current;
     private Checkpoint[] checkpoints;
+    private RebootToken[] rebootTokens;
 
     private Phase phase = INITIALISATION;
 
@@ -112,6 +114,14 @@ public class Board extends Subject {
                 throw new IllegalStateException("A game with a set id may not be assigned a new id!");
             }
         }
+    }
+
+    public RebootToken[] getRebootTokens() {
+        return rebootTokens;
+    }
+
+    public void setRebootTokens(RebootToken[] rebootTokens) {
+        this.rebootTokens = rebootTokens;
     }
 
     /**
@@ -294,19 +304,24 @@ public class Board extends Subject {
         int y = space.y;
         switch (heading) {
             case SOUTH:
-                y = (y + 1) % height;
+                y = y+1;
                 break;
             case WEST:
-                x = (x + width - 1) % width;
+                x = x-1;
                 break;
             case NORTH:
-                y = (y + height - 1) % height;
+                y = y-1;
                 break;
             case EAST:
-                x = (x + 1) % width;
+                x = x+1;
                 break;
         }
-        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
+//        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
+
+        if (x < 0 || y < 0 || x > width || y > height) {
+            return null;
+        }
+
         Space result = getSpace(x, y);
         return result;
     }

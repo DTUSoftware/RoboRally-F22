@@ -27,12 +27,14 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * ...
@@ -78,6 +80,8 @@ public class LoadBoard {
 
             // add all spaces
             JSONArray boardObjects = boardJSON.getJSONArray("board");
+
+            ArrayList<RebootToken> rebootTokens = new ArrayList<>();
             for (int i = 0; i < boardObjects.length(); i++) {
                 JSONObject spaceJSON = boardObjects.getJSONObject(i);
 
@@ -116,10 +120,10 @@ public class LoadBoard {
                             break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
-                            new RebootToken(space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2"));
+                            rebootTokens.add(new RebootToken(gameController, space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2")));
                             break;
                         case "spawn_gear":
-                            new SpawnGear(space, Heading.valueOf(elementJSON.getString("direction")));
+                            new SpawnGear(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
                         case "wall":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), false);
@@ -132,6 +136,9 @@ public class LoadBoard {
                     }
                 }
             }
+
+            // add reboot tokens
+            board.setRebootTokens(rebootTokens.toArray(new RebootToken[0]));
         }
         catch (Exception e) {
             e.printStackTrace();

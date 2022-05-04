@@ -23,9 +23,13 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
+import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
 import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
@@ -69,7 +73,6 @@ public class Player extends Subject {
 
     private Space space;
     private Space startGearSpace;
-    private Heading startGearHeading = SOUTH;
     private Heading heading = SOUTH;
     private int currentCheckpoint;
 
@@ -152,6 +155,37 @@ public class Player extends Subject {
         }
     }
 
+    public void damage() {
+        // TODO: give player a bad card
+    }
+
+    /**
+     * Reboot/respawn the player.
+     */
+    public void reboot() {
+        RebootToken[] rebootTokens = board.getRebootTokens();
+        RebootToken rebootToken = null;
+        for (RebootToken rebootToken1 : rebootTokens) {
+            if (rebootToken1.isWithinBounds(getSpace())) {
+                rebootToken = rebootToken1;
+                break;
+            }
+        }
+
+        if (rebootToken != null) {
+            rebootToken.spawnPlayer(this);
+        }
+        else {
+            FieldElement[] fieldElements = getStartGearSpacePosition().getFieldObjects();
+            for (FieldElement fieldElement : fieldElements) {
+                if (fieldElement instanceof SpawnGear) {
+                    ((SpawnGear) fieldElement).spawnPlayer(this);
+                    break;
+                }
+            }
+        }
+    }
+
     /**
      * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} the player is currently on.
      *
@@ -184,11 +218,8 @@ public class Player extends Subject {
     /**
      * Sets the players startGear {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
      */
-    public void setStartGearSpace(Space startGear, @NotNull Heading heading) {
-            this.startGearSpace = space;
-        if (heading != this.startGearHeading) {
-            this.startGearHeading = heading;
-        }
+    public void setStartGearSpace(Space startGear) {
+        this.startGearSpace = startGear;
     }
 
     /**
@@ -198,15 +229,6 @@ public class Player extends Subject {
      */
     public Space getStartGearSpacePosition() {
         return startGearSpace;
-    }
-
-    /**
-     * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading} the startGear is.
-     *
-     * @return the players startGearHeading {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
-     */
-    public Heading getStartGearHeading() {
-        return startGearHeading;
     }
 
     /**
