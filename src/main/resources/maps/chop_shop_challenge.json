@@ -1000,8 +1000,8 @@
     },
     {
       "position": {
-        "x": 4,
-        "y": 9
+        "x": 15,
+        "y": 0
       },
       "elements": [
         {
@@ -1018,8 +1018,8 @@
     },
     {
       "position":{
-        "x": 11,
-        "y": 7
+        "x": 15,
+        "y": 1
       },
       "elements": [
         {
@@ -1027,5 +1027,584 @@
         }
       ]
     },
+    {
+      "position": {
+        "x": 15,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "push_panel",
+          "direction": "WEST",
+          "registers": {
+            "register1": 6,
+            "register2": 6
+          }
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 15,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 16,
+        "y": 1
+      },
+      "elements": [
+        {
+          "type": "energy_space"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 16,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 16,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 16,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 16,
+        "y": 5
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 16,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 16,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 16,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 17,
+        "y": 0
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "NORTH"
+        },
+        {
+          "type": "laser",
+          "direction": "SOUTH"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 17,
+        "y": 1
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "SOUTH"
+        },
+        {
+          "type": "laser",
+          "direction": "NORTH"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 17,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 17,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "checkpoint",
+          "number": 5
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 17,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "energy_space"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 17,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "NORTH"
+        },
+        {
+          "type": "laser",
+          "direction": "SOUTH"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 17,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 17,
+        "y": 9
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "SOUTH"
+        },
+        {
+          "type": "laser",
+          "direction": "NORTH"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 18,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 18,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "SOUTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 18,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 18,
+        "y": 5
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 18,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 18,
+        "y": 7
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 18,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 19,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 19,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 19,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "push_panel",
+          "direction": "EAST",
+          "registers": {
+            "register1": 5,
+            "register2": 3
+          }
+        }
+      ]
+    },
+    {
+      "position":{
+        "x": 19,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "pit"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 20,
+        "y": 0
+      },
+      "elements": [
+        {
+          "type": "gear",
+          "direction": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 20,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "WEST",
+          "color": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 20,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "EAST",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 20,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "WEST"
+        },
+        {
+          "type": "laser",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 20,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "energy_space"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 20,
+        "y": 9
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "NORTH"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 21,
+        "y": 1
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 21,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 21,
+        "y": 3
+      },
+      "elements": [
+        {
+          "type": "conveyor_belt",
+          "direction": "NORTH",
+          "color": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 21,
+        "y": 4
+      },
+      "elements": [
+        {
+          "type": "gear",
+          "direction": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 21,
+        "y": 8
+      },
+      "elements": [
+        {
+          "type": "gear",
+          "direction": false
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 22,
+        "y": 1
+      },
+      "elements": [
+        {
+          "type": "checkpoint",
+          "number": 4
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 22,
+        "y": 2
+      },
+      "elements": [
+        {
+          "type": "energy_space"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 22,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "wall",
+          "direction": "EAST"
+        },
+        {
+          "type": "laser",
+          "direction": "WEST"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 22,
+        "y": 9
+      },
+      "elements": [
+        {
+          "type": "checkpoint",
+          "number": 6
+        }
+      ]
+    }
   ]  
 }
