@@ -589,6 +589,7 @@ public class GameController {
             yesno.add("Yes");
             yesno.add("Yes, and reset the board");
             yesno.add("No");
+            yesno.add("No, exit game");
 
             ChoiceDialog<String> dialogContinue = new ChoiceDialog<>(yesno.get(0), yesno);
             dialogContinue.setTitle(player.getName() + " won the game!");
@@ -596,15 +597,23 @@ public class GameController {
             Optional<String> continueResult = dialogContinue.showAndWait();
 
             if (continueResult.isPresent()) {
-                if (continueResult.get().equals("Yes")) {
-                    return;
+                // yes
+                if (continueResult.get().equals(yesno.get(0))) {
+                    // do nothing
                 }
-                else if (continueResult.get().equals("Yes, and reset the board")) {
+                // yes, reset
+                else if (continueResult.get().equals(yesno.get(1))) {
                     resetGame();
-                    return;
+                }
+                // no (go to menu)
+                else if (continueResult.get().equals(yesno.get(2))) {
+                    roboRally.createBoardView(null, null);
+                }
+                // no, exit (exit app)
+                else if (continueResult.get().equals(yesno.get(3))) {
+                    roboRally.exitApplication();
                 }
             }
-            roboRally.createBoardView(null, null);
         }
     }
 
