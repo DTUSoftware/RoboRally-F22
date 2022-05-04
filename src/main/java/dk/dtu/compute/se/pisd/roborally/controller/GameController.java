@@ -22,6 +22,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.elements.ActionElement;
 import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
@@ -43,6 +44,9 @@ public class GameController {
      * The board linked to the controller
      */
     public Board board;
+
+    final private RoboRally roboRally;
+
     /**
      * The elements on the boards with actions
      **/
@@ -53,8 +57,9 @@ public class GameController {
      *
      * @param board the board to control.
      */
-    public GameController(Board board) {
+    public GameController(RoboRally roboRally, Board board) {
         this.board = board;
+        this.roboRally = roboRally;
     }
 
     /**
@@ -578,13 +583,11 @@ public class GameController {
 
     }
 
+
     public void winTheGame(Player player){
-        if (command.equals("Play Again")) {
-            AppController.newGame();
-            
-        } else if (command.equals("Exit")) {
-            //AppController.Stopgame (Rent hypotetisk)
-        }
+        // show popup
+
+        //roboRally.createBoardView(null, null);
     }
 
 }

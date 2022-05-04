@@ -43,6 +43,7 @@ public class RoboRally extends Application {
 
     private static final int MIN_APP_WIDTH = 600;
 
+    private AppController appController;
     private Stage stage;
     private BorderPane boardRoot;
 
@@ -65,7 +66,7 @@ public class RoboRally extends Application {
     public void start(Stage primaryStage) {
         stage = primaryStage;
 
-        AppController appController = new AppController(this);
+        this.appController = new AppController(this);
 
         // create the primary scene with the a menu bar and a pane for
         // the board view (which initially is empty); it will be filled
@@ -127,6 +128,9 @@ public class RoboRally extends Application {
                 Button loadButton = new Button("Load Game");
                 loadButton.setOnAction(e -> appController.loadGame());
                 boardRoot.getChildren().add(loadButton);
+            }
+            else {
+                createBoardView(gameController, this.appController);
             }
         }
 
