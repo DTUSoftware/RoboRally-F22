@@ -582,29 +582,30 @@ public class GameController {
 
     }
 
-
     public void winTheGame(Player player){
         // show popup
-        List<String> yesno = new ArrayList<>();
-        yesno.add("Yes");
-        yesno.add("Yes, and reset the board");
-        yesno.add("No");
+        if (roboRally != null) {
+            List<String> yesno = new ArrayList<>();
+            yesno.add("Yes");
+            yesno.add("Yes, and reset the board");
+            yesno.add("No");
 
-        ChoiceDialog<String> dialogContinue = new ChoiceDialog<>(yesno.get(0), yesno);
-        dialogContinue.setTitle(player.getName() + " won the game!");
-        dialogContinue.setHeaderText("Do you want to continue playing?");
-        Optional<String> continueResult = dialogContinue.showAndWait();
+            ChoiceDialog<String> dialogContinue = new ChoiceDialog<>(yesno.get(0), yesno);
+            dialogContinue.setTitle(player.getName() + " won the game!");
+            dialogContinue.setHeaderText("Do you want to continue playing?");
+            Optional<String> continueResult = dialogContinue.showAndWait();
 
-        if (continueResult.isPresent()) {
-            if (continueResult.get().equals("Yes")) {
-                return;
+            if (continueResult.isPresent()) {
+                if (continueResult.get().equals("Yes")) {
+                    return;
+                }
+                else if (continueResult.get().equals("Yes, and reset the board")) {
+                    resetGame();
+                    return;
+                }
             }
-            else if (continueResult.get().equals("Yes, and reset the board")) {
-                resetGame();
-                return;
-            }
+            roboRally.createBoardView(null, null);
         }
-        roboRally.createBoardView(null, null);
     }
 
     private void resetGame() {
