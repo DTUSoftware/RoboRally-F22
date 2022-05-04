@@ -41,7 +41,7 @@ public class PushPanelView extends ElementView {
 
         if (this.pushPanel.getRegister1() < 6) {
             text = new Text(Integer.toString(this.pushPanel.getRegister1()));
-            text.setLayoutY(27);
+            text.setLayoutY(24);
             text.setLayoutX(15);
             text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
             text.setFill(Color.WHITE);
@@ -50,7 +50,7 @@ public class PushPanelView extends ElementView {
 
         if (this.pushPanel.getRegister2() < 6) {
             text = new Text(Integer.toString(this.pushPanel.getRegister2()));
-            text.setLayoutY(27);
+            text.setLayoutY(24);
             text.setLayoutX(38);
             text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
             text.setFill(Color.WHITE);
