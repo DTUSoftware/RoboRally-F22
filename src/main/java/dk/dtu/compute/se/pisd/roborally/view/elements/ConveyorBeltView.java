@@ -28,14 +28,14 @@ public class ConveyorBeltView extends ElementView {
         // blue conveyor belt
         if (this.conveyorBelt.getColor()) {
             try {
-                this.image = new Image(Resources.getResource("objects/blue_conveyor_belt.jpg").openStream());
+                this.image = new Image(Resources.getResource("objects/blue_conveyor_belt.png").openStream());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         else {
             try {
-                this.image = new Image(Resources.getResource("objects/green_conveyor_belt.jpg").openStream());
+                this.image = new Image(Resources.getResource("objects/green_conveyor_belt.png").openStream());
             } catch (IOException e) {
                 e.printStackTrace();
             }
