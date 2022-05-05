@@ -122,7 +122,7 @@ public class Board extends Subject {
      * @return rebootTokens
      */
     public RebootToken[] getRebootTokens() {
-        return rebootTokens;
+        return rebootTokens != null ? rebootTokens : new RebootToken[0];
     }
 
     /**

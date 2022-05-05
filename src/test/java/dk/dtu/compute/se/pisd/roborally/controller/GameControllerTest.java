@@ -5,6 +5,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.elements.Pit;
+import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -103,7 +105,29 @@ class GameControllerTest {
     }
 
     @Test
-    void pitFall() {}
+    void pitFall() {
+        Board board = gameController.board;
+        Player currentPlayer = board.getCurrentPlayer();
+
+        Space spawnSpace = board.getSpace(4, 4);
+        new SpawnGear(gameController, spawnSpace, Heading.EAST);
+        currentPlayer.setStartGearSpace(spawnSpace);
+
+        Space pitSpace = board.getSpace(6, 4);
+        new Pit(gameController, pitSpace);
+
+        currentPlayer.setSpace(spawnSpace);
+        currentPlayer.setHeading(Heading.EAST);
+
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should be on spawngear!");
+        Assertions.assertEquals(4, currentPlayer.getSpace().y, "Player should be on spawngear!");
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(5, currentPlayer.getSpace().x, "Player should have have moved!");
+        Assertions.assertEquals(4, currentPlayer.getSpace().y, "Player should not have moved in that direction!");
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should have fallen into pit and rebooted!");
+        Assertions.assertEquals(4, currentPlayer.getSpace().y, "Player should not have moved in that direction!");
+    }
 
     @Test
     void checkpoint() {
