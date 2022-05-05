@@ -4,5 +4,8 @@ package dk.dtu.compute.se.pisd.roborally.model.cards.temporaryupgrades;
 //                   permanently part of your deck. The SPAM Folder programming card allows
 //                   you to permanently discard one SPAM damage card from your discard pile.
 
+/**
+ * spamfolderroutine
+ */
 public class SpamFolderRoutine {
 }

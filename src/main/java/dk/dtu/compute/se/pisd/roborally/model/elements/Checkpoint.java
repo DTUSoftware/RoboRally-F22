@@ -80,6 +80,9 @@ public class Checkpoint extends ActionElement {
         }
     }
 
+    /**
+     * not used here
+     */
     @Override
     public void activate() {
 
