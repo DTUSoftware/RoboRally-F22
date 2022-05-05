@@ -58,7 +58,7 @@ public Board board;
     public void activate() {
         Player player = super.getSpace().getPlayer();
         if (player != null){
-            super.getGameController().moveDirectionX(player, direction, 1);
+            super.getGameController().moveDirectionX(player, direction.next().next(), 1);
         }
 
     }
