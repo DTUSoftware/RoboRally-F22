@@ -26,10 +26,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
 import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
-import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
@@ -176,12 +174,17 @@ public class Player extends Subject {
             rebootToken.spawnPlayer(this);
         }
         else {
-            FieldElement[] fieldElements = getStartGearSpacePosition().getFieldObjects();
-            for (FieldElement fieldElement : fieldElements) {
-                if (fieldElement instanceof SpawnGear) {
-                    ((SpawnGear) fieldElement).spawnPlayer(this);
-                    break;
+            if (getStartGearSpace() != null) {
+                FieldElement[] fieldElements = getStartGearSpace().getFieldObjects();
+                for (FieldElement fieldElement : fieldElements) {
+                    if (fieldElement instanceof SpawnGear) {
+                        ((SpawnGear) fieldElement).spawnPlayer(this);
+                        break;
+                    }
                 }
+            }
+            else {
+                System.out.println("Cannot reboot player, no reboot tokens or start gears assigned!");
             }
         }
     }
@@ -227,7 +230,7 @@ public class Player extends Subject {
      *
      * @return the players startGearPosition {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
      */
-    public Space getStartGearSpacePosition() {
+    public Space getStartGearSpace() {
         return startGearSpace;
     }
 

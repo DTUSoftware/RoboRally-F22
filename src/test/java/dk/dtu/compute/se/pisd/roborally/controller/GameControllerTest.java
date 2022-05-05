@@ -105,6 +105,28 @@ class GameControllerTest {
     }
 
     @Test
+    void mapFall() {
+        Board board = gameController.board;
+        Player currentPlayer = board.getCurrentPlayer();
+
+        Space spawnSpace = board.getSpace(4, 4);
+        new SpawnGear(gameController, spawnSpace, Heading.EAST);
+        currentPlayer.setStartGearSpace(spawnSpace);
+
+        currentPlayer.setSpace(spawnSpace);
+        currentPlayer.setHeading(Heading.NORTH);
+
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should be on spawngear!");
+        Assertions.assertEquals(4, currentPlayer.getSpace().y, "Player should be on spawngear!");
+        gameController.forwardX(currentPlayer, 4);
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should not have moved in that direction!");
+        Assertions.assertEquals(0, currentPlayer.getSpace().y, "Player should have moved!");
+        gameController.moveForward(currentPlayer);
+        Assertions.assertEquals(4, currentPlayer.getSpace().x, "Player should have fallen off the map and rebooted!");
+        Assertions.assertEquals(4, currentPlayer.getSpace().y, "Player should not have moved in that direction!");
+    }
+
+    @Test
     void pitFall() {
         Board board = gameController.board;
         Player currentPlayer = board.getCurrentPlayer();
