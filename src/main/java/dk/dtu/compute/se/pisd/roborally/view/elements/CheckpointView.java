@@ -41,6 +41,7 @@ public class CheckpointView extends ElementView {
         Text text = new Text(Integer.toString(this.checkpoint.getNumber()));
         text.setLayoutY(27);
         text.setLayoutX(28);
+        text.setRotate(28);
         text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 13));
         text.setFill(Color.YELLOW);
         super.getChildren().add(text);
