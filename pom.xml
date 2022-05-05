@@ -33,8 +33,14 @@
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <javafx.version>${jdk.version}</javafx.version>
         <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
-
     </properties>
+
+    <scm>
+        <url>git@github.com:${github.repo}.git</url>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <!-- Note that the dependencies here include some more dependencies
