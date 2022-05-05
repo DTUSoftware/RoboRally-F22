@@ -3,12 +3,13 @@ package dk.dtu.compute.se.pisd.roborally.view.elements;
 import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.roborally.model.elements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-/**
+/**'
  * A RebootTokenView is the visual representation of a {@link RebootToken RebootToken}.
  */
 public class RebootTokenView extends ElementView {
@@ -33,6 +34,10 @@ public class RebootTokenView extends ElementView {
     public RebootTokenView(@NotNull RebootToken rebootToken) {
         super(image, "center");
         this.rebootToken = rebootToken;
+
+        Glow glow = new Glow();
+        glow.setLevel(0.3);
+        setEffect(glow);
 
         super.setImage(this.image);
 

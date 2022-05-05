@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.roborally.model.elements.Laser;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
+import javafx.scene.effect.*;
 
 import java.io.IOException;
 
@@ -71,6 +72,10 @@ public class LaserView extends ElementView {
                 e.printStackTrace();
             }
         }
+
+        Bloom glow = new Bloom();
+        glow.setThreshold(0.9);
+        setEffect(glow);
 
         super.setImage(this.image);
 
