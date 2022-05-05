@@ -110,6 +110,7 @@ public class LoadBoard {
                             new Gear(gameController, space, elementJSON.getBoolean("direction"));
                             break;
                         case "laser":
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
                             new Laser(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
                             break;
                         case "pit":
