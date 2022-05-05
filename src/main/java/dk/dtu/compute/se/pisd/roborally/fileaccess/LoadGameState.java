@@ -17,6 +17,9 @@ import java.util.Date;
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
 
+/**
+ * Loads the state of the game
+ */
 public class LoadGameState {
 
     /** Where we save the game state */
