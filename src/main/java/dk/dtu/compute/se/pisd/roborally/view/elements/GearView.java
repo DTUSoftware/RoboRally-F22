@@ -42,6 +42,6 @@ public class GearView extends ElementView {
             }
         }
 
-        super.setImage(this.image, "center");
+        super.setImage(this.image);
     }
 }

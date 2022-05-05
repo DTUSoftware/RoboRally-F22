@@ -22,6 +22,7 @@
  */
 package dk.dtu.compute.se.pisd.roborally.view;
 
+import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.CommandCard;
@@ -32,7 +33,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -72,6 +75,11 @@ public class CardFieldView extends GridPane implements ViewObserver {
     /** The background design of a card when done */
     final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW,  null, null));
 
+    /** imageview object */
+    private ImageView imageView;
+    /** the color adjusting of image */
+    private ColorAdjust imageColor = new ColorAdjust();
+
     private CommandCardField field;
 
     private Label label;
@@ -107,6 +115,13 @@ public class CardFieldView extends GridPane implements ViewObserver {
         label.setWrapText(true);
         label.setMouseTransparent(true);
         this.add(label, 0, 0);
+
+        this.imageView = new ImageView();
+        this.imageView.fitWidthProperty().bind(this.widthProperty());
+        this.imageView.fitHeightProperty().bind(this.heightProperty());
+        this.imageView.setMouseTransparent(true);
+        this.imageView.setEffect(imageColor);
+        this.add(imageView, 0, 0);
 
         this.setOnDragDetected(new OnDragDetectedHandler());
         this.setOnDragOver(new OnDragOverHandler());
@@ -181,8 +196,15 @@ public class CardFieldView extends GridPane implements ViewObserver {
             CommandCard card = field.getCard();
             if (card != null && field.isVisible()) {
                 label.setText(card.getName());
+                try {
+                    imageView.setImage(new Image(Resources.getResource("objects/cards/"+card.getName()+".jpg").openStream()));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 label.setText("");
+                imageView.setImage(null);
             }
         }
     }
@@ -211,6 +233,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
                     content.put(ROBO_RALLY_CARD, cardFieldRepresentation(cardField));
 
                     db.setContent(content);
+                    imageColor.setSaturation(-1);
                     source.setBackground(BG_DRAG);
                 }
             }
@@ -287,6 +310,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
                         cardField.player.board != null) {
                     if (event.getGestureSource() != target &&
                             event.getDragboard().hasContent(ROBO_RALLY_CARD)) {
+                        imageColor.setSaturation(0);
                         target.setBackground(BG_DEFAULT);
                     }
                 }
@@ -348,6 +372,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
             Object t = event.getTarget();
             if (t instanceof CardFieldView) {
                 CardFieldView source = (CardFieldView) t;
+                imageColor.setSaturation(0);
                 source.setBackground(BG_DEFAULT);
             }
             event.consume();

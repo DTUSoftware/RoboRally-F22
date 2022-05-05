@@ -36,22 +36,22 @@ public enum Command {
     // This is a very simplistic way of realizing different commands.
 
     /** Move forward */
-    MOVE_1("Fwd"),
+    MOVE_1("move_1"),
     /** Move 2 forward */
-    MOVE_2("Fwd x2"),
+    MOVE_2("move_2"),
     /** Move 3 forward */
-    MOVE_3("Fwd x3"),
+    MOVE_3("move_3"),
     /** Move backwards */
-    MOVE_BACKWARDS("Backwd"),
+    MOVE_BACKWARDS("move_back"),
     /** Do a u-turn*/
-    U_TURN("U-turn"),
+    U_TURN("u_turn"),
     /** Turn right */
-    RIGHT("Turn Right"),
+    RIGHT("turn_right"),
     /** Turn left */
-    LEFT("Turn Left"),
+    LEFT("turn_left"),
     // XXX Assignment P3
     /** Left or Right */
-    OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT);
+    OPTION_LEFT_RIGHT("weasel_routine", LEFT, RIGHT);
 
     /** The displayName of a command */
     final public String displayName;

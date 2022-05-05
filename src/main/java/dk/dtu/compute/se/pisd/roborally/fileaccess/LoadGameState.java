@@ -17,6 +17,9 @@ import java.util.Date;
 
 import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
 
+/**
+ * Loads the state of the game
+ */
 public class LoadGameState {
 
     /** Where we save the game state */
@@ -68,7 +71,6 @@ public class LoadGameState {
 
             player.setPower(playerJSON.getInt("power"));
             player.setEnergy(playerJSON.getInt("energy"));
-            player.setHP(playerJSON.getInt("health"));
             player.setCurrentCheckpoint(playerJSON.getInt("currentCheckpoint"));
 
             JSONObject positionJSON = playerJSON.getJSONObject("position");
@@ -121,7 +123,6 @@ public class LoadGameState {
             playerJSON.put("color", player.getColor());
             playerJSON.put("power", player.getPower());
             playerJSON.put("energy", player.getEnergy());
-            playerJSON.put("health", player.getHP());
             playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
 
             JSONObject position = new JSONObject();

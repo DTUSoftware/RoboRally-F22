@@ -28,11 +28,13 @@ import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,14 +47,18 @@ public class PlayerView extends Tab implements ViewObserver {
     private Player player;
 
     private VBox top;
+    private ScrollPane playerViewScrollPane;
 
     private Label programLabel;
     private GridPane programPane;
     private Label cardsLabel;
     private GridPane cardsPane;
+    private Label upgradeCardsLabel;
+    private GridPane upgradeCardsPane;
 
     private CardFieldView[] programCardViews;
     private CardFieldView[] cardViews;
+    private ArrayList<CardFieldView> upgradeCardViews;
 
     private VBox buttonPanel;
 
@@ -77,7 +83,10 @@ public class PlayerView extends Tab implements ViewObserver {
         this.setStyle("-fx-text-base-color: " + player.getColor() + ";");
 
         top = new VBox();
-        this.setContent(top);
+        playerViewScrollPane = new ScrollPane();
+        playerViewScrollPane.setContent(top);
+        playerViewScrollPane.setFitToWidth(true);
+        this.setContent(playerViewScrollPane);
 
         this.gameController = gameController;
         this.player = player;
@@ -131,10 +140,26 @@ public class PlayerView extends Tab implements ViewObserver {
             }
         }
 
+        upgradeCardsLabel = new Label("Installed Upgrades");
+        upgradeCardsPane = new GridPane();
+        upgradeCardsPane.setVgap(2.0);
+        upgradeCardsPane.setHgap(2.0);
+        upgradeCardViews = new ArrayList<>();
+        for (int i = 0; i < player.getUpgradesNum(); i++) {
+            CommandCardField cardField = player.getUpgradeField(i);
+            if (cardField == null) {
+                cardField = new CommandCardField(player);
+            }
+            upgradeCardViews.add(i, new CardFieldView(gameController, cardField));
+            upgradeCardsPane.add(upgradeCardViews.get(i), i, 0);
+        }
+
         top.getChildren().add(programLabel);
         top.getChildren().add(programPane);
         top.getChildren().add(cardsLabel);
         top.getChildren().add(cardsPane);
+        top.getChildren().add(upgradeCardsLabel);
+        top.getChildren().add(upgradeCardsPane);
 
         if (player.board != null) {
             player.board.attach(this);
@@ -215,10 +240,6 @@ public class PlayerView extends Tab implements ViewObserver {
                 playerInteractionPanel.getChildren().clear();
 
                 if (player.board.getCurrentPlayer() == player) {
-                    // TODO Assignment P3: these buttons should be shown only when there is
-                    //      an interactive command card, and the buttons should represent
-                    //      the player's choices of the interactive command card. The
-                    //      following is just a mockup showing two options
 
                     CommandCard currentCard = player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard();
                     List<Command> cardOptions = currentCard.command.getOptions();

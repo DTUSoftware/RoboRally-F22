@@ -15,7 +15,7 @@
           "direction": "SOUTH"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "WEST"
         }
@@ -32,7 +32,7 @@
           "direction": "NORTH"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "WEST"
         }
@@ -49,7 +49,7 @@
           "direction": "WEST"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "NORTH"
         }
@@ -62,7 +62,7 @@
       },
       "elements": [
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "NORTH"
         }
@@ -75,7 +75,7 @@
       },
       "elements": [
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "NORTH"
         }
@@ -88,7 +88,7 @@
       },
       "elements": [
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "NORTH"
         }
@@ -101,7 +101,7 @@
       },
       "elements": [
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "NORTH"
         }
@@ -114,7 +114,7 @@
       },
       "elements": [
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "NORTH"
         }
@@ -131,7 +131,7 @@
           "direction": "NORTH"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "EAST"
         }
@@ -148,7 +148,7 @@
           "direction": "EAST"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "SOUTH"
         }
@@ -165,7 +165,7 @@
           "direction": "SOUTH"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "WEST"
         }
@@ -182,7 +182,7 @@
           "direction": "WEST"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "NORTH"
         }
@@ -199,7 +199,7 @@
           "direction": "NORTH"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "EAST"
         }
@@ -216,7 +216,7 @@
           "direction": "EAST"
         },
         {
-          "type": "conveyorbelt",
+          "type": "conveyor_belt",
           "color": true,
           "direction": "SOUTH"
         }

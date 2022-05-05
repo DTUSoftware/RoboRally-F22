@@ -1,20 +1,14 @@
 package dk.dtu.compute.se.pisd.roborally.view.elements;
 
-import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
 import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.Locale;
 
 /**
- * An ElementView is the visual representation of a {@link dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement FieldElement}.
+ * An ElementView is the visual representation of a {@link FieldElement FieldElement}.
  */
 abstract public class ElementView extends BorderPane {
 
@@ -30,22 +24,17 @@ abstract public class ElementView extends BorderPane {
 
     /**
      * Creates a new view for a {@link FieldElement FieldElement}.
+     * 
+     * @param image field teaxture
+     * @param alignment gives direction for the teaxture
      */
     public ElementView(Image image, String alignment) {
         if (image != null) {
-            setImage(image, alignment);
+            this.imageView = new ImageView(image);
         }
-
-        updateSize();
-    }
-
-    /**
-     * sets the image
-     * @param image the image
-     * @param alignment where to allign
-     */
-    public void setImage(Image image, String alignment) {
-        this.imageView = new ImageView(image);
+        else {
+            this.imageView = new ImageView();
+        }
 
         switch (alignment.toLowerCase()) {
             case "top":
@@ -69,6 +58,16 @@ abstract public class ElementView extends BorderPane {
 
         this.imageView.fitWidthProperty().bind(this.widthProperty());
         this.imageView.fitHeightProperty().bind(this.heightProperty());
+
+        updateSize();
+    }
+
+    /**
+     * sets the image
+     * @param image the image
+     */
+    public void setImage(Image image) {
+        this.imageView.setImage(image);
     }
 
     /**

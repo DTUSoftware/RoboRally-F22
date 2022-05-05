@@ -30,6 +30,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -42,6 +43,7 @@ public class RoboRally extends Application {
 
     private static final int MIN_APP_WIDTH = 600;
 
+    private AppController appController;
     private Stage stage;
     private BorderPane boardRoot;
 
@@ -64,7 +66,7 @@ public class RoboRally extends Application {
     public void start(Stage primaryStage) {
         stage = primaryStage;
 
-        AppController appController = new AppController(this);
+        this.appController = new AppController(this);
 
         // create the primary scene with the a menu bar and a pane for
         // the board view (which initially is empty); it will be filled
@@ -72,6 +74,7 @@ public class RoboRally extends Application {
         RoboRallyMenuBar menuBar = new RoboRallyMenuBar(appController);
         boardRoot = new BorderPane();
         VBox vbox = new VBox(menuBar, boardRoot);
+        VBox.setVgrow(boardRoot, Priority.ALWAYS);
 
         // aspect ratio is broken, not gonna put back
 //        // aspt ratio - 2/3
@@ -90,7 +93,8 @@ public class RoboRally extends Application {
         stage.setOnCloseRequest(
                 e -> {
                     e.consume();
-                    appController.exit();} );
+                    appController.exit();
+                });
 //        stage.minWidthProperty().bind(primaryScene.heightProperty().multiply(2));
 //        stage.minHeightProperty().bind(primaryScene.widthProperty().divide(2));
         stage.setResizable(true);
@@ -105,7 +109,7 @@ public class RoboRally extends Application {
      * Creates a new BoardView, and removes the old BoardView, if present.
      *
      * @param gameController The {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}.
-     * @param appController The {@link dk.dtu.compute.se.pisd.roborally.controller.AppController AppController}.
+     * @param appController  The {@link dk.dtu.compute.se.pisd.roborally.controller.AppController AppController}.
      */
     public void createBoardView(GameController gameController, AppController appController) {
         // if present, remove old BoardView
@@ -115,16 +119,18 @@ public class RoboRally extends Application {
             // create and add view for new board
             BoardView boardView = new BoardView(gameController);
             boardRoot.setCenter(boardView);
-        }
-        else {
+        } else {
             if (appController != null) {
                 Button startButton = new Button("New Game");
-                startButton.setOnAction( e -> appController.newGame());
+                startButton.setOnAction(e -> appController.newGame());
                 boardRoot.setCenter(startButton);
 
                 Button loadButton = new Button("Load Game");
-                loadButton.setOnAction( e -> appController.loadGame());
+                loadButton.setOnAction(e -> appController.loadGame());
                 boardRoot.getChildren().add(loadButton);
+            }
+            else {
+                createBoardView(gameController, this.appController);
             }
         }
 
@@ -144,6 +150,24 @@ public class RoboRally extends Application {
         //     but right now the only way for the user to exit the app
         //     is delegated to the exit() method in the AppController,
         //     so that the AppController can take care of that.
+    }
+
+    /**
+     * exits the application
+     */
+    public void exitApplication() {
+        if (this.appController != null) {
+            this.appController.exit();
+        }
+    }
+
+    /**
+     * To be called when the game is won
+     * @param gameController gamecontroller
+     * @param appController appcontroller
+     */
+    public void gameWon(GameController gameController, AppController appController) {
+
     }
 
     /**

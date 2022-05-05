@@ -22,16 +22,14 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
+import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.elements.ActionElement;
-import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
+import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import dk.dtu.compute.se.pisd.roborally.view.elements.*;
+import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * Controls stuff that happens on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
@@ -39,18 +37,26 @@ import java.util.WeakHashMap;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class GameController {
-    /** The board linked to the controller */
+    /**
+     * The board linked to the controller
+     */
     public Board board;
-    /** The elements on the boards with actions **/
-    private Set<ActionElement> actionElements = Collections.newSetFromMap(new WeakHashMap<>());
+
+    final private RoboRally roboRally;
+
+    /**
+     * The elements on the boards with actions
+     **/
+    private SortedSet<ActionElement> actionElements = new TreeSet<>();
 
     /**
      * The GameController constructor.
-     *
+     * @param roboRally the roborally class
      * @param board the board to control.
      */
-    public GameController(Board board) {
+    public GameController(RoboRally roboRally, Board board) {
         this.board = board;
+        this.roboRally = roboRally;
     }
 
     /**
@@ -70,6 +76,7 @@ public class GameController {
      */
     public void addElement(ActionElement actionElement) {
         actionElements.add(actionElement);
+        // System.out.println("Sorted set is: " + actionElements);
     }
 
     /**
@@ -86,8 +93,17 @@ public class GameController {
      * Used after each round of register activations.
      */
     public void activateElements() {
-        // TODO: activate the elements in the correct order/sequence
+        String currentType = "  ";
+
+        // the set is sorted by activation sequence
         for (ActionElement actionElement : actionElements) {
+            if (!actionElement.getClass().getName().equals(currentType)) {
+                currentType = actionElement.getClass().getName();
+                // reset every player's moved by action
+                for (int i = 0; i < board.getPlayersNumber(); i++) {
+                    board.getPlayer(i).setMovedByAction(false);
+                }
+            }
             actionElement.activate();
         }
     }
@@ -95,17 +111,17 @@ public class GameController {
     /**
      * This is just some dummy controller operation to make a simple move to see something
      * happening on the board. This method should eventually be deleted!
-     *
+     * <p>
      * - the current player should be moved to the given space
-     *   (if it is free()
+     * (if it is free()
      * - and the current player should be set to the player
-     *   following the current player
+     * following the current player
      * - the counter of moves in the game should be increased by one
-     *   if the player is moved
+     * if the player is moved
      *
      * @param space the space to which the current player should move
      */
-    public void moveCurrentPlayerToSpace(@NotNull Space space)  {
+    public void moveCurrentPlayerToSpace(@NotNull Space space) {
         if (space.free()) {
             space.setPlayer(board.getCurrentPlayer());
             board.endCurrentPlayerTurn();
@@ -123,6 +139,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Starts the programming phase.
      */
@@ -149,6 +166,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Generates a random command card.
      *
@@ -161,6 +179,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Ends the programming phase.
      */
@@ -173,6 +192,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Make the programming field visible.
      *
@@ -189,6 +209,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Hides the program fields.
      */
@@ -203,6 +224,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Executes programs (disables step mode).
      */
@@ -212,6 +234,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Execute steps (enables step mode).
      */
@@ -221,6 +244,7 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Continue programs.
      */
@@ -231,9 +255,11 @@ public class GameController {
     }
 
     // XXX: V2
+
     /**
      * Executes the next step.
      */
+    // TODO the stuff with the PriorityAntenna
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
@@ -280,7 +306,7 @@ public class GameController {
     /**
      * Executes a command.
      *
-     * @param player the player to execute the command on
+     * @param player  the player to execute the command on
      * @param command the command to execute
      */
     private void executeCommand(@NotNull Player player, Command command) {
@@ -335,6 +361,9 @@ public class GameController {
             if (target != null) {
                 canMove = true;
                 for (FieldElement fieldElement : space.getFieldObjects()) {
+                    if (fieldElement instanceof PriorityAntenna) {
+                        canMove = false;
+                    }
                     if (fieldElement instanceof Wall) {
                         if (((Wall) fieldElement).getDirection() == direction) {
                             canMove = false;
@@ -351,6 +380,10 @@ public class GameController {
                     }
                 }
             }
+            else {
+                player.damage();
+                player.reboot();
+            }
         }
         return canMove;
     }
@@ -363,24 +396,18 @@ public class GameController {
     public void moveBackwards(@NotNull Player player) {
         if (player != null && player.board == board) {
             Heading heading = player.getHeading().next().next();
-            
-            try {
-                moveDirection(player, heading);
-            } catch (ImpossibleMoveException e) {
-                // we don't do anything here  for now; we just catch the
-                // exception so that we do no pass it on to the caller
-                // (which would be very bad style).
-            }
+
+            moveDirection(player, heading);
         }
     }
 
     /**
      * Moves a player in a certain direction WITHOUT CHANGING THE PLAYER'S HEADING.
      *
-     * @param player the player
+     * @param player    the player
      * @param direction the direction
      */
-    public void moveDirection(@NotNull Player player, Heading direction) throws ImpossibleMoveException {
+    public void moveDirection(@NotNull Player player, Heading direction) {
         Space space = player.getSpace();
         if (player != null && player.board == board && space != null && canMove(player, direction)) {
             Space target = board.getNeighbour(space, direction);
@@ -388,8 +415,7 @@ public class GameController {
                 // when there is another player on the target. The other player is pushed away!
                 if (target.free()) {
                     target.setPlayer(player);
-                }
-                else {
+                } else {
                     // check that we aren't trying to move the other player through a wall
                     Player otherPlayer = target.getPlayer();
                     if (canMove(otherPlayer, direction)) {
@@ -397,13 +423,13 @@ public class GameController {
                         target.setPlayer(player);
                     }
                 }
-            }
-            else {
-                throw new ImpossibleMoveException(player, space, direction);
+            } else {
+                player.damage();
+                player.reboot();
             }
         }
     }
-
+    /*
     class ImpossibleMoveException extends Exception {
 
         private Player player;
@@ -417,6 +443,8 @@ public class GameController {
             this.heading = heading;
         }
     }
+    */
+
 
     /**
      * Moves the player forward, with the current heading.
@@ -426,20 +454,15 @@ public class GameController {
     public void moveForward(@NotNull Player player) {
         if (player != null && player.board == board) {
             Heading heading = player.getHeading();
-            try {
-                moveDirection(player, heading);
-            } catch (ImpossibleMoveException e) {
-                // we don't do anything here  for now; we just catch the
-                // exception so that we do no pass it on to the caller
-                // (which would be very bad style).
-            }
+            moveDirection(player, heading);
         }
     }
 
     /**
      * Move forward an x amount of times.
+     *
      * @param player the player to move forward
-     * @param times the amount of times to move forward
+     * @param times  the amount of times to move forward
      */
     public void forwardX(@NotNull Player player, int times) {
         for (int i = times; i > 0; i--) {
@@ -449,19 +472,14 @@ public class GameController {
 
     /**
      * Move in a certain direction an x amount of times.
-     * @param player the player to move
+     *
+     * @param player    the player to move
      * @param direction the direction to move
-     * @param times the amount of times to move
+     * @param times     the amount of times to move
      */
     public void moveDirectionX(@NotNull Player player, Heading direction, int times) {
         for (int i = times; i > 0; i--) {
-            try {
-                moveDirection(player, direction);
-            } catch (ImpossibleMoveException e) {
-                // we don't do anything here  for now; we just catch the
-                // exception so that we do no pass it on to the caller
-                // (which would be very bad style).
-            }
+            moveDirection(player, direction);
         }
     }
 
@@ -474,9 +492,14 @@ public class GameController {
         forwardX(player, 2);
     }
 
+    /**
+     * the fast fast forward card
+     * @param player the player to move
+     */
     public void fastfastForward(@NotNull Player player) {
         forwardX(player, 3);
     }
+
     /**
      * Turns the player right.
      *
@@ -499,8 +522,13 @@ public class GameController {
         }
     }
 
-    public void optionLeftRight (@NotNull Player player, Command command) {
-        if (command.equals("LEFT")){
+    /**
+     * if you want to turn left or right
+     * @param player the player to turn
+     * @param command to go left or right
+     */
+    public void optionLeftRight(@NotNull Player player, Command command) {
+        if (command.equals("LEFT")) {
             turnLeft(player);
         } else if (command.equals("RIGHT")) {
             turnRight(player);
@@ -532,9 +560,10 @@ public class GameController {
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
+     * @param cardOptions the card used
      */
-    public void  executeCommandOptionAndContinue(Command cardOptions) {
-        
+    public void executeCommandOptionAndContinue(Command cardOptions) {
+
         board.setPhase(Phase.ACTIVATION);
         Player currentPlayer = board.getCurrentPlayer();
         executeCommand(board.getCurrentPlayer(), cardOptions);
@@ -558,6 +587,52 @@ public class GameController {
 
         }
 
+    }
+
+    /**
+     * wins the game
+     * @param player the player that wins the game
+     */
+    public void winTheGame(Player player){
+        // show popup
+        if (roboRally != null) {
+            List<String> yesno = new ArrayList<>();
+            yesno.add("Yes");
+            yesno.add("Yes, and reset the board");
+            yesno.add("No");
+            yesno.add("No, exit game");
+
+            ChoiceDialog<String> dialogContinue = new ChoiceDialog<>(yesno.get(0), yesno);
+            dialogContinue.setTitle(player.getName() + " won the game!");
+            dialogContinue.setHeaderText("Do you want to continue playing?");
+            Optional<String> continueResult = dialogContinue.showAndWait();
+
+            if (continueResult.isPresent()) {
+                // yes
+                if (continueResult.get().equals(yesno.get(0))) {
+                    // do nothing
+                }
+                // yes, reset
+                else if (continueResult.get().equals(yesno.get(1))) {
+                    resetGame();
+                }
+                // no (go to menu)
+                else if (continueResult.get().equals(yesno.get(2))) {
+                    roboRally.createBoardView(null, null);
+                }
+                // no, exit (exit app)
+                else if (continueResult.get().equals(yesno.get(3))) {
+                    roboRally.exitApplication();
+                }
+            }
+        }
+    }
+
+    /**
+     * resets the game
+     */
+    private void resetGame() {
+        // TODO: reset the game with same map and same players
     }
 
 }

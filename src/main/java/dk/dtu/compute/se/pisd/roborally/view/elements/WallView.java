@@ -2,17 +2,13 @@ package dk.dtu.compute.se.pisd.roborally.view.elements;
 
 import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
-import dk.dtu.compute.se.pisd.roborally.view.SpaceView;
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
 /**
- * A WallView is the visual representation of a {@link dk.dtu.compute.se.pisd.roborally.model.elements.Wall Wall}.
+ * A WallView is the visual representation of a {@link Wall Wall}.
  */
 public class WallView extends ElementView {
 
@@ -22,21 +18,26 @@ public class WallView extends ElementView {
 
     static {
         try {
-            image = new Image(Resources.getResource("objects/wall.png").openStream());
+            image = new Image(Resources.getResource("objects/wallSmall.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Creates a new view for a {@link dk.dtu.compute.se.pisd.roborally.model.elements.Wall Wall}.
+     * Creates a new view for a {@link Wall Wall}.
      *
-     * @param wall the {@link dk.dtu.compute.se.pisd.roborally.model.elements.Wall Wall}.
+     * @param wall the {@link Wall Wall}.
      */
     public WallView(@NotNull Wall wall) {
+
         super(image, "top");
         this.wall = wall;
         super.getImageView().fitHeightProperty().unbind();
+
+        if (wall.getBooleanInvisible()) {
+            setVisible (false);
+        }
 
         switch (wall.getDirection()) {
             case NORTH:

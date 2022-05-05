@@ -1,7 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.view.elements;
 
 import com.google.common.io.Resources;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.elements.ConveyorBelt;
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
@@ -29,20 +28,20 @@ public class ConveyorBeltView extends ElementView {
         // blue conveyor belt
         if (this.conveyorBelt.getColor()) {
             try {
-                this.image = new Image(Resources.getResource("objects/blue_conveyor_belt.jpg").openStream());
+                this.image = new Image(Resources.getResource("objects/blue_conveyor_belt.png").openStream());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         else {
             try {
-                this.image = new Image(Resources.getResource("objects/green_conveyor_belt.jpg").openStream());
+                this.image = new Image(Resources.getResource("objects/green_conveyor_belt.png").openStream());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        super.setImage(this.image, "center");
+        super.setImage(this.image);
 
         switch (conveyorBelt.getDirection()) {
             case NORTH:

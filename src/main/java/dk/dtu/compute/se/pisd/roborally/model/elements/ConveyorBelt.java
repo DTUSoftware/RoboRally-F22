@@ -4,6 +4,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * converyorbelt object
@@ -15,9 +16,10 @@ public class ConveyorBelt extends ActionElement {
     /**
      * Creates a new conveyor belt.
      *
-     * @param gameController
-     * @param space
-     * @param color
+     * @param gameController the gamecontroller
+     * @param space the space to put the conveyorbelt
+     * @param color the color of the belt blue/green is true/false
+     * @param direction the direction for the conveyorbelt
      */
     public ConveyorBelt(GameController gameController, Space space, boolean color, Heading direction) {
         super(gameController, space);
@@ -55,7 +57,7 @@ public class ConveyorBelt extends ActionElement {
     @Override
     public void activate() {
         Player player = super.getSpace().getPlayer();
-        if (player != null) {
+        if (player != null && !player.isMovedByAction()) {
             // if blue
             if (color) {
                 super.getGameController().moveDirectionX(player, direction, 2);
@@ -64,6 +66,24 @@ public class ConveyorBelt extends ActionElement {
             else {
                 super.getGameController().moveDirectionX(player, direction, 1);
             }
+            player.setMovedByAction(true);
         }
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        if (!(o instanceof ActionElement)) {
+            throw new ClassCastException();
+        }
+
+        if (o instanceof ConveyorBelt) {
+            if (this.color) {
+                return -1;
+            }
+            else {
+                return 1;
+            }
+        }
+        return -1;
     }
 }

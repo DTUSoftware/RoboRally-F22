@@ -23,7 +23,12 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
+import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
@@ -61,15 +66,17 @@ public class Player extends Subject {
     private int power = 5;
     /** keep track of the energy */
     private int energy = 5;
-    /** keep track of the health */
-    private int health = 5;
 
     private Space space;
+    private Space startGearSpace;
     private Heading heading = SOUTH;
     private int currentCheckpoint;
 
+    private boolean movedByAction = false;
+
     private CommandCardField[] program;
     private CommandCardField[] cards;
+    private ArrayList<CommandCardField> upgrades;
 
 
     /**
@@ -84,6 +91,7 @@ public class Player extends Subject {
         this.name = name;
         this.color = color;
 
+        this.startGearSpace = null;
         this.space = null;
 
         program = new CommandCardField[NO_REGISTERS];
@@ -95,6 +103,8 @@ public class Player extends Subject {
         for (int i = 0; i < cards.length; i++) {
             cards[i] = new CommandCardField(this);
         }
+
+        upgrades = new ArrayList<>();
     }
 
     /**
@@ -144,6 +154,45 @@ public class Player extends Subject {
     }
 
     /**
+     * the damage part, where a bad card is given
+     */
+    public void damage() {
+        // TODO: give player a bad card
+    }
+
+    /**
+     * Reboot/respawn the player.
+     */
+    public void reboot() {
+        RebootToken[] rebootTokens = board.getRebootTokens();
+        RebootToken rebootToken = null;
+        for (RebootToken rebootToken1 : rebootTokens) {
+            if (rebootToken1.isWithinBounds(getSpace())) {
+                rebootToken = rebootToken1;
+                break;
+            }
+        }
+
+        if (rebootToken != null) {
+            rebootToken.spawnPlayer(this);
+        }
+        else {
+            if (getStartGearSpace() != null) {
+                FieldElement[] fieldElements = getStartGearSpace().getFieldObjects();
+                for (FieldElement fieldElement : fieldElements) {
+                    if (fieldElement instanceof SpawnGear) {
+                        ((SpawnGear) fieldElement).spawnPlayer(this);
+                        break;
+                    }
+                }
+            }
+            else {
+                System.out.println("Cannot reboot player, no reboot tokens or start gears assigned!");
+            }
+        }
+    }
+
+    /**
      * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} the player is currently on.
      *
      * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
@@ -170,6 +219,23 @@ public class Player extends Subject {
             }
             notifyChange();
         }
+    }
+
+    /**
+     * Sets the players startGear {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     * @param startGear the starting gear
+     */
+    public void setStartGearSpace(Space startGear) {
+        this.startGearSpace = startGear;
+    }
+
+    /**
+     * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} the startGear is on.
+     *
+     * @return the players startGearPosition {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     */
+    public Space getStartGearSpace() {
+        return startGearSpace;
     }
 
     /**
@@ -219,8 +285,35 @@ public class Player extends Subject {
     }
 
     /**
+     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} in the player's
+     * installed upgrades, on the index i.
+     *
+     * @param i the index in the player's upgrades to get the CommandCardField of.
+     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     */
+    public CommandCardField getUpgradeField(int i) {
+        if (i >= upgrades.size()) {
+            return null;
+        }
+        return upgrades.get(i);
+    }
+
+    /**
+     * Gets amount of a players current upgrades
+     * 
+     * @return 8 if amount is under 8 and the spicific amount if equal or above.
+     */
+    public int getUpgradesNum() {
+        int size = upgrades.size();
+        if (size < 8) {
+            return 8;
+        }
+        return size;
+    }
+
+    /**
      * gets current checkpoint
-     * @return currentcheckpoint
+     * @return gets the current checkpoint
      */
     public int getCurrentCheckpoint() {
         return currentCheckpoint;
@@ -290,20 +383,18 @@ public class Player extends Subject {
     }
 
     /**
-     * set the players health
-     *
-     * @param health the health you want to set the players health to
+     * Returns whether the player has moved or not for this action.
+     * @return whether they have moved or not
      */
-    public void setHP(int health) {
-        this.health = health;
+    public boolean isMovedByAction() {
+        return movedByAction;
     }
 
     /**
-     * gives the current health of the player
-     *
-     * @return the current health of the player
+     * Sets the player bool of whether the player has moved from this action.
+     * @param movedByAction whether they have moved
      */
-    public int getHP() {
-        return this.health;
+    public void setMovedByAction(boolean movedByAction) {
+        this.movedByAction = movedByAction;
     }
 }
