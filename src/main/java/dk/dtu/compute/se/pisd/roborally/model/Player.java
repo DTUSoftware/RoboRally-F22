@@ -382,10 +382,18 @@ public class Player extends Subject {
         return this.energy;
     }
 
+    /**
+     * Returns whether the player has moved or not for this action.
+     * @return whether they have moved or not
+     */
     public boolean isMovedByAction() {
         return movedByAction;
     }
 
+    /**
+     * Sets the player bool of whether the player has moved from this action.
+     * @param movedByAction whether they have moved
+     */
     public void setMovedByAction(boolean movedByAction) {
         this.movedByAction = movedByAction;
     }
