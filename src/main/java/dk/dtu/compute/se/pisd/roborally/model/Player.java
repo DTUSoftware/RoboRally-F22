@@ -291,6 +291,11 @@ public class Player extends Subject {
         return upgrades.get(i);
     }
 
+    /**
+     * Gets amount of a players current upgrades
+     * 
+     * @return 8 if amount is under 8 and the spicific amount if equal or above.
+     */
     public int getUpgradesNum() {
         int size = upgrades.size();
         if (size < 8) {
@@ -301,7 +306,7 @@ public class Player extends Subject {
 
     /**
      * gets current checkpoint
-     * @return currentcheckpoint
+     * @return gets the current checkpoint
      */
     public int getCurrentCheckpoint() {
         return currentCheckpoint;
