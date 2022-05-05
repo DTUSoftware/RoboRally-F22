@@ -1257,6 +1257,11 @@
           "type": "conveyor_belt",
           "direction": "EAST",
           "color": false
+        },
+        {
+          "type": "laser",
+          "direction": "SOUTH",
+          "number": 4
         }
       ]
     },
@@ -1547,6 +1552,19 @@
         {
           "type": "gear",
           "direction": true
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 21,
+        "y": 6
+      },
+      "elements": [
+        {
+          "type": "laser",
+          "direction": "WEST",
+          "number": 4
         }
       ]
     },
