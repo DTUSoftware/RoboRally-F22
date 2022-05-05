@@ -116,10 +116,20 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * Gets array of rebootTokens
+     * 
+     * @return rebootTokens
+     */
     public RebootToken[] getRebootTokens() {
         return rebootTokens;
     }
 
+    /**
+     * Sets rebootTokens
+     * 
+     * @param rebootTokens resets rebootTokens
+     */
     public void setRebootTokens(RebootToken[] rebootTokens) {
         this.rebootTokens = rebootTokens;
     }
