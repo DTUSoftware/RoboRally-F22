@@ -26,6 +26,8 @@ Instructions:
 ## Current Features
 
 - Checkpoints (collect them all and win the game!)
+- Playing different maps
+- Saving and loading the game
 - Walls
 - Conveyor Belts
 - Pits
