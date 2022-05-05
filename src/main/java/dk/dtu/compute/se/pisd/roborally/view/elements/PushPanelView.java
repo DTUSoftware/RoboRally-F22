@@ -39,7 +39,7 @@ public class PushPanelView extends ElementView {
         super(image, "top");
         this.pushPanel = pushPanel;
 
-        if (this.pushPanel.getRegister1() < 6) {
+        if (this.pushPanel.getRegister1() < 6 && this.pushPanel.getRegister1() > 0 ) {
             text = new Text(Integer.toString(this.pushPanel.getRegister1()));
             text.setLayoutY(34.7);
             text.setLayoutX(18);
@@ -48,7 +48,7 @@ public class PushPanelView extends ElementView {
             super.getChildren().add(text);
         }
 
-        if (this.pushPanel.getRegister2() < 6) {
+        if (this.pushPanel.getRegister2() < 6 && this.pushPanel.getRegister1() > 0) {
             text = new Text(Integer.toString(this.pushPanel.getRegister2()));
             text.setLayoutY(34.7);
             text.setLayoutX(37);
