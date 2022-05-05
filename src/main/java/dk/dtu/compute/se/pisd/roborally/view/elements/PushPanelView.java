@@ -24,7 +24,7 @@ public class PushPanelView extends ElementView {
 
     static {
         try {
-            image = new Image(Resources.getResource("objects/push_panel.jpg").openStream());
+            image = new Image(Resources.getResource("objects/push_panel.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
