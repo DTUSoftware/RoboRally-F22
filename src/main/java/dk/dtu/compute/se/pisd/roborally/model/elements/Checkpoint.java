@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.model.elements;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * checkpoint class, inherits from FieldElement
@@ -86,5 +87,17 @@ public class Checkpoint extends ActionElement {
     @Override
     public void activate() {
 
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        if (!(o instanceof ActionElement)) {
+            throw new ClassCastException();
+        }
+
+        if (o instanceof ConveyorBelt || o instanceof PushPanel || o instanceof Gear || o instanceof Laser || o instanceof EnergySpace || o instanceof Checkpoint) {
+            return 1;
+        }
+        return -1;
     }
 }

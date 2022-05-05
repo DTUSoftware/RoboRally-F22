@@ -68,7 +68,6 @@ public class LoadGameState {
 
             player.setPower(playerJSON.getInt("power"));
             player.setEnergy(playerJSON.getInt("energy"));
-            player.setHP(playerJSON.getInt("health"));
             player.setCurrentCheckpoint(playerJSON.getInt("currentCheckpoint"));
 
             JSONObject positionJSON = playerJSON.getJSONObject("position");
@@ -121,7 +120,6 @@ public class LoadGameState {
             playerJSON.put("color", player.getColor());
             playerJSON.put("power", player.getPower());
             playerJSON.put("energy", player.getEnergy());
-            playerJSON.put("health", player.getHP());
             playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
 
             JSONObject position = new JSONObject();

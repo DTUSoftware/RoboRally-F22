@@ -25,16 +25,21 @@ Instructions:
 
 ## Current Features
 
-- Checkpoints
+- Checkpoints (collect them all and win the game!)
 - Walls
 - Conveyor Belts
+- Pits
+- Reboot tokens
+- Spawn gears
+- Rebooting ("bad cards" aren't implemented yet)
 - Robots
 - Gears
 - Pushing robots
+- Push panels (they push, but they don't check registers at the moment)
 - A lot of programming cards (not all, not all special either)
 - Phases
 - Programming and activating robots
-- Some visual elements from the boardgame
+- A lot of visual elements from the board game
 
 ## Taxonomy
 

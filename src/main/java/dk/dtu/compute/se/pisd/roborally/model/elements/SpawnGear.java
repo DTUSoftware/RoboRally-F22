@@ -4,6 +4,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import org.jetbrains.annotations.NotNull;
 
 public class SpawnGear extends SpawnableElement {
 
@@ -26,5 +27,17 @@ public class SpawnGear extends SpawnableElement {
     @Override
     public void activate() {
 
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        if (!(o instanceof ActionElement)) {
+            throw new ClassCastException();
+        }
+
+        if (o instanceof ConveyorBelt || o instanceof PushPanel || o instanceof Gear || o instanceof Laser || o instanceof EnergySpace || o instanceof Checkpoint) {
+            return 1;
+        }
+        return -1;
     }
 }

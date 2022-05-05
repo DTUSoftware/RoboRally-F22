@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import org.jetbrains.annotations.NotNull;
 
 public class PushPanel extends ActionElement {
     private Heading direction;
@@ -57,8 +58,9 @@ public Board board;
     @Override
     public void activate() {
         Player player = super.getSpace().getPlayer();
-        if (player != null){
+        if (player != null && !player.isMovedByAction()){
             super.getGameController().moveDirectionX(player, direction.next().next(), 1);
+            player.setMovedByAction(true);
         }
 
     }
@@ -66,5 +68,20 @@ public Board board;
     @Override
     public void doLandingAction() {
 
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        if (!(o instanceof ActionElement)) {
+            throw new ClassCastException();
+        }
+
+        if (o instanceof ConveyorBelt) {
+            return 1;
+        }
+        else if (o instanceof Gear || o instanceof Laser || o instanceof EnergySpace || o instanceof Checkpoint) {
+            return -1;
+        }
+        return -1;
     }
 }

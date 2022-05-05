@@ -66,13 +66,13 @@ public class Player extends Subject {
     private int power = 5;
     /** keep track of the energy */
     private int energy = 5;
-    /** keep track of the health */
-    private int health = 5;
 
     private Space space;
     private Space startGearSpace;
     private Heading heading = SOUTH;
     private int currentCheckpoint;
+
+    private boolean movedByAction = false;
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
@@ -378,21 +378,11 @@ public class Player extends Subject {
         return this.energy;
     }
 
-    /**
-     * set the players health
-     *
-     * @param health the health you want to set the players health to
-     */
-    public void setHP(int health) {
-        this.health = health;
+    public boolean isMovedByAction() {
+        return movedByAction;
     }
 
-    /**
-     * gives the current health of the player
-     *
-     * @return the current health of the player
-     */
-    public int getHP() {
-        return this.health;
+    public void setMovedByAction(boolean movedByAction) {
+        this.movedByAction = movedByAction;
     }
 }

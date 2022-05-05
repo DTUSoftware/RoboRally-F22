@@ -24,10 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.elements.ActionElement;
-import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
-import dk.dtu.compute.se.pisd.roborally.model.elements.PriorityAntenna;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Wall;
+import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import dk.dtu.compute.se.pisd.roborally.view.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,7 +47,7 @@ public class GameController {
     /**
      * The elements on the boards with actions
      **/
-    private Set<ActionElement> actionElements = Collections.newSetFromMap(new WeakHashMap<>());
+    private SortedSet<ActionElement> actionElements = new TreeSet<>();
 
     /**
      * The GameController constructor.
@@ -78,6 +76,7 @@ public class GameController {
      */
     public void addElement(ActionElement actionElement) {
         actionElements.add(actionElement);
+        // System.out.println("Sorted set is: " + actionElements);
     }
 
     /**
@@ -94,8 +93,17 @@ public class GameController {
      * Used after each round of register activations.
      */
     public void activateElements() {
-        // TODO: activate the elements in the correct order/sequence
+        String currentType = "  ";
+
+        // the set is sorted by activation sequence
         for (ActionElement actionElement : actionElements) {
+            if (!actionElement.getClass().getName().equals(currentType)) {
+                currentType = actionElement.getClass().getName();
+                // reset every player's moved by action
+                for (int i = 0; i < board.getPlayersNumber(); i++) {
+                    board.getPlayer(i).setMovedByAction(false);
+                }
+            }
             actionElement.activate();
         }
     }
