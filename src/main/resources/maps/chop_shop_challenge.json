@@ -955,7 +955,8 @@
         },
         {
           "type": "laser",
-          "direction": "SOUTH"
+          "direction": "SOUTH",
+          "number": 2
         }
       ]
     },
@@ -971,7 +972,8 @@
         },
         {
           "type": "laser",
-          "direction": "NORTH"
+          "direction": "NORTH",
+          "number": 2
         }
       ]
     },
