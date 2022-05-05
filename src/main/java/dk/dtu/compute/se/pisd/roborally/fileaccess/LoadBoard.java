@@ -117,7 +117,7 @@ public class LoadBoard {
                             break;
                         case "laser":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
-                            new Laser(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
+                            new Laser(gameController, space, Heading.valueOf(elementJSON.getString("direction")), elementJSON.getInt("number"));
                             break;
                         case "pit":
                             new Pit(gameController, space);
