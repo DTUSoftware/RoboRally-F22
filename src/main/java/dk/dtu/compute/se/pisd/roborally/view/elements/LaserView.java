@@ -19,7 +19,7 @@ public class LaserView extends ElementView {
 
     static {
         try {
-            image = new Image(Resources.getResource("objects/laser_1.png").openStream());
+            image = new Image(Resources.getResource("objects/laser_1.jpg").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

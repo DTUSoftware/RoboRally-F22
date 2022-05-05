@@ -18,7 +18,7 @@ public class WallView extends ElementView {
 
     static {
         try {
-            image = new Image(Resources.getResource("objects/wall.png").openStream());
+            image = new Image(Resources.getResource("objects/wallSmall.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

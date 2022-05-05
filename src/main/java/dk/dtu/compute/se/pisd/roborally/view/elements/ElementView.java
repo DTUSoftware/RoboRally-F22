@@ -24,8 +24,9 @@ abstract public class ElementView extends BorderPane {
 
     /**
      * Creates a new view for a {@link FieldElement FieldElement}.
-     * @param image the image to input
-     * @param alignment the alignment of the image
+     * 
+     * @param image field teaxture
+     * @param alignment gives direction for the teaxture
      */
     public ElementView(Image image, String alignment) {
         if (image != null) {
