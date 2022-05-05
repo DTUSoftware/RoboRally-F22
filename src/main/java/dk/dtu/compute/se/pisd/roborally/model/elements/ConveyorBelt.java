@@ -16,9 +16,10 @@ public class ConveyorBelt extends ActionElement {
     /**
      * Creates a new conveyor belt.
      *
-     * @param gameController
-     * @param space
-     * @param color
+     * @param gameController the gamecontroller
+     * @param space the space to put the conveyorbelt
+     * @param color the color of the belt blue/green is true/false
+     * @param direction the direction for the conveyorbelt
      */
     public ConveyorBelt(GameController gameController, Space space, boolean color, Heading direction) {
         super(gameController, space);

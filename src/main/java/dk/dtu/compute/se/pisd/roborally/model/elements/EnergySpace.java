@@ -5,19 +5,33 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The energyspace object that gives the player energy
+ */
 public class EnergySpace extends ActionElement {
     boolean hasEnergy = true;
 
+    /**
+     * The constructer for the energyspace
+     * @param gameController the gamecontroller
+     * @param space the place t put the energyspace
+     */
     public EnergySpace(GameController gameController, Space space) {
         super(gameController, space);
 
     }
 
+    /**
+     * not used
+     */
     @Override
     public void doLandingAction() {
 
     }
 
+    /**
+     * gives the palyer energy
+     */
     @Override
     public void activate() {
         // TODO make the thingy with the specific register reached

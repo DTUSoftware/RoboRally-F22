@@ -153,6 +153,9 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * the damage part, where a bad card is given
+     */
     public void damage() {
         // TODO: give player a bad card
     }
@@ -220,6 +223,7 @@ public class Player extends Subject {
 
     /**
      * Sets the players startGear {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     * @param startGear the starting gear
      */
     public void setStartGearSpace(Space startGear) {
         this.startGearSpace = startGear;

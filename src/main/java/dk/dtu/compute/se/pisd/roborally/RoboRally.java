@@ -152,12 +152,20 @@ public class RoboRally extends Application {
         //     so that the AppController can take care of that.
     }
 
+    /**
+     * exits the application
+     */
     public void exitApplication() {
         if (this.appController != null) {
             this.appController.exit();
         }
     }
 
+    /**
+     * To be called when the game is won
+     * @param gameController gamecontroller
+     * @param appController appcontroller
+     */
     public void gameWon(GameController gameController, AppController appController) {
 
     }

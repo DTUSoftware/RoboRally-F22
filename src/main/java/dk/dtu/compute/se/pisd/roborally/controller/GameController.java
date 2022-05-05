@@ -51,7 +51,7 @@ public class GameController {
 
     /**
      * The GameController constructor.
-     *
+     * @param roboRally the roborally class
      * @param board the board to control.
      */
     public GameController(RoboRally roboRally, Board board) {
@@ -429,7 +429,7 @@ public class GameController {
             }
         }
     }
-
+    /*
     class ImpossibleMoveException extends Exception {
 
         private Player player;
@@ -443,6 +443,8 @@ public class GameController {
             this.heading = heading;
         }
     }
+    */
+
 
     /**
      * Moves the player forward, with the current heading.
@@ -490,6 +492,10 @@ public class GameController {
         forwardX(player, 2);
     }
 
+    /**
+     * the fast fast forward card
+     * @param player the player to move
+     */
     public void fastfastForward(@NotNull Player player) {
         forwardX(player, 3);
     }
@@ -516,6 +522,11 @@ public class GameController {
         }
     }
 
+    /**
+     * if you want to turn left or right
+     * @param player the player to turn
+     * @param command to go left or right
+     */
     public void optionLeftRight(@NotNull Player player, Command command) {
         if (command.equals("LEFT")) {
             turnLeft(player);
@@ -549,6 +560,7 @@ public class GameController {
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
+     * @param cardOptions the card used
      */
     public void executeCommandOptionAndContinue(Command cardOptions) {
 
@@ -577,6 +589,10 @@ public class GameController {
 
     }
 
+    /**
+     * wins the game
+     * @param player the player that wins the game
+     */
     public void winTheGame(Player player){
         // show popup
         if (roboRally != null) {
@@ -612,6 +628,9 @@ public class GameController {
         }
     }
 
+    /**
+     * resets the game
+     */
     private void resetGame() {
         // TODO: reset the game with same map and same players
     }

@@ -6,6 +6,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * SpawnGear class where players spawn
+ */
 public class SpawnGear extends SpawnableElement {
 
     /**
@@ -19,11 +22,17 @@ public class SpawnGear extends SpawnableElement {
         super(gameController, space, spawnDirection);
     }
 
+    /**
+     * not used
+     */
     @Override
     public void doLandingAction() {
 
     }
 
+    /**
+     * not used
+     */
     @Override
     public void activate() {
 
