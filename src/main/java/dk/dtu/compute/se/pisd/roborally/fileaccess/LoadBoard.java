@@ -49,6 +49,12 @@ public class LoadBoard {
     private static final int defaultBoardHeight = 8;
     private static final int defaultBoardWidth = 8;
 
+    /**
+     *  Loads the board
+     * @param gameController the gaecontroller
+     * @param boardname the name of the board to load
+     * @return the board.
+     */
     public static Board loadBoard(GameController gameController, String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
@@ -147,6 +153,11 @@ public class LoadBoard {
         return board;
     }
 
+    /**
+     * saves the current board
+     * @param board the board to save
+     * @param name the nake to give
+     */
     public static void saveBoard(Board board, String name) {
         JSONObject boardJSON = new JSONObject();
 

@@ -6,6 +6,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
+/**
+ * the pushpanel object that pushes player on certain registers
+ */
 public class PushPanel extends ActionElement {
     private Heading direction;
     private int register1;
@@ -14,7 +17,10 @@ public class PushPanel extends ActionElement {
 // TODO change push panels so it takes in the register
 
 //Function that pulls the current step from Board. Should be the register.
-public Board board;
+    /**
+     * the board.
+     */
+    public Board board;
 //    int step = board.getStep();
 
     /**
@@ -46,10 +52,18 @@ public Board board;
         return direction;
     }
 
+    /**
+     * the first register where the pushpanel reacts
+     * @return register1
+     */
     public int getRegister1() {
         return register1;
     }
 
+    /**
+     * the scond register where pushpanel reacts
+     * @return register2
+     */
     public int getRegister2() {
         return register2;
     }

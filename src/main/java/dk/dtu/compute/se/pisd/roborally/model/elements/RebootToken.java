@@ -5,6 +5,9 @@ import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
+/**
+ * the reboottoken object for rebooting the robots
+ */
 public class RebootToken extends SpawnableElement {
     private int x1;
     private int y1;
@@ -30,23 +33,42 @@ public class RebootToken extends SpawnableElement {
         this.y2 = y2;
     }
 
+    /**
+     * not used
+     */
     @Override
     public void doLandingAction() {
 
     }
 
+    /**
+     * retruns x coordinate 1
+     * @return x1
+     */
     public int getx1() {
         return x1;
     }
 
+    /**
+     * returns y coordinate 1
+     * @return y1
+     */
     public int gety1() {
         return y1;
     }
 
+    /**
+     * returns x coordinate 2
+     * @return x2
+     */
     public int getx2() {
         return x2;
     }
 
+    /**
+     * returns y coordinate 2
+     * @return y2
+     */
     public int gety2() {
         return y2;
     }
@@ -73,6 +95,9 @@ public class RebootToken extends SpawnableElement {
                 );
     }
 
+    /**
+     * not used
+     */
     @Override
     public void activate() {
 

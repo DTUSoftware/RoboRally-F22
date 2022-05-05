@@ -16,7 +16,7 @@ public class Checkpoint extends ActionElement {
 
     /**
      * constructer of the checkpoint class
-     * @param gamecontroller
+     * @param gamecontroller the gamecontroller
      * @param space  takes the space the checkpoint is on
      * @param number the number that the checkpoint needs to be
      */
@@ -26,6 +26,10 @@ public class Checkpoint extends ActionElement {
         this.number = number;
     }
 
+    /**
+     * the number of checkpoints to go through
+     * @param checkpoints the amount of checkpoints
+     */
     public static void setNumberOfCheckpointsCreated(int checkpoints) {
         numberOfCheckpointsCreated = checkpoints;
     }
@@ -58,6 +62,11 @@ public class Checkpoint extends ActionElement {
         return checkpointReached == getNumber() - 1;
     }
 
+    /**
+     * if all the checkpoints are reached
+     * @param checkpointsReached the number of checkpoints reached
+     * @return true if yes false if no
+     */
     public boolean allCheckpointsReached(int checkpointsReached) {
         return checkpointsReached == numberOfCheckpointsCreated;
     }

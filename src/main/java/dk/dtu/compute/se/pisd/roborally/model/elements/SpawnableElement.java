@@ -16,6 +16,7 @@ public abstract class SpawnableElement extends ActionElement {
      *
      * @param gameController the game controller
      * @param space          the space
+     * @param spawnDirection the direction
      */
     public SpawnableElement(GameController gameController, Space space, Heading spawnDirection) {
         super(gameController, space);
