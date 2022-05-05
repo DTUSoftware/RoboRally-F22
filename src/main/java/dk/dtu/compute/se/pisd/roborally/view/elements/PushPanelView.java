@@ -42,7 +42,7 @@ public class PushPanelView extends ElementView {
         if (this.pushPanel.getRegister1() < 6) {
             text = new Text(Integer.toString(this.pushPanel.getRegister1()));
             text.setLayoutY(24);
-            text.setLayoutX(15);
+            text.setLayoutX(16);
             text.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 9));
             text.setFill(Color.WHITE);
             super.getChildren().add(text);
@@ -59,14 +59,18 @@ public class PushPanelView extends ElementView {
 
         switch (pushPanel.getDirection()) {
             case NORTH:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
                 break;
             case SOUTH:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
                 this.setRotate(180);
                 break;
             case EAST:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
                 this.setRotate(90);
                 break;
             case WEST:
+                super.getImageView().fitWidthProperty().bind(this.heightProperty());
                 this.setRotate(-90);
                 break;
         }
