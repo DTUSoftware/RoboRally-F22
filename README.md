@@ -37,6 +37,7 @@ Instructions:
 - Robots
 - Gears
 - Pushing robots
+- Energy spaces (they give energy, but they don't have the checks implemented)
 - Push panels (they push, but they don't check registers at the moment)
 - A lot of programming cards (not all, not all special either)
 - Phases
