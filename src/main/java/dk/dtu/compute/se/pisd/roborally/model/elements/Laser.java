@@ -10,6 +10,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
  */
 public class Laser extends ActionElement{
     private Heading direction;
+    private int lazer;
 
     /**
      * constructor for the laser
@@ -17,9 +18,10 @@ public class Laser extends ActionElement{
      * @param space the space to put the lazer
      * @param direction the direction for the laser
      */
-    public Laser(GameController gameController, Space space, Heading direction) {
+    public Laser(GameController gameController, Space space, Heading direction, int lazer) {
         super(gameController, space);
         this.direction = direction;
+        this.lazer = lazer;
     }
 
     /**
@@ -28,6 +30,14 @@ public class Laser extends ActionElement{
      */
     public Heading getDirection() {
         return direction;
+    }
+
+    /**
+     * gets the lazer number
+     * @return lazer number
+     */
+    public int getLazer() {
+        return lazer;
     }
 
     /**
