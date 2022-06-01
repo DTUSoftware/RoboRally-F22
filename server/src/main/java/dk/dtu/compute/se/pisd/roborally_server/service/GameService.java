@@ -1,7 +1,9 @@
-package dk.dtu.compute.se.pisd.roborally_server;
+package dk.dtu.compute.se.pisd.roborally_server.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import org.springframework.stereotype.Service;
 
 @Service

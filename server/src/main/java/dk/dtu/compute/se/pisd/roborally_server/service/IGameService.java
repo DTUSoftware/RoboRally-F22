@@ -1,4 +1,6 @@
-package dk.dtu.compute.se.pisd.roborally_server;
+package dk.dtu.compute.se.pisd.roborally_server.service;
+
+import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 
 import java.util.List;
 

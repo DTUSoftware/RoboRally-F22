@@ -1,6 +1,9 @@
-package dk.dtu.compute.se.pisd.roborally_server;
+package dk.dtu.compute.se.pisd.roborally_server.controller;
 
 import java.util.List;
+
+import dk.dtu.compute.se.pisd.roborally_server.service.IGameService;
+import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +29,6 @@ public class GameController {
         else {
             return ResponseEntity.internalServerError().body("not added");
         }
-
     }
 
     @GetMapping("/games/{id}")

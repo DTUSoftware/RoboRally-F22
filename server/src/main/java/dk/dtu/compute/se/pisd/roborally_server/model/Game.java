@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally_server;
+package dk.dtu.compute.se.pisd.roborally_server.model;
 
 public class Game {
     private int id;
