@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally_server.controller;
 
 import java.util.List;
 
+import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.service.IGameService;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,5 +53,17 @@ public class GameController {
         else {
             return ResponseEntity.internalServerError().body("not deleted");
         }
+    }
+
+    @GetMapping("/games/{id}/gameState")
+    public ResponseEntity<GameState> getGameStateByID(@PathVariable int id) {
+        GameState gameState = gameService.getGameStateByID(id);
+        return ResponseEntity.ok().body(gameState);
+    }
+
+    @PostMapping("/games/{id}/gameState/{playerID}/move")
+    public ResponseEntity<String> updatePlayerState(@PathVariable int id, @PathVariable int playerID, @RequestBody Game game) {
+        String status = gameService.updatePlayerState(id, playerID);
+        return ResponseEntity.ok().body(status);
     }
 }
