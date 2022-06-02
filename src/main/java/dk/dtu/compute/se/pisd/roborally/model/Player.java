@@ -45,7 +45,7 @@ public class Player extends Subject {
     /**
      * The number of cards the player can have
      */
-    final public static int NO_CARDS = 8;
+    final public static int NO_COMMAND_CARDS = 8;
 
     /**
      * The Board the Player is playing on
@@ -75,7 +75,7 @@ public class Player extends Subject {
     private boolean movedByAction = false;
 
     private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private CommandCardField[] move_cards;
     private ArrayList<CommandCardField> upgrades;
 
 
@@ -99,9 +99,9 @@ public class Player extends Subject {
             program[i] = new CommandCardField(this);
         }
 
-        cards = new CommandCardField[NO_CARDS];
-        for (int i = 0; i < cards.length; i++) {
-            cards[i] = new CommandCardField(this);
+        move_cards = new CommandCardField[NO_COMMAND_CARDS];
+        for (int i = 0; i < move_cards.length; i++) {
+            move_cards[i] = new CommandCardField(this);
         }
 
         upgrades = new ArrayList<>();
@@ -281,7 +281,7 @@ public class Player extends Subject {
      * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
      */
     public CommandCardField getCardField(int i) {
-        return cards[i];
+        return move_cards[i];
     }
 
     /**
