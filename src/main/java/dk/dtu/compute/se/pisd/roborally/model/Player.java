@@ -46,10 +46,6 @@ public class Player extends Subject {
      * The number of cards the player can have
      */
     final public static int NO_COMMAND_CARDS = 8;
-    /**
-     * The number of damageCards the player can have
-     */
-    final public static int NO_DAMAGE_CARDS = 4;
 
     /**
      * The Board the Player is playing on
@@ -80,7 +76,6 @@ public class Player extends Subject {
 
     private CommandCardField[] program;
     private CommandCardField[] move_cards;
-    private CommandCardField[] damage_cards;
     private ArrayList<CommandCardField> upgrades;
 
 
@@ -108,8 +103,6 @@ public class Player extends Subject {
         for (int i = 0; i < move_cards.length; i++) {
             move_cards[i] = new CommandCardField(this);
         }
-
-        damage_cards = new CommandCardField[NO_DAMAGE_CARDS];
 
         upgrades = new ArrayList<>();
     }
