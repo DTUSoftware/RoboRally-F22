@@ -1,10 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
 
 import dk.dtu.compute.se.pisd.roborally_server.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Board;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Heading;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Player;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -27,15 +24,14 @@ public class PushPanel extends ActionElement {
     /**
      * Constructer for action element
      *
-     * @param gameController the game controller
+     * @param gameLogicController the game controller
      * @param space          the space
      * @param direction the direction
      * @param register1 register 1
      * @param register2 register 2
      */
-    public PushPanel(GameController gameController, Space space, Heading direction, int register1, int register2) {
-
-        super(gameController, space);
+    public PushPanel(IGameLogicController gameLogicController, Space space, Heading direction, int register1, int register2) {
+        super(gameLogicController, space);
 
         this.direction = direction;
         this.register1 = register1;
@@ -73,7 +69,7 @@ public class PushPanel extends ActionElement {
     public void activate() {
         Player player = super.getSpace().getPlayer();
         if (player != null && !player.isMovedByAction()){
-            super.getGameController().moveDirectionX(player, direction.next().next(), 1);
+            super.getGameLogicController().moveDirectionX(player, direction.next().next(), 1);
             player.setMovedByAction(true);
         }
 

@@ -23,9 +23,9 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally_server.model.elements.FieldElement;
-import dk.dtu.compute.se.pisd.roborally_server.model.elements.RebootToken;
-import dk.dtu.compute.se.pisd.roborally_server.model.elements.SpawnGear;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.FieldElement;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.SpawnGear;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

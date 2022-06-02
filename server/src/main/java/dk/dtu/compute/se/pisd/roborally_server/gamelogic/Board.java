@@ -23,8 +23,8 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally_server.model.elements.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally_server.model.elements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

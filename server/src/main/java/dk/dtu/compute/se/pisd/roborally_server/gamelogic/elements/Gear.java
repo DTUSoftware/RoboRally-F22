@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
 
-import dk.dtu.compute.se.pisd.roborally_server.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.GameLogicController;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.IGameLogicController;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Player;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
 import org.jetbrains.annotations.NotNull;
@@ -14,12 +15,12 @@ public class Gear extends ActionElement {
     /**
      * Creates a new conveyor belt.
      *
-     * @param gameController the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space where to put the gear
      * @param direction the direction of the gear
      */
-    public Gear(GameController gameController, Space space, boolean direction) {
-        super(gameController, space);
+    public Gear(IGameLogicController gameLogicController, Space space, boolean direction) {
+        super(gameLogicController, space);
         this.direction = direction;
     }
 
@@ -48,11 +49,11 @@ public class Gear extends ActionElement {
         if (player != null && !player.isMovedByAction()) {
             // if right
             if (direction) {
-                super.getGameController().turnRight(player);
+                super.getGameLogicController().turnRight(player);
             }
             // if left
             else {
-                super.getGameController().turnLeft(player);
+                super.getGameLogicController().turnLeft(player);
             }
             player.setMovedByAction(true);
         }

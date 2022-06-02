@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
 
 import dk.dtu.compute.se.pisd.roborally_server.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Heading;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.IGameLogicController;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,12 +14,12 @@ public class SpawnGear extends SpawnableElement {
     /**
      * Creates a new spawn gear.
      *
-     * @param gameController the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space the space
      * @param spawnDirection the direction that the robot should face
      */
-    public SpawnGear(GameController gameController, Space space, Heading spawnDirection) {
-        super(gameController, space, spawnDirection);
+    public SpawnGear(IGameLogicController gameLogicController, Space space, Heading spawnDirection) {
+        super(gameLogicController, space, spawnDirection);
     }
 
     /**

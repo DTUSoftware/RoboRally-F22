@@ -1,9 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
 
 import dk.dtu.compute.se.pisd.roborally_server.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Heading;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Player;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,13 +14,13 @@ public class ConveyorBelt extends ActionElement {
     /**
      * Creates a new conveyor belt.
      *
-     * @param gameController the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space the space to put the conveyorbelt
      * @param color the color of the belt blue/green is true/false
      * @param direction the direction for the conveyorbelt
      */
-    public ConveyorBelt(GameController gameController, Space space, boolean color, Heading direction) {
-        super(gameController, space);
+    public ConveyorBelt(IGameLogicController gameLogicController, Space space, boolean color, Heading direction) {
+        super(gameLogicController, space);
         this.color = color;
         this.direction = direction;
     }
@@ -60,11 +58,11 @@ public class ConveyorBelt extends ActionElement {
         if (player != null && !player.isMovedByAction()) {
             // if blue
             if (color) {
-                super.getGameController().moveDirectionX(player, direction, 2);
+                super.getGameLogicController().moveDirectionX(player, direction, 2);
             }
             // if green
             else {
-                super.getGameController().moveDirectionX(player, direction, 1);
+                super.getGameLogicController().moveDirectionX(player, direction, 1);
             }
             player.setMovedByAction(true);
         }

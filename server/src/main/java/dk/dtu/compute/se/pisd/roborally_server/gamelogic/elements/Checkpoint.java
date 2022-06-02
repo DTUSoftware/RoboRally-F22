@@ -1,6 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
 
 import dk.dtu.compute.se.pisd.roborally_server.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.GameLogicController;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.IGameLogicController;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,12 +19,12 @@ public class Checkpoint extends ActionElement {
 
     /**
      * constructer of the checkpoint class
-     * @param gamecontroller the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space  takes the space the checkpoint is on
      * @param number the number that the checkpoint needs to be
      */
-    public Checkpoint(GameController gamecontroller, Space space, int number) {
-        super(gamecontroller, space);
+    public Checkpoint(IGameLogicController gameLogicController, Space space, int number) {
+        super(gameLogicController, space);
         numberOfCheckpointsCreated++;
         this.number = number;
     }
@@ -80,7 +82,7 @@ public class Checkpoint extends ActionElement {
         if (checkCheckpoint(super.getSpace().getPlayer().getCurrentCheckpoint())) {
             super.getSpace().getPlayer().setCurrentCheckpoint(getNumber());
             if (allCheckpointsReached(super.getSpace().getPlayer().getCurrentCheckpoint())){
-                super.getGameController().winTheGame(getSpace().getPlayer());
+                super.getGameLogicController().winTheGame(getSpace().getPlayer());
                 // TODO win function
                 //Use the button feature from left right, then find out how to quit / restart the game from scratch.
                 //brug evt. new game function for restart.

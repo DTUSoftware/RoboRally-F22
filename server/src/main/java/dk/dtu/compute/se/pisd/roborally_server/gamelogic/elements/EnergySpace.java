@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
 
 import dk.dtu.compute.se.pisd.roborally_server.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.IGameLogicController;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Player;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
 import org.jetbrains.annotations.NotNull;
@@ -13,11 +14,11 @@ public class EnergySpace extends ActionElement {
 
     /**
      * The constructer for the energyspace
-     * @param gameController the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space the place t put the energyspace
      */
-    public EnergySpace(GameController gameController, Space space) {
-        super(gameController, space);
+    public EnergySpace(IGameLogicController gameLogicController, Space space) {
+        super(gameLogicController, space);
 
     }
 

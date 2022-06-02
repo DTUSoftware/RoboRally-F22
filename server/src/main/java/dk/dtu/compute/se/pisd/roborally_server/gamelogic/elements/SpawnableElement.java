@@ -1,9 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
 
 import dk.dtu.compute.se.pisd.roborally_server.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Heading;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Player;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.*;
 
 /**
  * Spawnablelement abstract class that extends actionelement and helps spawning the elements.
@@ -14,12 +12,12 @@ public abstract class SpawnableElement extends ActionElement {
     /**
      * Constructer for spawnableelement
      *
-     * @param gameController the game controller
+     * @param gameLogicController the game controller
      * @param space          the space
      * @param spawnDirection the direction
      */
-    public SpawnableElement(GameController gameController, Space space, Heading spawnDirection) {
-        super(gameController, space);
+    public SpawnableElement(IGameLogicController gameLogicController, Space space, Heading spawnDirection) {
+        super(gameLogicController, space);
         this.spawnDirection = spawnDirection;
     }
 
@@ -42,7 +40,7 @@ public abstract class SpawnableElement extends ActionElement {
         }
         else {
             try {
-                super.getGameController().moveDirection(player, getDirection());
+                super.getGameLogicController().moveDirection(player, getDirection());
             }
             catch (Exception e) {
                 e.printStackTrace();

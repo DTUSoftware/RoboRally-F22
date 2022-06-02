@@ -1,0 +1,6 @@
+{
+  "server": {
+    "address": "http://localhost",
+    "port": 80
+  }
+}

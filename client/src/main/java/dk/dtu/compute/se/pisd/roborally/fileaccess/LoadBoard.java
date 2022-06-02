@@ -60,21 +60,31 @@ public class LoadBoard {
             boardname = DEFAULTBOARD;
         }
 
-        InputStream inputStream = null;
-        try {
-            inputStream = Resources.getResource(BOARDSFOLDER + "/" + boardname + ".json").openStream();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (inputStream == null) {
-            Board board = new Board(defaultBoardWidth,defaultBoardHeight, boardname);
-            gameController.setBoard(board);
-            return board;
-        }
+        JSONObject boardJSON = null;
 
-        JSONTokener tokener = new JSONTokener(inputStream);
-        JSONObject boardJSON = new JSONObject(tokener);
+        ServerConnector serverConnector = new ServerConnector();
+        boardJSON = serverConnector.getMap(boardname);
+
+        // as fallback, load from files
+        // TODO: remove after development
+        if (boardJSON == null) {
+            System.out.println("COULD NOT CONNECT TO SERVER - LOADING FROM FILESYSTEM");
+            InputStream inputStream = null;
+            try {
+                inputStream = Resources.getResource(BOARDSFOLDER + "/" + boardname + ".json").openStream();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (inputStream == null) {
+                Board board = new Board(defaultBoardWidth,defaultBoardHeight, boardname);
+                gameController.setBoard(board);
+                return board;
+            }
+
+            JSONTokener tokener = new JSONTokener(inputStream);
+            boardJSON = new JSONObject(tokener);
+        }
 
 		Board board = null;
 		try {

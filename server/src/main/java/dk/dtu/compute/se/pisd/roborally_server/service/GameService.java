@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
+import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -49,5 +50,15 @@ public class GameService implements IGameService {
     @Override
     public boolean deleteGameByID(int id) {
         return false;
+    }
+
+    @Override
+    public GameState getGameStateByID(int id) {
+        return null;
+    }
+
+    @Override
+    public String updatePlayerState(int id, int playerID) {
+        return null;
     }
 }
