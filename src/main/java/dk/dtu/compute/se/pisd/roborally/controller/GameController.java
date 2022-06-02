@@ -25,7 +25,6 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
-import dk.dtu.compute.se.pisd.roborally.view.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
@@ -153,13 +152,21 @@ public class GameController {
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
-                    field.setCard(null);
+                    field.setCard((CommandCard) null);
                     field.setVisible(true);
                 }
+                int random;
                 for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
-                    field.setVisible(true);
+                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
+                        System.out.println("True " + player.getDamage());
+                        field.setCard(generateRandomDamageCard());
+                        field.setVisible(true);
+                    } else {
+                        System.out.println("False " + player.getDamage());
+                        field.setCard(generateRandomCommandCard());
+                        field.setVisible(true);
+                    }
                 }
             }
         }
@@ -176,6 +183,12 @@ public class GameController {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * commands.length);
         return new CommandCard(commands[random]);
+    }
+
+    private DamageCard generateRandomDamageCard() {
+        Damage[] damage = Damage.values();
+        int random = (int) (Math.random() * damage.length);
+        return new DamageCard(damage[random]);
     }
 
     // XXX: V2
@@ -337,6 +350,7 @@ public class GameController {
                 case U_TURN:
                     this.turnRight(player);
                     this.turnRight(player);
+                    player.damage();
                     break;
                 case OPTION_LEFT_RIGHT:
                     this.optionLeftRight(player, command);
@@ -550,7 +564,7 @@ public class GameController {
         CommandCard targetCard = target.getCard();
         if (sourceCard != null && targetCard == null) {
             target.setCard(sourceCard);
-            source.setCard(null);
+            source.setCard((CommandCard) null);
             return true;
         } else {
             return false;

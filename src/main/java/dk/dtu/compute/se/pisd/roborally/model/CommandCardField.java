@@ -35,6 +35,8 @@ public class CommandCardField extends Subject {
 
     private CommandCard card;
 
+    private DamageCard damage_card;
+
     private boolean visible;
 
     /**
@@ -66,6 +68,13 @@ public class CommandCardField extends Subject {
     public void setCard(CommandCard card) {
         if (card != this.card) {
             this.card = card;
+            notifyChange();
+        }
+    }
+
+    public void setCard(DamageCard card) {
+        if (card != this.damage_card) {
+            this.damage_card = card;
             notifyChange();
         }
     }

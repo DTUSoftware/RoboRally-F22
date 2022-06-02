@@ -70,6 +70,7 @@ public class Player extends Subject {
     private Space space;
     private Space startGearSpace;
     private Heading heading = SOUTH;
+    private int damageTaken = 0;
     private int currentCheckpoint;
 
     private boolean movedByAction = false;
@@ -90,6 +91,7 @@ public class Player extends Subject {
         this.board = board;
         this.name = name;
         this.color = color;
+        this.damageTaken = 0;
 
         this.startGearSpace = null;
         this.space = null;
@@ -157,7 +159,13 @@ public class Player extends Subject {
      * the damage part, where a bad card is given
      */
     public void damage() {
+        damageTaken = damageTaken + 1;
+
         // TODO: give player a bad card
+    }
+
+    public int getDamage(){
+        return damageTaken;
     }
 
     /**

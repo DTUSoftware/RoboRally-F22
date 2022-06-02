@@ -35,7 +35,6 @@ public enum Damage {
     // This is a very simplistic way of realizing different commands.
     /** Play top card of deck this register */
     SPAM("SPAM"),
-    
     /** Play 2 top cards of deck this register */
     TROJAN_HORSE("TROJAN_HORSE"),
     /** Immediately reboot robot  */
