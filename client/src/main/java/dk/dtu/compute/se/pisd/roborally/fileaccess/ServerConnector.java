@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 
 import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -121,11 +122,19 @@ public class ServerConnector {
         return sendRequest(endpoint, requestType, null);
     }
 
-    public JSONObject getMaps() {
-        return sendRequest("/maps", RequestType.GET);
+    public JSONObject getMap(String mapName) {
+        JSONObject responseJSON = sendRequest("/maps/"+mapName, RequestType.GET);
+        if (responseJSON.has("result")) {
+            return responseJSON.getJSONObject("result");
+        }
+        return null;
     }
 
-    public JSONObject getMap(String mapName) {
-        return sendRequest("/maps/"+mapName, RequestType.GET);
+    public JSONArray getMaps() {
+        JSONObject responseJSON = sendRequest("/maps", RequestType.GET);
+        if (responseJSON.has("result")) {
+            return responseJSON.getJSONArray("result");
+        }
+        return null;
     }
 }

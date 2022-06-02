@@ -15,18 +15,31 @@ public class MapController {
 
     @GetMapping(value = "/maps", produces = "application/json")
     public ResponseEntity<String> getMaps() {
+        JSONObject response = new JSONObject();
         JSONArray maps = mapService.findAll();
-        return ResponseEntity.ok().body(maps.toString());
+        if (maps != null) {
+            response.put("status", "ok");
+            response.put("result", maps);
+        }
+        else {
+            response.put("status", "error");
+            response.put("message", "could not load maps");
+        }
+        return ResponseEntity.ok().body(response.toString());
     }
 
     @GetMapping(value = "/maps/{id}", produces = "application/json")
     public ResponseEntity<String> getMapByID(@PathVariable String id) {
+        JSONObject response = new JSONObject();
         JSONObject map = mapService.getMapByID(id);
         if (map != null) {
-            return ResponseEntity.ok().body(map.toString());
+            response.put("status", "ok");
+            response.put("result", map);
         }
         else {
-            return ResponseEntity.internalServerError().body("could not load map");
+            response.put("status", "error");
+            response.put("message", "could not load map");
         }
+        return ResponseEntity.ok().body(response.toString());
     }
 }
