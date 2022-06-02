@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally_server.service;
 
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
+import dk.dtu.compute.se.pisd.roborally_server.model.Player;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface IGameService {
 
     GameState getGameStateByID(int id);
     String updatePlayerState(int id, int playerID);
+
+    boolean updatePlayerDeck(int id, int playerID, Player player);
+
+    Player getPlayerDeck(int id, int playerID);
 }

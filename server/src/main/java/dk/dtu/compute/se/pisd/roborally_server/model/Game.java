@@ -14,6 +14,7 @@ public class Game {
     public Game(int id) {
         super();
         this.id = id;
+        this.mapID = "defaultboard";
     }
 
     public int getID() {
@@ -22,5 +23,9 @@ public class Game {
 
     public void setID(int id) {
         this.id = id;
+    }
+
+    public String getMapID() {
+        return mapID;
     }
 }

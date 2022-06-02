@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static dk.dtu.compute.se.pisd.roborally_server.controller.Utility.getResponseEntity;
+
 @RestController
 public class MapController {
     @Autowired
@@ -15,31 +17,13 @@ public class MapController {
 
     @GetMapping(value = "/maps", produces = "application/json")
     public ResponseEntity<String> getMaps() {
-        JSONObject response = new JSONObject();
         JSONArray maps = mapService.findAll();
-        if (maps != null) {
-            response.put("status", "ok");
-            response.put("result", maps);
-        }
-        else {
-            response.put("status", "error");
-            response.put("message", "could not load maps");
-        }
-        return ResponseEntity.ok().body(response.toString());
+        return getResponseEntity(maps, "could not load maps");
     }
 
     @GetMapping(value = "/maps/{id}", produces = "application/json")
     public ResponseEntity<String> getMapByID(@PathVariable String id) {
-        JSONObject response = new JSONObject();
         JSONObject map = mapService.getMapByID(id);
-        if (map != null) {
-            response.put("status", "ok");
-            response.put("result", map);
-        }
-        else {
-            response.put("status", "error");
-            response.put("message", "could not load map");
-        }
-        return ResponseEntity.ok().body(response.toString());
+        return getResponseEntity(map, "could not get map");
     }
 }
