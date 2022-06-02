@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.ServerConnector;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -157,11 +158,28 @@ public class AppController implements Observer {
     }
 
     private List<String> getMapOptions() {
-        List<String> mapOptions = getFolderJSON(LoadBoard.BOARDSFOLDER);
-        // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. this is a temp fix
-        if (!mapOptions.contains("dizzy_highway")) {
-            mapOptions.add("dizzy_highway");
+        List<String> mapOptions = null;
+
+        ServerConnector serverConnector = new ServerConnector();
+        JSONArray maps = serverConnector.getMaps();
+
+        if (maps != null && maps.length() > 0) {
+            mapOptions = new ArrayList<>();
+            for (int i = 0; i < maps.length(); i++) {
+                mapOptions.add(maps.getJSONObject(i).getString("id"));
+            }
         }
+
+        // load from files if server down
+        // TODO: remove after development
+        if (mapOptions == null) {
+            mapOptions = getFolderJSON(LoadBoard.BOARDSFOLDER);
+            // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. this is a temp fix
+            if (!mapOptions.contains("dizzy_highway")) {
+                mapOptions.add("dizzy_highway");
+            }
+        }
+
         return mapOptions;
     }
 
