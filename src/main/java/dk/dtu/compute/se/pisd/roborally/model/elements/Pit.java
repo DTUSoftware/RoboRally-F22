@@ -30,7 +30,9 @@ public class Pit extends ActionElement{
             Player player = getSpace().getPlayer();
 
             // give bad card
+            //TODO This sometimes activate 2 times on landing
             player.damage();
+            System.out.println("damage3");
 
             // reboot the player
             player.reboot();

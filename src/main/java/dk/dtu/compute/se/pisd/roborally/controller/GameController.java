@@ -355,7 +355,9 @@ public class GameController {
                     this.optionLeftRight(player, command);
                     break;
                 case SPAM:
-                    //TODO something
+                    Command[] commands = Command.values();
+                    int random = (int) (Math.random() * 8);
+                    executeCommand(board.getCurrentPlayer(), commands[random]);
                     break;
                 case TROJAN_HORSE:
                     //TODO something
