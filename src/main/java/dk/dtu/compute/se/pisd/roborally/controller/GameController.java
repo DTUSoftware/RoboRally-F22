@@ -50,8 +50,9 @@ public class GameController {
 
     /**
      * The GameController constructor.
+     *
      * @param roboRally the roborally class
-     * @param board the board to control.
+     * @param board     the board to control.
      */
     public GameController(RoboRally roboRally, Board board) {
         this.board = board;
@@ -159,7 +160,7 @@ public class GameController {
                 for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
                     System.out.println("Player damage " + player.getDamage());
-                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
+                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)) {
                         field.setCard(generateRandomDamageCard(8, 11));
                         player.removeDamage();
                         field.setVisible(true);
@@ -268,6 +269,17 @@ public class GameController {
     }
 
     // XXX: V2
+
+    /**
+     * Calculates the distance between two object position
+     *
+     * @param pos1 the space of the first object
+     * @param pos2 the space of the second object
+     * @return the distance
+     */
+    private double getDistance(Space pos1, Space pos2) {
+        return Math.sqrt(Math.pow(pos1.x-pos2.x,2) + Math.pow(pos1.y - pos2.y,2));
+    }
 
     /**
      * Executes the next step.
@@ -404,8 +416,7 @@ public class GameController {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 player.damage();
                 player.reboot();
             }
@@ -519,6 +530,7 @@ public class GameController {
 
     /**
      * the fast fast forward card
+     *
      * @param player the player to move
      */
     public void fastfastForward(@NotNull Player player) {
@@ -549,7 +561,8 @@ public class GameController {
 
     /**
      * if you want to turn left or right
-     * @param player the player to turn
+     *
+     * @param player  the player to turn
      * @param command to go left or right
      */
     public void optionLeftRight(@NotNull Player player, Command command) {
@@ -585,6 +598,7 @@ public class GameController {
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
+     *
      * @param cardOptions the card used
      */
     public void executeCommandOptionAndContinue(Command cardOptions) {
@@ -616,9 +630,10 @@ public class GameController {
 
     /**
      * wins the game
+     *
      * @param player the player that wins the game
      */
-    public void winTheGame(Player player){
+    public void winTheGame(Player player) {
         // show popup
         if (roboRally != null) {
             List<String> yesno = new ArrayList<>();
