@@ -160,12 +160,16 @@ public class Player extends Subject {
      */
     public void damage() {
         damageTaken = damageTaken + 1;
-
-        // TODO: give player a bad card
     }
 
     public int getDamage(){
         return damageTaken;
+    }
+
+    public void removeDamage() {
+        if (damageTaken > 0) {
+            damageTaken = damageTaken - 1;
+        }
     }
 
     /**

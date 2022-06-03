@@ -35,8 +35,6 @@ public class CommandCardField extends Subject {
 
     private CommandCard card;
 
-    private DamageCard damage_card;
-
     private boolean visible;
 
     /**
@@ -72,12 +70,6 @@ public class CommandCardField extends Subject {
         }
     }
 
-    public void setCard(DamageCard card) {
-        if (card != this.damage_card) {
-            this.damage_card = card;
-            notifyChange();
-        }
-    }
 
     /**
      * Whether the field is visible.

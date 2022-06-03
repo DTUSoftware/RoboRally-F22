@@ -152,19 +152,19 @@ public class GameController {
             if (player != null) {
                 for (int j = 0; j < Player.NO_REGISTERS; j++) {
                     CommandCardField field = player.getProgramField(j);
-                    field.setCard((CommandCard) null);
+                    field.setCard(null);
                     field.setVisible(true);
                 }
-                int random;
+
                 for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
+                    System.out.println("Player damage " + player.getDamage());
                     if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
-                        System.out.println("True " + player.getDamage());
-                        field.setCard(generateRandomDamageCard());
+                        field.setCard(generateRandomDamageCard(8, 11));
+                        player.removeDamage();
                         field.setVisible(true);
                     } else {
-                        System.out.println("False " + player.getDamage());
-                        field.setCard(generateRandomCommandCard());
+                        field.setCard(generateRandomCommandCard(0, 7));
                         field.setVisible(true);
                     }
                 }
@@ -179,16 +179,16 @@ public class GameController {
      *
      * @return the random {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard}.
      */
-    private CommandCard generateRandomCommandCard() {
+    private CommandCard generateRandomCommandCard(int from, int to) {
         Command[] commands = Command.values();
-        int random = (int) (Math.random() * commands.length);
+        int random = (int) ((Math.random() * (to + 1 - from)) + from);
         return new CommandCard(commands[random]);
     }
 
-    private DamageCard generateRandomDamageCard() {
-        Damage[] damage = Damage.values();
-        int random = (int) (Math.random() * damage.length);
-        return new DamageCard(damage[random]);
+    private CommandCard generateRandomDamageCard(int from, int to) {
+        Command[] commands = Command.values();
+        int random = (int) ((Math.random() * (to + 1 - from)) + from);
+        return new CommandCard(commands[random]);
     }
 
     // XXX: V2
@@ -350,10 +350,21 @@ public class GameController {
                 case U_TURN:
                     this.turnRight(player);
                     this.turnRight(player);
-                    player.damage();
                     break;
                 case OPTION_LEFT_RIGHT:
                     this.optionLeftRight(player, command);
+                    break;
+                case SPAM:
+                    //TODO something
+                    break;
+                case TROJAN_HORSE:
+                    //TODO something
+                    break;
+                case WORM:
+                    //TODO something
+                    break;
+                case VIRUS:
+                    //TODO something
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -564,7 +575,7 @@ public class GameController {
         CommandCard targetCard = target.getCard();
         if (sourceCard != null && targetCard == null) {
             target.setCard(sourceCard);
-            source.setCard((CommandCard) null);
+            source.setCard(null);
             return true;
         } else {
             return false;
