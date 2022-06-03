@@ -355,12 +355,10 @@ public class GameController {
                     this.optionLeftRight(player, command);
                     break;
                 case SPAM:
-                    Command[] commands = Command.values();
-                    int random = (int) (Math.random() * 8);
-                    executeCommand(board.getCurrentPlayer(), commands[random]);
+                    this.SPAM(player);
                     break;
                 case TROJAN_HORSE:
-                    //TODO something
+                    this.TROJAN_HORSE(player);
                     break;
                 case WORM:
                     //TODO something
@@ -560,6 +558,18 @@ public class GameController {
         } else if (command.equals("RIGHT")) {
             turnRight(player);
         }
+    }
+
+    public void SPAM (@NotNull Player player) {
+        Command[] commands = Command.values();
+        int random = (int) (Math.random() * 8);
+        executeCommand(player, commands[random]);
+    }
+
+    public void TROJAN_HORSE (@NotNull Player player) {
+        Command[] commands = Command.values();
+        for ( int i = 0 ; i < 2 ; i++)
+        executeCommand(player, commands[9]);
     }
 
     /**
