@@ -106,4 +106,10 @@ public class GameController {
         boolean status = gameService.updatePlayerDeck(id, playerID, playerDeck);
         return getResponseEntity(status, "player deck not updated");
     }
+
+    @PostMapping(value = "/games/{id}/gameState/{playerID}/ready", produces = "application/json")
+    public ResponseEntity<String> playerProgrammingDone(@PathVariable UUID id, @PathVariable UUID playerID) {
+        String status = gameService.updatePlayerReady(id, playerID);
+        return getResponseEntity(status, "could not mark as ready!");
+    }
 }

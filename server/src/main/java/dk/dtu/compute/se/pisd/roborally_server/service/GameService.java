@@ -1,6 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally_server.service;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -82,5 +81,10 @@ public class GameService implements IGameService {
     @Override
     public PlayerDeck getPlayerDeck(UUID id, UUID playerID) {
         return games.get(id).getPlayer(playerID).getDeck();
+    }
+
+    @Override
+    public String updatePlayerReady(UUID id, UUID playerID) {
+        return null;
     }
 }

@@ -58,4 +58,14 @@ public class GameState {
     public void removePlayer(Player player) {
         players.remove(player);
     }
+
+    public int getReadyPlayers() {
+        int readyPlayers = 0;
+        for (Player player : players) {
+            if (player.isReady()) {
+                readyPlayers++;
+            }
+        }
+        return readyPlayers;
+    }
 }

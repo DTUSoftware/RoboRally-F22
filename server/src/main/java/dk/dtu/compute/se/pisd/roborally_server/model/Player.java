@@ -12,6 +12,7 @@ public class Player {
     private int currentCheckpoint;
     private Position position;
     private PlayerDeck deck;
+    private boolean ready;
 
     class Position {
         private int x;
@@ -61,6 +62,7 @@ public class Player {
         this.id = id;
         this.position = new Position();
         this.deck = new PlayerDeck();
+        this.ready = false;
     }
 
     public Player(String name) {
@@ -131,5 +133,14 @@ public class Player {
 
     public void setDeck(PlayerDeck deck) {
         this.deck = deck;
+    }
+
+    @JsonIgnore
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 }
