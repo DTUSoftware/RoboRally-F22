@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally.model.elements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,6 +56,7 @@ public class Board extends Subject {
     private Player current;
     private Checkpoint[] checkpoints;
     private RebootToken[] rebootTokens;
+    private Space priorityAntenna;
 
     private Phase phase = INITIALISATION;
 
@@ -291,6 +293,12 @@ public class Board extends Subject {
         }
     }
 
+    public void setPriorityAntenna(Space position){
+        this.priorityAntenna = position;
+    }
+    public Space getPriorityAntennaPosition(){
+        return this.priorityAntenna;
+    }
     /**
      * Returns the neighbour of the given space of the board in the given heading.
      * The neighbour is returned only, if it can be reached from the given space

@@ -28,6 +28,7 @@ import dk.dtu.compute.se.pisd.roborally.model.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Array;
 import java.util.*;
 
 /**
@@ -287,6 +288,13 @@ public class GameController {
     // TODO the stuff with the PriorityAntenna
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
+        int playerAmmount = board.getPlayersNumber();
+        double[] playerDistances = new double[board.getPlayersNumber()];
+        Space prorityantennaPosition = board.getPriorityAntennaPosition();
+
+        for (int i = 0; i < playerAmmount; i++){
+            // playerDistances[i]
+        }
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
