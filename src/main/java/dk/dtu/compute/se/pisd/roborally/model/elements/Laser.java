@@ -46,13 +46,24 @@ public class Laser extends ActionElement{
     /**
      * not used
      */
-    int k = 1;
+
     @Override
     public void activate() {
         Player player = super.getSpace().getPlayer();
         if (player != null && !player.isMovedByAction()) {
-            
-            k = k+1;
+            if (this.lazer == 1 || this.lazer == 4){
+                player.takeDamage();
+            }
+            else if (this.lazer == 2 || this.lazer == 5){
+                player.takeDamage();
+                player.takeDamage();
+            }
+            else if (this.lazer == 3 || this.lazer == 6){
+                player.takeDamage();
+                player.takeDamage();
+                player.takeDamage();
+            }
+            System.out.println(player.getDamage());player.getDamage();
             }
 
 
