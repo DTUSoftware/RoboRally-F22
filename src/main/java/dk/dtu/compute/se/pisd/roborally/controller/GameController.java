@@ -163,10 +163,10 @@ public class GameController {
 
                     if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)) {
 
-                        field.setCard(generateRandomDamageCard(8, 11));
+                        field.setCard(generateRandomDamageCard(10, 13)); //TODO change if cards chance
                         field.setVisible(true);
                     } else {
-                        field.setCard(generateRandomCommandCard(0, 7));
+                        field.setCard(generateRandomCommandCard(0, 9)); //TODO change if cards chance
                         field.setVisible(true);
                     }
                 }
@@ -380,6 +380,12 @@ public class GameController {
                 case OPTION_LEFT_RIGHT:
                     this.optionLeftRight(player, command);
                     break;
+                case POWER_UP:
+                    this.powerUp(player);
+                    break;
+                case AGAIN:
+                    this.again(player);
+                    break;
                 case SPAM:
                     this.SPAM(player);
                     player.removeDamage();
@@ -591,9 +597,29 @@ public class GameController {
         }
     }
 
-    public void SPAM(@NotNull Player player) {
+    public void powerUp (@NotNull Player player) {
+        player.addPower(1);
+    }
+
+    public void again (@NotNull Player player) {
+        int step = board.getStep();
+        if (step <= 0) {
+            return;
+        }
+        CommandCard card = player.getProgramField(step - 1).getCard();
+        if (card != null) {
+            Command command = card.command;
+            if (command.isInteractive()) {
+                board.setPhase(Phase.PLAYER_INTERACTION);
+                return;
+            }
+            executeCommand(player, command);
+        }
+    }
+
+    public void SPAM (@NotNull Player player) {
         Command[] commands = Command.values();
-        int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
+        int random = (int) (Math.random() * 10);  //commands[8] = SPAM Card //TODO Change of cards chance
         executeCommand(player, commands[random]);
     }
 

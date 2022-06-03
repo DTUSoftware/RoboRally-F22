@@ -52,6 +52,10 @@ public enum Command {
     // XXX Assignment P3
     /** Left or Right */
     OPTION_LEFT_RIGHT("weasel_routine", LEFT, RIGHT),
+    /** Giver player one energi cupe */
+    POWER_UP("power_up"),
+    /** Plays the last card in register */
+    AGAIN("again"),
     /** Play top card of deck this register */
     SPAM("spam"),
     /** Play 2 top cards of deck this register */
