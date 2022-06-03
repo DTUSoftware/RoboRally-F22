@@ -45,7 +45,7 @@ public class Player extends Subject {
     /**
      * The number of cards the player can have
      */
-    final public static int NO_CARDS = 8;
+    final public static int NO_COMMAND_CARDS = 8;
 
     /**
      * The Board the Player is playing on
@@ -70,12 +70,13 @@ public class Player extends Subject {
     private Space space;
     private Space startGearSpace;
     private Heading heading = SOUTH;
+    private int damageTaken = 0;
     private int currentCheckpoint;
 
     private boolean movedByAction = false;
 
     private CommandCardField[] program;
-    private CommandCardField[] cards;
+    private CommandCardField[] move_cards;
     private ArrayList<CommandCardField> upgrades;
 
 
@@ -90,6 +91,7 @@ public class Player extends Subject {
         this.board = board;
         this.name = name;
         this.color = color;
+        this.damageTaken = 0;
 
         this.startGearSpace = null;
         this.space = null;
@@ -99,9 +101,9 @@ public class Player extends Subject {
             program[i] = new CommandCardField(this);
         }
 
-        cards = new CommandCardField[NO_CARDS];
-        for (int i = 0; i < cards.length; i++) {
-            cards[i] = new CommandCardField(this);
+        move_cards = new CommandCardField[NO_COMMAND_CARDS];
+        for (int i = 0; i < move_cards.length; i++) {
+            move_cards[i] = new CommandCardField(this);
         }
 
         upgrades = new ArrayList<>();
@@ -154,16 +156,31 @@ public class Player extends Subject {
     }
 
     /**
-     * the damage part, where a bad card is given
+     * the takeDamage part, where a bad card is given
      */
-    public void damage() {
-        // TODO: give player a bad card
+    public void takeDamage() {
+        damageTaken = damageTaken + 1;
+    }
+
+    public int getDamage(){
+        return damageTaken;
+    }
+
+    public void removeDamage() {
+        if (damageTaken > 0) {
+            damageTaken = damageTaken - 1;
+        }
     }
 
     /**
      * Reboot/respawn the player.
      */
     public void reboot() {
+
+        for (int i = 0; i < 2 ; i++) {
+            this.takeDamage();
+        }
+
         RebootToken[] rebootTokens = board.getRebootTokens();
         RebootToken rebootToken = null;
         for (RebootToken rebootToken1 : rebootTokens) {
@@ -281,7 +298,7 @@ public class Player extends Subject {
      * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
      */
     public CommandCardField getCardField(int i) {
-        return cards[i];
+        return move_cards[i];
     }
 
     /**

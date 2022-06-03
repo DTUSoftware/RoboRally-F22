@@ -186,6 +186,19 @@ public class Board extends Subject {
     }
 
     /**
+     * Gets list of all players.
+     *
+     * @return The {@link dk.dtu.compute.se.pisd.roborally.model.Board players} if found, else null.
+     */
+    public Player getPlayers() {
+        if (players != null) {
+            return (Player) players;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Gets the current player.
      *
      * @return The current {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.

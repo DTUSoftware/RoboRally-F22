@@ -25,7 +25,6 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
-import dk.dtu.compute.se.pisd.roborally.view.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,8 +50,9 @@ public class GameController {
 
     /**
      * The GameController constructor.
+     *
      * @param roboRally the roborally class
-     * @param board the board to control.
+     * @param board     the board to control.
      */
     public GameController(RoboRally roboRally, Board board) {
         this.board = board;
@@ -156,10 +156,18 @@ public class GameController {
                     field.setCard(null);
                     field.setVisible(true);
                 }
-                for (int j = 0; j < Player.NO_CARDS; j++) {
+
+                for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
-                    field.setVisible(true);
+                    
+                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
+
+                        field.setCard(generateRandomDamageCard(8, 11));
+                        field.setVisible(true);
+                    } else {
+                        field.setCard(generateRandomCommandCard(0, 7));
+                        field.setVisible(true);
+                    }
                 }
             }
         }
@@ -172,9 +180,15 @@ public class GameController {
      *
      * @return the random {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard}.
      */
-    private CommandCard generateRandomCommandCard() {
+    private CommandCard generateRandomCommandCard(int from, int to) {
         Command[] commands = Command.values();
-        int random = (int) (Math.random() * commands.length);
+        int random = (int) ((Math.random() * (to + 1 - from)) + from);
+        return new CommandCard(commands[random]);
+    }
+
+    private CommandCard generateRandomDamageCard(int from, int to) {
+        Command[] commands = Command.values();
+        int random = (int) ((Math.random() * (to + 1 - from)) + from);
         return new CommandCard(commands[random]);
     }
 
@@ -255,6 +269,17 @@ public class GameController {
     }
 
     // XXX: V2
+
+    /**
+     * Calculates the distance between two object position
+     *
+     * @param pos1 the space of the first object
+     * @param pos2 the space of the second object
+     * @return the distance
+     */
+    private double getDistance(Space pos1, Space pos2) {
+        return Math.sqrt(Math.pow(pos1.x-pos2.x,2) + Math.pow(pos1.y - pos2.y,2));
+    }
 
     /**
      * Executes the next step.
@@ -341,6 +366,22 @@ public class GameController {
                 case OPTION_LEFT_RIGHT:
                     this.optionLeftRight(player, command);
                     break;
+                case SPAM:
+                    this.SPAM(player);
+                    player.removeDamage();
+                    break;
+                case TROJAN_HORSE:
+                    this.TROJAN_HORSE(player);
+                    player.removeDamage();
+                    break;
+                case WORM:
+                    this.WORM(player);
+                    player.removeDamage();
+                    break;
+                case VIRUS:
+                    this.VIRUS(player);
+                    player.removeDamage();
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -379,9 +420,8 @@ public class GameController {
                         }
                     }
                 }
-            }
-            else {
-                player.damage();
+            } else {
+                player.takeDamage();
                 player.reboot();
             }
         }
@@ -424,7 +464,7 @@ public class GameController {
                     }
                 }
             } else {
-                player.damage();
+                player.takeDamage();
                 player.reboot();
             }
         }
@@ -494,6 +534,7 @@ public class GameController {
 
     /**
      * the fast fast forward card
+     *
      * @param player the player to move
      */
     public void fastfastForward(@NotNull Player player) {
@@ -524,7 +565,8 @@ public class GameController {
 
     /**
      * if you want to turn left or right
-     * @param player the player to turn
+     *
+     * @param player  the player to turn
      * @param command to go left or right
      */
     public void optionLeftRight(@NotNull Player player, Command command) {
@@ -534,6 +576,37 @@ public class GameController {
             turnRight(player);
         }
     }
+
+    public void SPAM (@NotNull Player player) {
+        Command[] commands = Command.values();
+        int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
+        executeCommand(player, commands[random]);
+    }
+
+    public void TROJAN_HORSE (@NotNull Player player) {
+
+        for ( int i = 0 ; i < 2 ; i++)
+        SPAM(player);
+    }
+
+    public void WORM (@NotNull Player player) {
+        player.reboot();
+    }
+
+    public void VIRUS (@NotNull Player player) {
+        Command[] commands = Command.values();
+        Space playerSpace = player.getSpace();
+
+        for (int i = 0; i < board.getPlayersNumber(); i++) {
+
+            /*if (madsfunktion(6) == true) {
+
+            }*/
+
+        }
+
+    }
+
 
     /**
      * Moves a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} on a source
@@ -560,6 +633,7 @@ public class GameController {
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
+     *
      * @param cardOptions the card used
      */
     public void executeCommandOptionAndContinue(Command cardOptions) {
@@ -591,9 +665,10 @@ public class GameController {
 
     /**
      * wins the game
+     *
      * @param player the player that wins the game
      */
-    public void winTheGame(Player player){
+    public void winTheGame(Player player) {
         // show popup
         if (roboRally != null) {
             List<String> yesno = new ArrayList<>();

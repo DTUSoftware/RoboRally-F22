@@ -41,6 +41,9 @@ public class EnergySpace extends ActionElement {
                 player.addPower(1);
                 hasEnergy = false;
             }
+            else if(super.getGameController().board.getStep() == 5){
+                player.addPower(1);
+            }
         }
     }
 

@@ -22,15 +22,12 @@ public class Pit extends ActionElement{
     }
 
     /**
-     * does damage to the player and reboots the player
+     * does takeDamage to the player and reboots the player
      */
     @Override
     public void doLandingAction() {
         if (!getSpace().free()) {
             Player player = getSpace().getPlayer();
-
-            // give bad card
-            player.damage();
 
             // reboot the player
             player.reboot();
