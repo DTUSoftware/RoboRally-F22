@@ -159,8 +159,7 @@ public class GameController {
 
                 for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-
-                    System.out.println("Player takeDamage " + player.getDamage());
+                    
                     if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
 
                         field.setCard(generateRandomDamageCard(8, 11));
@@ -600,9 +599,9 @@ public class GameController {
 
         for (int i = 0; i < board.getPlayersNumber(); i++) {
 
-            if (madsfunktion(6) == true) {
+            /*if (madsfunktion(6) == true) {
 
-            }
+            }*/
 
         }
 
