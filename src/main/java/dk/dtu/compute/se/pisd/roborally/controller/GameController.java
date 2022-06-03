@@ -361,10 +361,10 @@ public class GameController {
                     this.TROJAN_HORSE(player);
                     break;
                 case WORM:
-                    //TODO something
+                    this.WORM(player);
                     break;
                 case VIRUS:
-                    //TODO something
+                    this.VIRUS(player);
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -569,8 +569,31 @@ public class GameController {
     public void TROJAN_HORSE (@NotNull Player player) {
         Command[] commands = Command.values();
         for ( int i = 0 ; i < 2 ; i++)
+<<<<<<< Updated upstream
         executeCommand(player, commands[8]); //commands[8] = SPAM Card
+=======
+            executeCommand(player, commands[9]);
+>>>>>>> Stashed changes
     }
+
+    public void WORM (@NotNull Player player) {
+        player.reboot();
+    }
+
+    public void VIRUS (@NotNull Player player) {
+        Command[] commands = Command.values();
+        Space playerSpace = player.getSpace();
+
+        for (int i = 0; i < board.getPlayersNumber(); i++) {
+
+            if (madsfunktion(6) == true) {
+
+            }
+
+        }
+
+    }
+
 
     /**
      * Moves a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} on a source
