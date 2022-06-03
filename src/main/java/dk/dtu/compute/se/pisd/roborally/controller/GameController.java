@@ -161,7 +161,7 @@ public class GameController {
                 for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
 
-                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
+                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)) {
 
                         field.setCard(generateRandomDamageCard(8, 11));
                         field.setVisible(true);
@@ -279,7 +279,7 @@ public class GameController {
      * @return the distance
      */
     private double getDistance(Space pos1, Space pos2) {
-        return Math.sqrt(Math.pow(pos1.x-pos2.x,2) + Math.pow(pos1.y - pos2.y,2));
+        return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2));
     }
 
     /**
@@ -289,12 +289,18 @@ public class GameController {
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         int playerAmmount = board.getPlayersNumber();
-        double[] playerDistances = new double[board.getPlayersNumber()];
+        ArrayList<Double> playerDistances = new ArrayList<Double>();
         Space prorityantennaPosition = board.getPriorityAntennaPosition();
-
-        for (int i = 0; i < playerAmmount; i++){
-            // playerDistances[i]
+        for (int i = 0; i < playerAmmount; i++) {
+            Player player2Check = board.getPlayer(i);
+            playerDistances.add(getDistance(prorityantennaPosition, player2Check.getSpace()));
         }
+        for (int i = 0; i < playerAmmount; i++) {
+            for (int j = 0; j < playerAmmount; j++){
+                
+            }
+        }
+
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = board.getStep();
             if (step >= 0 && step < Player.NO_REGISTERS) {
@@ -585,23 +591,23 @@ public class GameController {
         }
     }
 
-    public void SPAM (@NotNull Player player) {
+    public void SPAM(@NotNull Player player) {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
         executeCommand(player, commands[random]);
     }
 
-    public void TROJAN_HORSE (@NotNull Player player) {
+    public void TROJAN_HORSE(@NotNull Player player) {
 
-        for ( int i = 0 ; i < 2 ; i++)
-        SPAM(player);
+        for (int i = 0; i < 2; i++)
+            SPAM(player);
     }
 
-    public void WORM (@NotNull Player player) {
+    public void WORM(@NotNull Player player) {
         player.reboot();
     }
 
-    public void VIRUS (@NotNull Player player) {
+    public void VIRUS(@NotNull Player player) {
         Command[] commands = Command.values();
         Space playerSpace = player.getSpace();
 
