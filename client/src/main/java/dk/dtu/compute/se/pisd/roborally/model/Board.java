@@ -25,6 +25,7 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class Board extends Subject {
 
     private Player current;
     private Checkpoint[] checkpoints;
+    private SpawnGear[] spawnGears;
     private RebootToken[] rebootTokens;
 
     private Phase phase = INITIALISATION;
@@ -132,6 +134,24 @@ public class Board extends Subject {
      */
     public void setRebootTokens(RebootToken[] rebootTokens) {
         this.rebootTokens = rebootTokens;
+    }
+
+    /**
+     * Gets array of spawnGears
+     *
+     * @return spawnGears
+     */
+    public SpawnGear[] getSpawnGears() {
+        return spawnGears != null ? spawnGears : new SpawnGear[0];
+    }
+
+    /**
+     * Sets spawnGears
+     *
+     * @param spawnGears resets spawnGears
+     */
+    public void setSpawnGears(SpawnGear[] spawnGears) {
+        this.spawnGears = spawnGears;
     }
 
     /**

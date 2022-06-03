@@ -31,21 +31,16 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
 import dk.dtu.compute.se.pisd.roborally.server.MapService;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import net.harawata.appdirs.AppDirs;
 import net.harawata.appdirs.AppDirsFactory;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
@@ -219,68 +214,20 @@ public class AppController implements Observer {
                 gameController = new GameController(this.roboRally, null);
                 Board board = loadBoard(gameController, mapResult.get());
 
-                // debug adding
-//                {
-//                    Space space = board.getSpace(1, 2);
-//                    new Wall(space, Heading.EAST);
-//                    new Checkpoint(space, 2);
-//
-//                    space = board.getSpace(1,3);
-//                    new ConveyorBelt(gameController, space, true, Heading.SOUTH);
-//
-//                    space = board.getSpace(1, 4);
-//                    new Checkpoint(space, 1);
-//                    new Wall(space, Heading.NORTH);
-//
-//                    space = board.getSpace(3, 4);
-//                    new Gear(gameController, space, false);
-//                    new Wall(space, Heading.SOUTH);
-//                }
-
-                final String BOARDSFOLDER = "maps";
-                InputStream inputStream = null;
-                try {
-                    inputStream = Resources.getResource(BOARDSFOLDER + "/" + mapResult.get() + ".json").openStream();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-                JSONTokener tokener = new JSONTokener(inputStream);
-                JSONObject boardJSON = new JSONObject(tokener);
-                JSONArray boardObjects = boardJSON.getJSONArray("board");
-
-                String spawn_gear_element;
-                JSONArray elementsJSON = null;
-                Space space = null;
-                int l = 0;
+                SpawnGear[] spawnGears = board.getSpawnGears();
+                int j = 0;
 
                 int no = playerNumberResult.get();
                 for (int i = 0; i < no; i++) {
                     Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
                     board.addPlayer(player);
-                    //TODO: skriv linjen under om til at skaffe et gear til hver spiller, og gem det
 
-                    outerloop:
-                    for (; l < boardObjects.length(); l++) {
-                        JSONObject spaceJSON = boardObjects.getJSONObject(l);
+                    SpawnGear spawnGear = spawnGears[j];
+                    player.setSpace(spawnGear.getSpace());
+                    player.setHeading(spawnGear.getDirection());
+                    player.setStartGearSpace(spawnGear.getSpace());
 
-                        JSONObject positionJSON = spaceJSON.getJSONObject("position");
-                        space = board.getSpace(positionJSON.getInt("x"), positionJSON.getInt("y"));
-
-                        elementsJSON = spaceJSON.getJSONArray("elements");
-
-                        for (int j = 0; j < elementsJSON.length(); j++) {
-                            JSONObject elementJSON = elementsJSON.getJSONObject(j);
-                            if (elementJSON.getString("type").equals("spawn_gear")) {
-                                player.setSpace(space);
-                                player.setHeading(Heading.valueOf(elementJSON.getString("direction")));
-                                player.setStartGearSpace(space);
-                                l++;
-                                break outerloop;
-                            }
-                        }
-                    }
-
+                    j++;
                 }
                 // XXX: V2
                 // board.setCurrentPlayer(board.getPlayer(0));

@@ -97,6 +97,7 @@ public class LoadBoard {
             JSONArray boardObjects = boardJSON.getJSONArray("board");
 
             ArrayList<RebootToken> rebootTokens = new ArrayList<>();
+            ArrayList<SpawnGear> spawnGears = new ArrayList<>();
             for (int i = 0; i < boardObjects.length(); i++) {
                 JSONObject spaceJSON = boardObjects.getJSONObject(i);
 
@@ -139,7 +140,7 @@ public class LoadBoard {
                             rebootTokens.add(new RebootToken(gameController, space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2")));
                             break;
                         case "spawn_gear":
-                            new SpawnGear(gameController, space, Heading.valueOf(elementJSON.getString("direction")));
+                            spawnGears.add(new SpawnGear(gameController, space, Heading.valueOf(elementJSON.getString("direction"))));
                             break;
                         case "wall":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), false);
@@ -155,6 +156,7 @@ public class LoadBoard {
 
             // add reboot tokens
             board.setRebootTokens(rebootTokens.toArray(new RebootToken[0]));
+            board.setSpawnGears(spawnGears.toArray(new SpawnGear[0]));
         }
         catch (Exception e) {
             e.printStackTrace();
