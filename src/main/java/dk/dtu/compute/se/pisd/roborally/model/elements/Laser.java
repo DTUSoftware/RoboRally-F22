@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally.model.elements;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,8 +46,28 @@ public class Laser extends ActionElement{
     /**
      * not used
      */
+
     @Override
     public void activate() {
+        Player player = super.getSpace().getPlayer();
+        if (player != null && !player.isMovedByAction()) {
+            if (this.lazer == 1 || this.lazer == 4){
+                player.takeDamage();
+            }
+            else if (this.lazer == 2 || this.lazer == 5){
+                player.takeDamage();
+                player.takeDamage();
+            }
+            else if (this.lazer == 3 || this.lazer == 6){
+                player.takeDamage();
+                player.takeDamage();
+                player.takeDamage();
+            }
+            System.out.println(player.getDamage());player.getDamage();
+            }
+
+
+
 
     }
 

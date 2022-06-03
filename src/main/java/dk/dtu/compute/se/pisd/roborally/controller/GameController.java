@@ -598,13 +598,16 @@ public class GameController {
         Space playerSpace = player.getSpace();
 
         for (int i = 0; i < board.getPlayersNumber(); i++) {
+            Player checkPlayer = board.getPlayer(i);
+            Space checkPlayerSpace = checkPlayer.getSpace();
 
-            /*if (madsfunktion(6) == true) {
-
-            }*/
-
+            if (getDistance(playerSpace, checkPlayerSpace) > 0 && getDistance(playerSpace, checkPlayerSpace) < 6) {
+                checkPlayer.takeDamage();
+            }
         }
 
+        int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
+        executeCommand(player, commands[random]);
     }
 
 
