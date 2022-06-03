@@ -569,7 +569,7 @@ public class GameController {
     public void TROJAN_HORSE (@NotNull Player player) {
         Command[] commands = Command.values();
         for ( int i = 0 ; i < 2 ; i++)
-        executeCommand(player, commands[9]);
+        executeCommand(player, commands[8]); //commands[8] = SPAM Card
     }
 
     /**
