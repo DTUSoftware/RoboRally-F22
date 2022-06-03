@@ -158,7 +158,7 @@ public class GameController {
 
                 for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    System.out.println("Player damage " + player.getDamage());
+                    System.out.println("Player takeDamage " + player.getDamage());
                     if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
                         field.setCard(generateRandomDamageCard(8, 11));
                         player.removeDamage();
@@ -406,7 +406,7 @@ public class GameController {
                 }
             }
             else {
-                player.damage();
+                player.takeDamage();
                 player.reboot();
             }
         }
@@ -449,7 +449,7 @@ public class GameController {
                     }
                 }
             } else {
-                player.damage();
+                player.takeDamage();
                 player.reboot();
             }
         }
@@ -569,11 +569,9 @@ public class GameController {
     public void TROJAN_HORSE (@NotNull Player player) {
         Command[] commands = Command.values();
         for ( int i = 0 ; i < 2 ; i++)
-<<<<<<< Updated upstream
+
         executeCommand(player, commands[8]); //commands[8] = SPAM Card
-=======
-            executeCommand(player, commands[9]);
->>>>>>> Stashed changes
+
     }
 
     public void WORM (@NotNull Player player) {

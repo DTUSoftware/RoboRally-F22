@@ -156,9 +156,9 @@ public class Player extends Subject {
     }
 
     /**
-     * the damage part, where a bad card is given
+     * the takeDamage part, where a bad card is given
      */
-    public void damage() {
+    public void takeDamage() {
         damageTaken = damageTaken + 1;
     }
 
@@ -176,6 +176,11 @@ public class Player extends Subject {
      * Reboot/respawn the player.
      */
     public void reboot() {
+
+        for (int i = 0; i < 2 ; i++) {
+            this.takeDamage();
+        }
+
         RebootToken[] rebootTokens = board.getRebootTokens();
         RebootToken rebootToken = null;
         for (RebootToken rebootToken1 : rebootTokens) {
