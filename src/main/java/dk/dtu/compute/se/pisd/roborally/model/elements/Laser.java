@@ -11,15 +11,16 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The laser object
  */
-public class Laser extends ActionElement{
+public class Laser extends ActionElement {
     private Heading direction;
     private int lazer;
 
     /**
      * constructor for the laser
+     *
      * @param gameController the gamecontroller
-     * @param space the space to put the lazer
-     * @param direction the direction for the laser
+     * @param space          the space to put the lazer
+     * @param direction      the direction for the laser
      */
     public Laser(GameController gameController, Space space, Heading direction, int lazer) {
         super(gameController, space);
@@ -29,6 +30,7 @@ public class Laser extends ActionElement{
 
     /**
      * gets the heading
+     *
      * @return direction
      */
     public Heading getDirection() {
@@ -37,6 +39,7 @@ public class Laser extends ActionElement{
 
     /**
      * gets the lazer number
+     *
      * @return lazer number
      */
     public int getLazer() {
@@ -51,22 +54,17 @@ public class Laser extends ActionElement{
     public void activate() {
         Player player = super.getSpace().getPlayer();
         if (player != null && !player.isMovedByAction()) {
-            if (this.lazer == 1 || this.lazer == 4){
+            if (this.lazer == 1 || this.lazer == 4) {
                 player.takeDamage();
-            }
-            else if (this.lazer == 2 || this.lazer == 5){
+            } else if (this.lazer == 2 || this.lazer == 5) {
                 player.takeDamage();
                 player.takeDamage();
-            }
-            else if (this.lazer == 3 || this.lazer == 6){
+            } else if (this.lazer == 3 || this.lazer == 6) {
                 player.takeDamage();
                 player.takeDamage();
                 player.takeDamage();
             }
-            System.out.println(player.getDamage());player.getDamage();
-            }
-
-
+        }
 
 
     }
@@ -87,8 +85,7 @@ public class Laser extends ActionElement{
 
         if (o instanceof ConveyorBelt || o instanceof PushPanel || o instanceof Gear) {
             return 1;
-        }
-        else if (o instanceof EnergySpace || o instanceof Checkpoint) {
+        } else if (o instanceof EnergySpace || o instanceof Checkpoint) {
             return -1;
         }
         return -1;
