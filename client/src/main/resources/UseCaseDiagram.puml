@@ -1,0 +1,20 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+actor "Player" as Player
+rectangle Roborally {
+    usecase "Initialize new game" as init
+    usecase "Joining a game" as join
+    usecase "Playing the game" as play
+    usecase "Saving the game" as saving
+    usecase "Loading a game" as load
+    join .> load: include
+    play .> saving: include
+
+}
+Player --> init
+Player --> join
+Player "2-6"--> play
+
+
+@enduml
