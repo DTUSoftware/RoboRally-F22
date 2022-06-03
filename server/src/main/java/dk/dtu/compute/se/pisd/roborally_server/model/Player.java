@@ -73,11 +73,11 @@ public class Player {
         this.name = name;
     }
 
-    public UUID getId() {
+    public UUID getID() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setID(UUID id) {
         this.id = id;
     }
 

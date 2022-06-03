@@ -28,6 +28,7 @@ package dk.dtu.compute.se.pisd.roborally_server.gamelogic;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public enum Phase {
+    WAITING,
     /** The initialization phase */
     INITIALISATION,
     /** The programming phase */

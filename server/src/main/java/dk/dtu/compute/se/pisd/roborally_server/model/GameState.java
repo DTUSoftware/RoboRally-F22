@@ -13,7 +13,7 @@ public class GameState {
     private List<Player> players;
 
     public GameState() {
-        this.phase = Phase.INITIALISATION;
+        this.phase = Phase.WAITING;
         this.step = 0;
         this.currentPlayer = 0;
         this.players = new ArrayList<>();

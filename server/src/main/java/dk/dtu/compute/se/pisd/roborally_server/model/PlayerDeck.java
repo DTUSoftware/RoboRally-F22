@@ -7,7 +7,6 @@ import dk.dtu.compute.se.pisd.roborally_server.model.cards.UpgradeCard;
 import java.util.ArrayList;
 
 public class PlayerDeck {
-    private int power;
     private int energy;
 
     private ArrayList<Card> cards;
@@ -18,14 +17,8 @@ public class PlayerDeck {
         this.cards = new ArrayList<>();
         this.program = new ArrayList<>();
         this.upgrades = new ArrayList<>();
-    }
 
-    public int getPower() {
-        return power;
-    }
-
-    public void setPower(int power) {
-        this.power = power;
+        this.energy = 5;
     }
 
     public int getEnergy() {

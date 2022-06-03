@@ -109,38 +109,37 @@ public class LoadBoard {
                     JSONObject elementJSON = elementsJSON.getJSONObject(j);
                     switch (elementJSON.getString("type")) {
                         case "checkpoint":
-                            new Checkpoint(gameController,space, elementJSON.getInt("number"));
+                            new Checkpoint(space, elementJSON.getInt("number"));
                             break;
                         case "conveyor_belt":
                             new ConveyorBelt(
-                                    gameController,
                                     space,
                                     elementJSON.getBoolean("color"),
                                     Heading.valueOf(elementJSON.getString("direction"))
                             );
                             break;
                         case "energy_space":
-                            new EnergySpace(gameController, space);
+                            new EnergySpace(space);
                             break;
                         case "gear":
-                            new Gear(gameController, space, elementJSON.getBoolean("direction"));
+                            new Gear(space, elementJSON.getBoolean("direction"));
                             break;
                         case "laser":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
-                            new Laser(gameController, space, Heading.valueOf(elementJSON.getString("direction")), elementJSON.getInt("number"));
+                            new Laser(space, Heading.valueOf(elementJSON.getString("direction")), elementJSON.getInt("number"));
                             break;
                         case "pit":
-                            new Pit(gameController, space);
+                            new Pit(space);
                             break;
                         case "priority_antenna":
                             new PriorityAntenna(space);
                             break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
-                            rebootTokens.add(new RebootToken(gameController, space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2")));
+                            rebootTokens.add(new RebootToken(space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2")));
                             break;
                         case "spawn_gear":
-                            spawnGears.add(new SpawnGear(gameController, space, Heading.valueOf(elementJSON.getString("direction"))));
+                            spawnGears.add(new SpawnGear(space, Heading.valueOf(elementJSON.getString("direction"))));
                             break;
                         case "wall":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), false);
@@ -148,7 +147,7 @@ public class LoadBoard {
                         case "push_panel":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
                             JSONObject pushPanel = elementJSON.getJSONObject("registers");
-                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
+                            new PushPanel(space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
                             break;
                     }
                 }

@@ -26,7 +26,7 @@ public class GearView extends ElementView {
         this.gear = gear;
 
         // right gear
-        if (this.gear.getDirection()) {
+        if (this.gear.getGearDirection()) {
             try {
                 this.image = new Image(Resources.getResource("objects/gear_right.jpg").openStream());
             } catch (IOException e) {

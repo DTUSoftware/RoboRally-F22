@@ -2,10 +2,7 @@ package dk.dtu.compute.se.pisd.roborally_server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Game {
     private UUID id;
@@ -17,6 +14,8 @@ public class Game {
 
     private GameState gameState;
     private HashMap<UUID, Player> players;
+
+    private static final List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     public Game() {}
 
@@ -35,6 +34,8 @@ public class Game {
         for (int i = 0; i < playerCount; i++) {
             UUID uuid = UUID.randomUUID();
             Player player = new Player(uuid);
+            player.setColor(PLAYER_COLORS.get(i));
+            player.setName("Player " + Integer.toString(i+1));
             players.put(uuid, player);
             gameState.addPlayer(player);
         }

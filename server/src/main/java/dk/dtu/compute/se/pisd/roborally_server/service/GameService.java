@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally_server.service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GameService implements IGameService {
-    HashMap<UUID, Game> games = new HashMap<>();
+    private HashMap<UUID, Game> games = new HashMap<>();
 
     public GameService() {
 //        games.put(10, new Game(10));

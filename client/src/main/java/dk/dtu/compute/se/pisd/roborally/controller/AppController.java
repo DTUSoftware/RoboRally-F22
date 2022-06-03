@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
+import dk.dtu.compute.se.pisd.roborally.server.GameService;
 import dk.dtu.compute.se.pisd.roborally.server.MapService;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -39,6 +40,7 @@ import net.harawata.appdirs.AppDirs;
 import net.harawata.appdirs.AppDirsFactory;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.net.URI;
@@ -212,26 +214,13 @@ public class AppController implements Observer {
             if (mapResult.isPresent()) {
                 Checkpoint.setNumberOfCheckpointsCreated(0);
                 gameController = new GameController(this.roboRally, null);
-                Board board = loadBoard(gameController, mapResult.get());
 
-                SpawnGear[] spawnGears = board.getSpawnGears();
-                int j = 0;
+                loadBoard(gameController, mapResult.get());
 
-                int no = playerNumberResult.get();
-                for (int i = 0; i < no; i++) {
-                    Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                    board.addPlayer(player);
+                JSONObject gameJSON = GameService.newGame(mapResult.get(), playerNumberResult.get());
+                gameController.setGameID(UUID.fromString(gameJSON.getString("id")));
 
-                    SpawnGear spawnGear = spawnGears[j];
-                    player.setSpace(spawnGear.getSpace());
-                    player.setHeading(spawnGear.getDirection());
-                    player.setStartGearSpace(spawnGear.getSpace());
-
-                    j++;
-                }
-                // XXX: V2
-                // board.setCurrentPlayer(board.getPlayer(0));
-                gameController.startProgrammingPhase();
+                gameController.updateGameState();
 
                 roboRally.createBoardView(gameController, null);
             }

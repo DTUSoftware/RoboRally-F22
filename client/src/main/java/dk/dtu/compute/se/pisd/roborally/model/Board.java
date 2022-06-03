@@ -185,7 +185,7 @@ public class Board extends Subject {
      * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to add to the game.
      */
     public void addPlayer(@NotNull Player player) {
-        if (player.board == this && !players.contains(player)) {
+        if (!players.contains(player)) {
             players.add(player);
             notifyChange();
         }
@@ -304,11 +304,7 @@ public class Board extends Subject {
      * @return the Player's player number.
      */
     public int getPlayerNumber(@NotNull Player player) {
-        if (player.board == this) {
-            return players.indexOf(player);
-        } else {
-            return -1;
-        }
+        return players.indexOf(player);
     }
 
     /**
@@ -379,6 +375,6 @@ public class Board extends Subject {
                 ", Player: " + getCurrentPlayer().getName() +
                 ", Step: " + getStep() +
                 ", Player checkpoint: " + getCurrentPlayer().getCurrentCheckpoint() +
-                ", Player power: " + getCurrentPlayer().getPower();
+                ", Player energy: " + getCurrentPlayer().getEnergy();
     }
 }

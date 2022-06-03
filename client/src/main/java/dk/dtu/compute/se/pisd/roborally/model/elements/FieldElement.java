@@ -1,5 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.model.elements;
 
+import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 /**
@@ -7,6 +8,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
  */
 public abstract class FieldElement {
     private Space space;
+    private Heading direction;
 
     /**
      * cunstructer
@@ -15,12 +17,17 @@ public abstract class FieldElement {
     public FieldElement(Space space) {
         this.space = space;
         this.space.addFieldObject(this);
+        this.direction = Heading.NORTH;
     }
 
     /**
-     * landing action method
+     * cunstructer
+     * @param space give the space to where the field should be
      */
-    public abstract void doLandingAction();
+    public FieldElement(Space space, Heading direction) {
+        this(space);
+        this.direction = direction;
+    }
 
     /**
      * gets the space the field is on
@@ -28,5 +35,13 @@ public abstract class FieldElement {
      */
     public Space getSpace() {
         return space;
+    }
+
+    /**
+     * getter for direction - NOT EVERY FIELD WILL HAVE A DIRECTION!
+     * @return spawnDirection which is the direction a wall or pushpanel should spawn
+     */
+    public Heading getDirection() {
+        return this.direction;
     }
 }

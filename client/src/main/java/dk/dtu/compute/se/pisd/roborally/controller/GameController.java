@@ -25,9 +25,12 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import dk.dtu.compute.se.pisd.roborally.server.GameService;
 import dk.dtu.compute.se.pisd.roborally.view.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -41,13 +44,9 @@ public class GameController {
      * The board linked to the controller
      */
     public Board board;
+    private UUID gameID;
 
     final private RoboRally roboRally;
-
-    /**
-     * The elements on the boards with actions
-     **/
-    private SortedSet<ActionElement> actionElements = new TreeSet<>();
 
     /**
      * The GameController constructor.
@@ -69,43 +68,87 @@ public class GameController {
         this.board = board;
     }
 
-    /**
-     * Adds an action element to the game.
-     *
-     * @param actionElement the element to add
-     */
-    public void addElement(ActionElement actionElement) {
-        actionElements.add(actionElement);
-        // System.out.println("Sorted set is: " + actionElements);
+    public void setGameID(UUID gameID) {
+        this.gameID = gameID;
     }
 
-    /**
-     * Removes an action element from the game.
-     *
-     * @param actionElement the element to remove
-     */
-    public void removeElement(ActionElement actionElement) {
-        actionElements.remove(actionElement);
-    }
 
-    /**
-     * Activates all action elements on the board.
-     * Used after each round of register activations.
-     */
-    public void activateElements() {
-        String currentType = "  ";
-
-        // the set is sorted by activation sequence
-        for (ActionElement actionElement : actionElements) {
-            if (!actionElement.getClass().getName().equals(currentType)) {
-                currentType = actionElement.getClass().getName();
-                // reset every player's moved by action
-                for (int i = 0; i < board.getPlayersNumber(); i++) {
-                    board.getPlayer(i).setMovedByAction(false);
-                }
-            }
-            actionElement.activate();
+    public void updateGameState() {
+        JSONObject gameState = GameService.getGameState(gameID);
+        if (gameState == null) {
+            System.out.println("GameState is null!");
+            return;
         }
+
+        boolean createPlayers = board.getPlayersNumber() == 0;
+
+        JSONArray players = gameState.getJSONArray("players");
+        for (int i = 0; i < players.length(); i++) {
+            JSONObject playerJSON = players.getJSONObject(i);
+
+            if (createPlayers) {
+                board.addPlayer(new Player(UUID.fromString(playerJSON.getString("id")), board));
+            }
+
+            Player player = board.getPlayer(i);
+
+            if (!UUID.fromString(playerJSON.getString("id")).equals(player.getID())) {
+                System.out.println("PLAYER UUID MISMATCH WITH SERVER! - CANCELING SYNC!");
+                return;
+            }
+
+            JSONObject positionJSON = playerJSON.getJSONObject("position");
+            updatePlayer(board.getPlayer(i),
+                    playerJSON.getString("color"), playerJSON.getString("name"),
+                    playerJSON.getInt("currentCheckpoint"),
+                    positionJSON.getInt("x"), positionJSON.getInt("y"), Heading.valueOf(positionJSON.getString("heading")));
+
+            // Update their deck
+            // TODO: only update current player's deck? (local player)
+            JSONObject playerDeck = GameService.getPlayerDeck(gameID, player.getID());
+            if (playerDeck == null) {
+                System.out.println("Could not fetch player deck for " + player.getName());
+                continue;
+            }
+
+            updatePlayerDeck(player, playerDeck.getInt("energy"), playerDeck.getJSONArray("program"), playerDeck.getJSONArray("cards"), playerDeck.getJSONArray("upgrades"));
+        }
+
+
+        board.setPhase(gameState.getEnum(Phase.class, "phase"));
+        board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
+    }
+
+    private void updatePlayer(Player player, String color, String name, int currentCheckpoint, int x, int y, Heading heading) {
+        player.setColor(color);
+        player.setName(name);
+        player.setCurrentCheckpoint(currentCheckpoint);
+        player.setSpace(board.getSpace(x, y));
+        player.setHeading(heading);
+    }
+
+    private void updatePlayerDeck(Player player, int energy, JSONArray program, JSONArray cards, JSONArray upgrades) {
+        player.setEnergy(energy);
+
+        // Program
+        for (int j = 0; j < program.length(); j++) {
+            JSONObject programJSON = program.getJSONObject(j);
+            CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("command")));
+            CommandCardField field = player.getProgramField(j);
+            field.setCard(commandCard);
+            field.setVisible(programJSON.getBoolean("visible"));
+        }
+
+        // Cards
+        for (int j = 0; j < cards.length(); j++) {
+            JSONObject card = cards.getJSONObject(j);
+            CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("command")));
+            CommandCardField field = player.getCardField(j);
+            field.setCard(commandCard);
+            field.setVisible(card.getBoolean("visible"));
+        }
+
+        // Upgrades
     }
 
     /**
@@ -223,318 +266,6 @@ public class GameController {
         }
     }
 
-    // XXX: V2
-
-    /**
-     * Executes programs (disables step mode).
-     */
-    public void executePrograms() {
-        board.setStepMode(false);
-        continuePrograms();
-    }
-
-    // XXX: V2
-
-    /**
-     * Execute steps (enables step mode).
-     */
-    public void executeStep() {
-        board.setStepMode(true);
-        continuePrograms();
-    }
-
-    // XXX: V2
-
-    /**
-     * Continue programs.
-     */
-    private void continuePrograms() {
-        do {
-            executeNextStep();
-        } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
-    }
-
-    // XXX: V2
-
-    /**
-     * Executes the next step.
-     */
-    // TODO the stuff with the PriorityAntenna
-    private void executeNextStep() {
-        Player currentPlayer = board.getCurrentPlayer();
-        if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
-            int step = board.getStep();
-            if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
-                if (card != null) {
-                    Command command = card.command;
-                    if (card.command.isInteractive()) {
-                        board.setPhase(Phase.PLAYER_INTERACTION);
-                        return;
-                    }
-                    executeCommand(currentPlayer, command);
-                }
-
-                int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-                if (nextPlayerNumber < board.getPlayersNumber()) {
-                    board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-                } else {
-                    // Activate all elements on the board
-                    activateElements();
-
-                    step++;
-                    if (step < Player.NO_REGISTERS) {
-                        makeProgramFieldsVisible(step);
-                        board.setStep(step);
-                        board.setCurrentPlayer(board.getPlayer(0));
-                    } else {
-                        startProgrammingPhase();
-                    }
-                }
-            } else {
-                // this should not happen
-                assert false;
-            }
-        } else {
-            // this should not happen
-            assert false;
-        }
-    }
-
-    // XXX: V2
-
-    /**
-     * Executes a command.
-     *
-     * @param player  the player to execute the command on
-     * @param command the command to execute
-     */
-    private void executeCommand(@NotNull Player player, Command command) {
-        if (player != null && player.board == board && command != null) {
-            // XXX This is a very simplistic way of dealing with some basic cards and
-            //     their execution. This should eventually be done in a more elegant way
-            //     (this concerns the way cards are modelled as well as the way they are executed).
-
-            switch (command) {
-                case MOVE_1:
-                    this.moveForward(player);
-                    break;
-                case RIGHT:
-                    this.turnRight(player);
-                    break;
-                case LEFT:
-                    this.turnLeft(player);
-                    break;
-                case MOVE_2:
-                    this.fastForward(player);
-                    break;
-                case MOVE_3:
-                    this.fastfastForward(player);
-                    break;
-                case MOVE_BACKWARDS:
-                    this.moveBackwards(player);
-                    break;
-                case U_TURN:
-                    this.turnRight(player);
-                    this.turnRight(player);
-                    break;
-                case OPTION_LEFT_RIGHT:
-                    this.optionLeftRight(player, command);
-                    break;
-                default:
-                    // DO NOTHING (for now)
-            }
-        }
-    }
-
-    /**
-     * Checks if a player can move in a certain direction.
-     * For example, you cannot move from a field into another field, if there is a wall.
-     *
-     * @param player The player to check if they can move.
-     */
-    private boolean canMove(@NotNull Player player, Heading direction) {
-        Space space = player.getSpace();
-        boolean canMove = false;
-        if (player != null && player.board == board && space != null) {
-            Space target = board.getNeighbour(space, direction);
-            if (target != null) {
-                canMove = true;
-                for (FieldElement fieldElement : space.getFieldObjects()) {
-                    if (fieldElement instanceof PriorityAntenna) {
-                        canMove = false;
-                    }
-                    if (fieldElement instanceof Wall) {
-                        if (((Wall) fieldElement).getDirection() == direction) {
-                            canMove = false;
-                        }
-                    }
-                }
-                if (canMove) {
-                    for (FieldElement fieldElement : target.getFieldObjects()) {
-                        if (fieldElement instanceof Wall) {
-                            if (((Wall) fieldElement).getDirection().next().next() == direction) {
-                                canMove = false;
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                player.damage();
-                player.reboot();
-            }
-        }
-        return canMove;
-    }
-
-    /**
-     * Moves the player backwards.
-     *
-     * @param player The player to move backwards.
-     */
-    public void moveBackwards(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            Heading heading = player.getHeading().next().next();
-
-            moveDirection(player, heading);
-        }
-    }
-
-    /**
-     * Moves a player in a certain direction WITHOUT CHANGING THE PLAYER'S HEADING.
-     *
-     * @param player    the player
-     * @param direction the direction
-     */
-    public void moveDirection(@NotNull Player player, Heading direction) {
-        Space space = player.getSpace();
-        if (player != null && player.board == board && space != null && canMove(player, direction)) {
-            Space target = board.getNeighbour(space, direction);
-            if (target != null) {
-                // when there is another player on the target. The other player is pushed away!
-                if (target.free()) {
-                    target.setPlayer(player);
-                } else {
-                    // check that we aren't trying to move the other player through a wall
-                    Player otherPlayer = target.getPlayer();
-                    if (canMove(otherPlayer, direction)) {
-                        moveDirection(target.getPlayer(), direction);
-                        target.setPlayer(player);
-                    }
-                }
-            } else {
-                player.damage();
-                player.reboot();
-            }
-        }
-    }
-    /*
-    class ImpossibleMoveException extends Exception {
-
-        private Player player;
-        private Space space;
-        private Heading heading;
-
-        public ImpossibleMoveException(Player player, Space space, Heading heading) {
-            super("Move impossible");
-            this.player = player;
-            this.space = space;
-            this.heading = heading;
-        }
-    }
-    */
-
-
-    /**
-     * Moves the player forward, with the current heading.
-     *
-     * @param player The player to move forward.
-     */
-    public void moveForward(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            Heading heading = player.getHeading();
-            moveDirection(player, heading);
-        }
-    }
-
-    /**
-     * Move forward an x amount of times.
-     *
-     * @param player the player to move forward
-     * @param times  the amount of times to move forward
-     */
-    public void forwardX(@NotNull Player player, int times) {
-        for (int i = times; i > 0; i--) {
-            moveForward(player);
-        }
-    }
-
-    /**
-     * Move in a certain direction an x amount of times.
-     *
-     * @param player    the player to move
-     * @param direction the direction to move
-     * @param times     the amount of times to move
-     */
-    public void moveDirectionX(@NotNull Player player, Heading direction, int times) {
-        for (int i = times; i > 0; i--) {
-            moveDirection(player, direction);
-        }
-    }
-
-    /**
-     * Fast forwards (the card).
-     *
-     * @param player The player to fast-forward.
-     */
-    public void fastForward(@NotNull Player player) {
-        forwardX(player, 2);
-    }
-
-    /**
-     * the fast fast forward card
-     * @param player the player to move
-     */
-    public void fastfastForward(@NotNull Player player) {
-        forwardX(player, 3);
-    }
-
-    /**
-     * Turns the player right.
-     *
-     * @param player The player to turn right.
-     */
-    public void turnRight(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            player.setHeading(player.getHeading().next());
-        }
-    }
-
-    /**
-     * Turns the player left.
-     *
-     * @param player The player to turn left.
-     */
-    public void turnLeft(@NotNull Player player) {
-        if (player != null && player.board == board) {
-            player.setHeading(player.getHeading().prev());
-        }
-    }
-
-    /**
-     * if you want to turn left or right
-     * @param player the player to turn
-     * @param command to go left or right
-     */
-    public void optionLeftRight(@NotNull Player player, Command command) {
-        if (command.equals("LEFT")) {
-            turnLeft(player);
-        } else if (command.equals("RIGHT")) {
-            turnRight(player);
-        }
-    }
-
     /**
      * Moves a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} on a source
      * {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to
@@ -555,38 +286,6 @@ public class GameController {
         } else {
             return false;
         }
-    }
-
-    /**
-     * A method called when no corresponding controller operation is implemented yet. This
-     * should eventually be removed.
-     * @param cardOptions the card used
-     */
-    public void executeCommandOptionAndContinue(Command cardOptions) {
-
-        board.setPhase(Phase.ACTIVATION);
-        Player currentPlayer = board.getCurrentPlayer();
-        executeCommand(board.getCurrentPlayer(), cardOptions);
-
-        int step = board.getStep();
-        if (step >= 0 && step < Player.NO_REGISTERS) {
-            int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
-            if (nextPlayerNumber < board.getPlayersNumber()) {
-                board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
-            } else {
-                step++;
-                if (step < Player.NO_REGISTERS) {
-                    makeProgramFieldsVisible(step);
-                    board.setStep(step);
-                    board.setCurrentPlayer(board.getPlayer(0));
-                } else {
-                    startProgrammingPhase();
-                }
-            }
-            continuePrograms();
-
-        }
-
     }
 
     /**

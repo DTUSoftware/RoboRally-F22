@@ -67,9 +67,8 @@ public class LoadGameState {
         JSONArray players = gameState.getJSONArray("players");
         for (int i = 0; i < players.length(); i++) {
             JSONObject playerJSON = players.getJSONObject(i);
-            Player player = new Player(board, playerJSON.getString("color"), playerJSON.getString("name"));
+            Player player = new Player(null, board);
 
-            player.setPower(playerJSON.getInt("power"));
             player.setEnergy(playerJSON.getInt("energy"));
             player.setCurrentCheckpoint(playerJSON.getInt("currentCheckpoint"));
 
@@ -121,7 +120,6 @@ public class LoadGameState {
 
             playerJSON.put("name", player.getName());
             playerJSON.put("color", player.getColor());
-            playerJSON.put("power", player.getPower());
             playerJSON.put("energy", player.getEnergy());
             playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
 
