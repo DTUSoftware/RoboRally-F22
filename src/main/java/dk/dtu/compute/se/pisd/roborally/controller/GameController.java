@@ -161,7 +161,6 @@ public class GameController {
                     System.out.println("Player takeDamage " + player.getDamage());
                     if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
                         field.setCard(generateRandomDamageCard(8, 11));
-                        player.removeDamage();
                         field.setVisible(true);
                     } else {
                         field.setCard(generateRandomCommandCard(0, 7));
@@ -356,15 +355,19 @@ public class GameController {
                     break;
                 case SPAM:
                     this.SPAM(player);
+                    player.removeDamage();
                     break;
                 case TROJAN_HORSE:
                     this.TROJAN_HORSE(player);
+                    player.removeDamage();
                     break;
                 case WORM:
                     this.WORM(player);
+                    player.removeDamage();
                     break;
                 case VIRUS:
                     this.VIRUS(player);
+                    player.removeDamage();
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -562,16 +565,14 @@ public class GameController {
 
     public void SPAM (@NotNull Player player) {
         Command[] commands = Command.values();
-        int random = (int) (Math.random() * 8);
+        int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
         executeCommand(player, commands[random]);
     }
 
     public void TROJAN_HORSE (@NotNull Player player) {
-        Command[] commands = Command.values();
+
         for ( int i = 0 ; i < 2 ; i++)
-
-        executeCommand(player, commands[8]); //commands[8] = SPAM Card
-
+        SPAM(player);
     }
 
     public void WORM (@NotNull Player player) {
