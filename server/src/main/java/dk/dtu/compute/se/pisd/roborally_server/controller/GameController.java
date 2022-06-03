@@ -42,13 +42,19 @@ public class GameController {
     }
 
     @PostMapping(value = "/games", produces = "application/json")
-    public ResponseEntity<String> addGame(@RequestBody Game game) {
-        boolean added = gameService.addGame(game);
-        return getResponseEntity(added, "game not added");
+    public ResponseEntity<String> addGame(@RequestParam(defaultValue = "defaultboard") String mapID, @RequestParam(defaultValue = "2") int playerCount) {
+        Game game = gameService.newGame(mapID, playerCount);
+        JSONObject gameJSON = null;
+        try {
+            gameJSON = new JSONObject(objectMapper.writeValueAsString(game));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return getResponseEntity(gameJSON, "game not added");
     }
 
     @GetMapping(value = "/games/{id}", produces = "application/json")
-    public ResponseEntity<String> getGameByID(@PathVariable int id) {
+    public ResponseEntity<String> getGameByID(@PathVariable UUID id) {
         Game game = gameService.getGameByID(id);
         JSONObject gameJSON = null;
         try {
@@ -60,19 +66,19 @@ public class GameController {
     }
 
     @PutMapping(value = "/games/{id}", produces = "application/json")
-    public ResponseEntity<String> updateGame(@PathVariable int id, @RequestBody Game game) {
+    public ResponseEntity<String> updateGame(@PathVariable UUID id, @RequestBody Game game) {
         boolean updated = gameService.updateGame(id, game);
         return getResponseEntity(updated, "game not updated");
     }
 
     @DeleteMapping(value = "/games/{id}", produces = "application/json")
-    public ResponseEntity<String> deleteGame(@PathVariable int id) {
+    public ResponseEntity<String> deleteGame(@PathVariable UUID id) {
         boolean deleted = gameService.deleteGameByID(id);
         return getResponseEntity(deleted, "game not deleted");
     }
 
     @GetMapping(value = "/games/{id}/gameState", produces = "application/json")
-    public ResponseEntity<String> getGameStateByID(@PathVariable int id) {
+    public ResponseEntity<String> getGameStateByID(@PathVariable UUID id) {
         GameState gameState = gameService.getGameStateByID(id);
         JSONObject gameStateJSON = null;
         try {
@@ -84,7 +90,7 @@ public class GameController {
     }
 
     @GetMapping(value = "/games/{id}/gameState/{playerID}", produces = "application/json")
-    public ResponseEntity<String> getPlayerDeck(@PathVariable int id, @PathVariable UUID playerID) {
+    public ResponseEntity<String> getPlayerDeck(@PathVariable UUID id, @PathVariable UUID playerID) {
         PlayerDeck playerDeck = gameService.getPlayerDeck(id, playerID);
         JSONObject playerDeckJSON = null;
         try {
@@ -96,7 +102,7 @@ public class GameController {
     }
 
     @PostMapping(value = "/games/{id}/gameState/{playerID}", produces = "application/json")
-    public ResponseEntity<String> updatePlayerDeck(@PathVariable int id, @PathVariable UUID playerID, @RequestBody PlayerDeck playerDeck) {
+    public ResponseEntity<String> updatePlayerDeck(@PathVariable UUID id, @PathVariable UUID playerID, @RequestBody PlayerDeck playerDeck) {
         boolean status = gameService.updatePlayerDeck(id, playerID, playerDeck);
         return getResponseEntity(status, "player deck not updated");
     }

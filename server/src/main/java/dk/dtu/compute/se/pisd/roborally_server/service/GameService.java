@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GameService implements IGameService {
-    HashMap<Integer, Game> games = new HashMap<>();
+    HashMap<UUID, Game> games = new HashMap<>();
 
     public GameService() {
-        games.put(10, new Game(10));
-        games.put(11, new Game(11));
-        games.put(12, new Game(12));
-        games.put(13, new Game(13));
+//        games.put(10, new Game(10));
+//        games.put(11, new Game(11));
+//        games.put(12, new Game(12));
+//        games.put(13, new Game(13));
     }
 
     @Override
@@ -27,8 +27,15 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Game getGameByID(int id) {
+    public Game getGameByID(UUID id) {
         return games.get(id);
+    }
+
+    @Override
+    public Game newGame(String mapID, int playerCount) {
+        Game game = new Game(mapID, playerCount);
+        games.put(game.getID(), game);
+        return game;
     }
 
     @Override
@@ -37,7 +44,7 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public boolean updateGame(int id, Game game) {
+    public boolean updateGame(UUID id, Game game) {
         Game gameFound = getGameByID(id);
         if (gameFound != null) {
             gameFound.setID(game.getID());
@@ -47,32 +54,32 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public boolean deleteGameByID(int id) {
+    public boolean deleteGameByID(UUID id) {
         return false;
     }
 
     @Override
-    public GameState getGameStateByID(int id) {
+    public GameState getGameStateByID(UUID id) {
         return games.get(id).getGameState();
     }
 
     @Override
-    public String updatePlayerState(int id, UUID playerID) {
+    public String updatePlayerState(UUID id, UUID playerID) {
         return null;
     }
 
     @Override
-    public boolean updatePlayerDeck(int id, UUID playerID, PlayerDeck playerDeck) {
+    public boolean updatePlayerDeck(UUID id, UUID playerID, PlayerDeck playerDeck) {
         return false;
     }
 
     @Override
-    public Player getPlayer(int id, UUID playerID) {
+    public Player getPlayer(UUID id, UUID playerID) {
         return games.get(id).getPlayer(playerID);
     }
 
     @Override
-    public PlayerDeck getPlayerDeck(int id, UUID playerID) {
+    public PlayerDeck getPlayerDeck(UUID id, UUID playerID) {
         return games.get(id).getPlayer(playerID).getDeck();
     }
 }

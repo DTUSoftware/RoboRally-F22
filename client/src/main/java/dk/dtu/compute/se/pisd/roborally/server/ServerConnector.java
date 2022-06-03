@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally.fileaccess;
+package dk.dtu.compute.se.pisd.roborally.server;
 
 import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
@@ -28,7 +28,7 @@ public class ServerConnector {
             .connectTimeout(Duration.ofSeconds(20))
             .build();
 
-    private enum RequestType {
+    enum RequestType {
         POST,
         GET,
         PUT,
@@ -37,7 +37,7 @@ public class ServerConnector {
 
     public ServerConnector() {}
 
-    private JSONObject getServerDetails() {
+    private static JSONObject getServerDetails() {
         InputStream inputStream = null;
         try {
             inputStream = Resources.getResource("config.json").openStream();
@@ -55,7 +55,7 @@ public class ServerConnector {
         return configJSON.getJSONObject("server");
     }
 
-    private String getServerURL() {
+    private static String getServerURL() {
         JSONObject serverDetails = getServerDetails();
         if (serverDetails != null) {
             int port = serverDetails.getInt("port");
@@ -70,7 +70,7 @@ public class ServerConnector {
         return "http://localhost";
     }
 
-    private JSONObject sendRequest(String endpoint, RequestType requestType, HttpRequest.BodyPublisher body) {
+    private static JSONObject sendRequest(String endpoint, RequestType requestType, HttpRequest.BodyPublisher body) {
         HttpRequest request;
 
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
@@ -79,18 +79,12 @@ public class ServerConnector {
 
         switch (requestType) {
             case POST:
-                if (body == null) {
-                    return null;
-                }
                 requestBuilder.POST(body);
                 break;
             case GET:
                 requestBuilder.GET();
                 break;
             case PUT:
-                if (body == null) {
-                    return null;
-                }
                 requestBuilder.PUT(body);
                 break;
             case DELETE:
@@ -118,23 +112,7 @@ public class ServerConnector {
         return null;
     }
 
-    private JSONObject sendRequest(String endpoint, RequestType requestType) {
+    static JSONObject sendRequest(String endpoint, RequestType requestType) {
         return sendRequest(endpoint, requestType, null);
-    }
-
-    public JSONObject getMap(String mapName) {
-        JSONObject responseJSON = sendRequest("/maps/"+mapName, RequestType.GET);
-        if (responseJSON.has("result")) {
-            return responseJSON.getJSONObject("result");
-        }
-        return null;
-    }
-
-    public JSONArray getMaps() {
-        JSONObject responseJSON = sendRequest("/maps", RequestType.GET);
-        if (responseJSON.has("result")) {
-            return responseJSON.getJSONArray("result");
-        }
-        return null;
     }
 }

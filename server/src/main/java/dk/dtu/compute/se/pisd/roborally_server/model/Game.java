@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Game {
-    private int id;
+    private UUID id;
     private Date created;
     private Date lastPlayed;
 
@@ -20,7 +20,7 @@ public class Game {
 
     public Game() {}
 
-    public Game(int id, String mapID, int playerCount) {
+    public Game(UUID id, String mapID, int playerCount) {
         super();
         this.id = id;
         this.mapID = mapID;
@@ -40,15 +40,19 @@ public class Game {
         }
     }
 
-    public Game(int id) {
+    public Game(String mapID, int playerCount) {
+        this(UUID.randomUUID(), mapID, playerCount);
+    }
+
+    public Game(UUID id) {
         this(id, "defaultboard", 2);
     }
 
-    public int getID() {
+    public UUID getID() {
         return id;
     }
 
-    public void setID(int id) {
+    public void setID(UUID id) {
         this.id = id;
     }
 

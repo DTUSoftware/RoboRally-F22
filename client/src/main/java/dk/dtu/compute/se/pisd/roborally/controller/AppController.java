@@ -29,7 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.ServerConnector;
+import dk.dtu.compute.se.pisd.roborally.server.MapService;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -160,8 +160,7 @@ public class AppController implements Observer {
     private List<String> getMapOptions() {
         List<String> mapOptions = null;
 
-        ServerConnector serverConnector = new ServerConnector();
-        JSONArray maps = serverConnector.getMaps();
+        JSONArray maps = MapService.getMaps();
 
         if (maps != null && maps.length() > 0) {
             mapOptions = new ArrayList<>();

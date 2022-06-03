@@ -27,7 +27,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
-import org.checkerframework.checker.units.qual.A;
+import dk.dtu.compute.se.pisd.roborally.server.MapService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -62,8 +62,7 @@ public class LoadBoard {
 
         JSONObject boardJSON = null;
 
-        ServerConnector serverConnector = new ServerConnector();
-        boardJSON = serverConnector.getMap(boardname);
+        boardJSON = MapService.getMap(boardname);
 
         // as fallback, load from files
         // TODO: remove after development

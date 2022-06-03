@@ -10,16 +10,17 @@ import java.util.UUID;
 
 public interface IGameService {
     List<Game> findAll();
-    public Game getGameByID(int id);
+    public Game getGameByID(UUID id);
+    public Game newGame(String mapID, int playerCount);
     boolean addGame(Game game);
-    public boolean updateGame(int id, Game game);
-    public boolean deleteGameByID(int id);
+    public boolean updateGame(UUID id, Game game);
+    public boolean deleteGameByID(UUID id);
 
-    GameState getGameStateByID(int id);
-    String updatePlayerState(int id, UUID playerID);
+    GameState getGameStateByID(UUID id);
+    String updatePlayerState(UUID id, UUID playerID);
 
-    boolean updatePlayerDeck(int id, UUID playerID, PlayerDeck playerDeck);
+    boolean updatePlayerDeck(UUID id, UUID playerID, PlayerDeck playerDeck);
 
-    Player getPlayer(int id, UUID playerID);
-    PlayerDeck getPlayerDeck(int id, UUID playerID);
+    Player getPlayer(UUID id, UUID playerID);
+    PlayerDeck getPlayerDeck(UUID id, UUID playerID);
 }
