@@ -1,30 +1,24 @@
 package dk.dtu.compute.se.pisd.roborally_server.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
+import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GameService implements IGameService {
     HashMap<Integer, Game> games = new HashMap<>();
-    HashMap<Integer, GameState> gamestates = new HashMap<>();
-    HashMap<Integer, HashMap<Integer, Player>> players = new HashMap<>();
 
     public GameService() {
         games.put(10, new Game(10));
         games.put(11, new Game(11));
         games.put(12, new Game(12));
         games.put(13, new Game(13));
-
-        players.put(10, new HashMap<>());
-        players.get(10).put(1, new Player(1));
-
-        gamestates.put(10, new GameState());
     }
 
     @Override
@@ -59,21 +53,26 @@ public class GameService implements IGameService {
 
     @Override
     public GameState getGameStateByID(int id) {
-        return gamestates.get(id);
+        return games.get(id).getGameState();
     }
 
     @Override
-    public String updatePlayerState(int id, int playerID) {
+    public String updatePlayerState(int id, UUID playerID) {
         return null;
     }
 
     @Override
-    public boolean updatePlayerDeck(int id, int playerID, Player player) {
+    public boolean updatePlayerDeck(int id, UUID playerID, PlayerDeck playerDeck) {
         return false;
     }
 
     @Override
-    public Player getPlayerDeck(int id, int playerID) {
-        return players.get(id).get(playerID);
+    public Player getPlayer(int id, UUID playerID) {
+        return games.get(id).getPlayer(playerID);
+    }
+
+    @Override
+    public PlayerDeck getPlayerDeck(int id, UUID playerID) {
+        return games.get(id).getPlayer(playerID).getDeck();
     }
 }

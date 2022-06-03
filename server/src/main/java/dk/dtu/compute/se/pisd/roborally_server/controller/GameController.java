@@ -1,13 +1,16 @@
 package dk.dtu.compute.se.pisd.roborally_server.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
+import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
 import dk.dtu.compute.se.pisd.roborally_server.service.IGameService;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,21 @@ public class GameController {
     @Autowired
     private IGameService gameService;
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     @GetMapping(value = "/games", produces = "application/json")
     public ResponseEntity<String> getGames() {
         List<Game> games = gameService.findAll();
-        return getResponseEntity(games, "could not get games");
+        JSONArray gamesJSON = new JSONArray();
+        for (Game game : games) {
+            try {
+                JSONObject gameJSON = new JSONObject(objectMapper.writeValueAsString(game));
+                gamesJSON.put(gameJSON);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        return getResponseEntity(gamesJSON, "could not get games");
     }
 
     @PostMapping(value = "/games", produces = "application/json")
@@ -36,7 +50,6 @@ public class GameController {
     @GetMapping(value = "/games/{id}", produces = "application/json")
     public ResponseEntity<String> getGameByID(@PathVariable int id) {
         Game game = gameService.getGameByID(id);
-        ObjectMapper objectMapper = new ObjectMapper();
         JSONObject gameJSON = null;
         try {
             gameJSON = new JSONObject(objectMapper.writeValueAsString(game));
@@ -61,18 +74,30 @@ public class GameController {
     @GetMapping(value = "/games/{id}/gameState", produces = "application/json")
     public ResponseEntity<String> getGameStateByID(@PathVariable int id) {
         GameState gameState = gameService.getGameStateByID(id);
-        return getResponseEntity(gameState, "gamestate not found");
+        JSONObject gameStateJSON = null;
+        try {
+            gameStateJSON = new JSONObject(objectMapper.writeValueAsString(gameState));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return getResponseEntity(gameStateJSON, "gamestate not found");
     }
 
     @GetMapping(value = "/games/{id}/gameState/{playerID}", produces = "application/json")
-    public ResponseEntity<String> getPlayer(@PathVariable int id, @PathVariable int playerID) {
-        Player player = gameService.getPlayerDeck(id, playerID);
-        return getResponseEntity(player, "could not get player deck");
+    public ResponseEntity<String> getPlayerDeck(@PathVariable int id, @PathVariable UUID playerID) {
+        PlayerDeck playerDeck = gameService.getPlayerDeck(id, playerID);
+        JSONObject playerDeckJSON = null;
+        try {
+            playerDeckJSON = new JSONObject(objectMapper.writeValueAsString(playerDeck));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return getResponseEntity(playerDeckJSON, "could not get player deck");
     }
 
     @PostMapping(value = "/games/{id}/gameState/{playerID}", produces = "application/json")
-    public ResponseEntity<String> updatePlayer(@PathVariable int id, @PathVariable int playerID, @RequestBody Player player) {
-        boolean status = gameService.updatePlayerDeck(id, playerID, player);
+    public ResponseEntity<String> updatePlayerDeck(@PathVariable int id, @PathVariable UUID playerID, @RequestBody PlayerDeck playerDeck) {
+        boolean status = gameService.updatePlayerDeck(id, playerID, playerDeck);
         return getResponseEntity(status, "player deck not updated");
     }
 }

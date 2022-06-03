@@ -3,8 +3,10 @@ package dk.dtu.compute.se.pisd.roborally_server.service;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
+import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IGameService {
     List<Game> findAll();
@@ -14,9 +16,10 @@ public interface IGameService {
     public boolean deleteGameByID(int id);
 
     GameState getGameStateByID(int id);
-    String updatePlayerState(int id, int playerID);
+    String updatePlayerState(int id, UUID playerID);
 
-    boolean updatePlayerDeck(int id, int playerID, Player player);
+    boolean updatePlayerDeck(int id, UUID playerID, PlayerDeck playerDeck);
 
-    Player getPlayerDeck(int id, int playerID);
+    Player getPlayer(int id, UUID playerID);
+    PlayerDeck getPlayerDeck(int id, UUID playerID);
 }

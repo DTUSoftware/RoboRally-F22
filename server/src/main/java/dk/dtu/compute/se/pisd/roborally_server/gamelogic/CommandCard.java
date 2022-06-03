@@ -23,6 +23,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally_server.model.cards.Command;
 import org.jetbrains.annotations.NotNull;
 
 /**
