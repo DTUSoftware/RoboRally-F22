@@ -160,10 +160,10 @@ public class GameController {
 
                 for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    System.out.println("Player damage " + player.getDamage());
-                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)) {
+
+                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
+
                         field.setCard(generateRandomDamageCard(8, 11));
-                        player.removeDamage();
                         field.setVisible(true);
                     } else {
                         field.setCard(generateRandomCommandCard(0, 7));
@@ -375,16 +375,20 @@ public class GameController {
                     this.optionLeftRight(player, command);
                     break;
                 case SPAM:
-                    //TODO something
+                    this.SPAM(player);
+                    player.removeDamage();
                     break;
                 case TROJAN_HORSE:
-                    //TODO something
+                    this.TROJAN_HORSE(player);
+                    player.removeDamage();
                     break;
                 case WORM:
-                    //TODO something
+                    this.WORM(player);
+                    player.removeDamage();
                     break;
                 case VIRUS:
-                    //TODO something
+                    this.VIRUS(player);
+                    player.removeDamage();
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -425,7 +429,7 @@ public class GameController {
                     }
                 }
             } else {
-                player.damage();
+                player.takeDamage();
                 player.reboot();
             }
         }
@@ -468,7 +472,7 @@ public class GameController {
                     }
                 }
             } else {
-                player.damage();
+                player.takeDamage();
                 player.reboot();
             }
         }
@@ -580,6 +584,40 @@ public class GameController {
             turnRight(player);
         }
     }
+
+    public void SPAM (@NotNull Player player) {
+        Command[] commands = Command.values();
+        int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
+        executeCommand(player, commands[random]);
+    }
+
+    public void TROJAN_HORSE (@NotNull Player player) {
+
+        for ( int i = 0 ; i < 2 ; i++)
+        SPAM(player);
+    }
+
+    public void WORM (@NotNull Player player) {
+        player.reboot();
+    }
+
+    public void VIRUS (@NotNull Player player) {
+        Command[] commands = Command.values();
+        Space playerSpace = player.getSpace();
+
+        for (int i = 0; i < board.getPlayersNumber(); i++) {
+            Player checkPlayer = board.getPlayer(i);
+            Space checkPlayerSpace = checkPlayer.getSpace();
+
+            if (getDistance(playerSpace, checkPlayerSpace) > 0 && getDistance(playerSpace, checkPlayerSpace) < 6) {
+                checkPlayer.takeDamage();
+            }
+        }
+
+        int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
+        executeCommand(player, commands[random]);
+    }
+
 
     /**
      * Moves a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} on a source
