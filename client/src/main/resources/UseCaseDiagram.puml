@@ -14,7 +14,7 @@ rectangle Roborally {
 }
 Player --> init
 Player --> join
-Player "2-6"--> play
+Player "2..6"--> play
 
 
 @enduml
