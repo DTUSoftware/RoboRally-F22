@@ -24,5 +24,5 @@ public interface IGameService {
     Player getPlayer(UUID id, UUID playerID);
     PlayerDeck getPlayerDeck(UUID id, UUID playerID);
 
-    String updatePlayerReady(UUID id, UUID playerID);
+    boolean updatePlayerReady(UUID id, UUID playerID);
 }

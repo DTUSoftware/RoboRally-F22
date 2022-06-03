@@ -109,7 +109,7 @@ public class GameController {
 
     @PostMapping(value = "/games/{id}/gameState/{playerID}/ready", produces = "application/json")
     public ResponseEntity<String> playerProgrammingDone(@PathVariable UUID id, @PathVariable UUID playerID) {
-        String status = gameService.updatePlayerReady(id, playerID);
+        boolean status = gameService.updatePlayerReady(id, playerID);
         return getResponseEntity(status, "could not mark as ready!");
     }
 }

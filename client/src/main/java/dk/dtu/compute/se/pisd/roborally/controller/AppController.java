@@ -222,6 +222,21 @@ public class AppController implements Observer {
 
                 gameController.updateGameState();
 
+                new Timer().scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (gameController != null) {
+                            System.out.println("----------------------------");
+                            System.out.println("Game Controller still exists...\nChecking Game State!");
+                            gameController.updateGameState();
+                            System.out.println("----------------------------");
+                        }
+                        else {
+                            this.cancel();
+                        }
+                    }
+                }, 0, 1000);
+
                 roboRally.createBoardView(gameController, null);
             }
         }

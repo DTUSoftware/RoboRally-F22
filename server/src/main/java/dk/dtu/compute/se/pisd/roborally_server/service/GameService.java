@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Phase;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
@@ -80,11 +81,15 @@ public class GameService implements IGameService {
 
     @Override
     public PlayerDeck getPlayerDeck(UUID id, UUID playerID) {
-        return games.get(id).getPlayer(playerID).getDeck();
+        return getPlayer(id, playerID).getDeck();
     }
 
     @Override
-    public String updatePlayerReady(UUID id, UUID playerID) {
-        return null;
+    public boolean updatePlayerReady(UUID id, UUID playerID) {
+        if (games.get(id).getGameState().getPhase() == Phase.PROGRAMMING) {
+            getPlayer(id, playerID).setReady(true);
+            return true;
+        }
+        return false;
     }
 }

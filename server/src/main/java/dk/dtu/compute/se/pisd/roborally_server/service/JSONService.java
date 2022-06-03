@@ -55,7 +55,7 @@ public class JSONService implements IJSONService {
         if (folder != null && !folder.getPath().contains(".jar") && folder.listFiles() != null) {
             for (File file : Objects.requireNonNull(folder.listFiles())) {
                 String filename = file.getName();
-                System.out.println(filename);
+//                System.out.println(filename);
                 if (filename.contains(".json")) {
                     resourceFolderFiles.add(file.getName().replace(".json", ""));
                 }
