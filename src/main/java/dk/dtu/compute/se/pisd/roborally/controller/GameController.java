@@ -163,10 +163,10 @@ public class GameController {
 
                     if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)) {
 
-                        field.setCard(generateRandomDamageCard(10, 13)); //TODO change if cards chance
+                        field.setCard(generateRandomDamageCard(9, 12)); //TODO change if cards chance
                         field.setVisible(true);
                     } else {
-                        field.setCard(generateRandomCommandCard(0, 9)); //TODO change if cards chance
+                        field.setCard(generateRandomCommandCard(0, 8)); //TODO change if cards chance
                         field.setVisible(true);
                     }
                 }
@@ -377,9 +377,6 @@ public class GameController {
                     this.turnRight(player);
                     this.turnRight(player);
                     break;
-                case OPTION_LEFT_RIGHT:
-                    this.optionLeftRight(player, command);
-                    break;
                 case POWER_UP:
                     this.powerUp(player);
                     break;
@@ -401,6 +398,24 @@ public class GameController {
                 case VIRUS:
                     this.VIRUS(player);
                     player.removeDamage();
+                    break;
+                case ENERGY_ROUTINE:
+                    this.powerUp(player);
+                    break;
+                case SANDBOX_ROUTINE:
+                    this.sandboxRoutine(player, command);
+                    break;
+                case WEASEL_ROUTINE:
+                    this.optionLeftRight(player, command);
+                    break;
+                case SPEED_ROUTINE:
+                    this.fastfastForward(player);
+                    break;
+                case SPAM_FOLDER:
+                    player.removeDamage();
+                    break;
+                case REPEAT_ROUTINE:
+                    this.again(player);
                     break;
                 default:
                     // DO NOTHING (for now)
@@ -597,6 +612,34 @@ public class GameController {
         }
     }
 
+    public void sandboxRoutine(@NotNull Player player, Command command) {
+
+        switch (command) {
+            case MOVE_1:
+                this.moveForward(player);
+                break;
+            case MOVE_2:
+                this.fastForward(player);
+                break;
+            case MOVE_3:
+                this.fastfastForward(player);
+                break;
+            case MOVE_BACKWARDS:
+                this.moveBackwards(player);
+                break;
+            case LEFT:
+                this.turnLeft(player);
+                break;
+            case RIGHT:
+                this.turnRight(player);
+                break;
+            case U_TURN:
+                this.turnRight(player);
+                this.turnRight(player);
+                break;
+        }
+    }
+
     public void powerUp (@NotNull Player player) {
         player.addPower(1);
     }
@@ -619,7 +662,7 @@ public class GameController {
 
     public void SPAM (@NotNull Player player) {
         Command[] commands = Command.values();
-        int random = (int) (Math.random() * 10);  //commands[8] = SPAM Card //TODO Change of cards chance
+        int random = (int) (Math.random() * 9);  //commands[8] = SPAM Card //TODO Change of cards chance
         executeCommand(player, commands[random]);
     }
 
