@@ -30,6 +30,7 @@ public class Pit extends ActionElement{
             Player player = getSpace().getPlayer();
 
             // give bad card
+            //TODO This should not do damage, but reboot should do 2 damage
             player.damage();
 
             // reboot the player
