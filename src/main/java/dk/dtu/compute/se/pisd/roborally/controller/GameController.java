@@ -159,7 +159,7 @@ public class GameController {
 
                 for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
-                    
+
                     if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)){
 
                         field.setCard(generateRandomDamageCard(8, 11));
