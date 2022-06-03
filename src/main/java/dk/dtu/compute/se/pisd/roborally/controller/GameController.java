@@ -602,7 +602,7 @@ public class GameController {
             Space checkPlayerSpace = checkPlayer.getSpace();
 
             if (getDistance(playerSpace, checkPlayerSpace) > 0 && getDistance(playerSpace, checkPlayerSpace) < 6) {
-                checkPlayer.reboot();
+                checkPlayer.takeDamage();
             }
         }
 
