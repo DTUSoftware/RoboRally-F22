@@ -1,7 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally_server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Heading;
 
 import java.util.UUID;
 
@@ -135,8 +134,7 @@ public class Player {
         this.deck = deck;
     }
 
-    @JsonIgnore
-    public boolean isReady() {
+    public boolean getReady() {
         return ready;
     }
 

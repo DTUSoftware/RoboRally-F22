@@ -46,4 +46,12 @@ public class GameService {
         }
         return null;
     }
+
+    public static boolean markPlayerReady(UUID gameID, UUID playerID) {
+        JSONObject responseJSON = ServerConnector.sendRequest("/games/"+gameID+"/gameState/"+playerID+"/ready", ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(""));
+        if (responseJSON.has("result")) {
+            return true;
+        }
+        return false;
+    }
 }

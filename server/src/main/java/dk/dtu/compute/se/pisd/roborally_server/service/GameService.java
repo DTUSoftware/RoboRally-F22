@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Phase;
+import dk.dtu.compute.se.pisd.roborally_server.model.Phase;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
@@ -86,10 +86,24 @@ public class GameService implements IGameService {
 
     @Override
     public boolean updatePlayerReady(UUID id, UUID playerID) {
-        if (games.get(id).getGameState().getPhase() == Phase.PROGRAMMING) {
-            getPlayer(id, playerID).setReady(true);
-            return true;
+        // todo: update and let the controller handle it
+        Game game = games.get(id);
+        switch (game.getGameState().getPhase()) {
+            case PROGRAMMING:
+                getPlayer(id, playerID).setReady(true);
+                return true;
+            case WAITING:
+                getPlayer(id, playerID).setReady(true);
+                if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
+                    for (Player player : game.getPlayers()) {
+                        player.setReady(false);
+                    }
+                    // todo: set correct phase
+                    game.getGameState().setPhase(Phase.PROGRAMMING);
+                }
+                return true;
+            default:
+                return false;
         }
-        return false;
     }
 }

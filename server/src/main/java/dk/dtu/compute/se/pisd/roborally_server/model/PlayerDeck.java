@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.model;
 
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.Card;
+import dk.dtu.compute.se.pisd.roborally_server.model.cards.Command;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.UpgradeCard;
 
@@ -17,6 +18,8 @@ public class PlayerDeck {
         this.cards = new ArrayList<>();
         this.program = new ArrayList<>();
         this.upgrades = new ArrayList<>();
+
+        this.cards.add(new CommandCard(Command.LEFT));
 
         this.energy = 5;
     }

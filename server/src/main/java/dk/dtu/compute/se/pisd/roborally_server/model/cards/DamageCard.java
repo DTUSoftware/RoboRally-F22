@@ -4,7 +4,7 @@ public class DamageCard extends Card {
     private Damage damage;
 
     public DamageCard(Damage damage) {
-        super();
+        super(CardType.DAMAGE);
         this.damage = damage;
     }
 

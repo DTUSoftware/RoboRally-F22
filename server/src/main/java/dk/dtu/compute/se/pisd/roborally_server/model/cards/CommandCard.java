@@ -4,7 +4,7 @@ public class CommandCard extends Card {
     private Command command;
 
     public CommandCard(Command command) {
-        super();
+        super(CardType.COMMAND);
         this.command = command;
     }
 

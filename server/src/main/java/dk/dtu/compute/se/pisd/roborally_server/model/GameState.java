@@ -1,7 +1,5 @@
 package dk.dtu.compute.se.pisd.roborally_server.model;
 
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Phase;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +60,7 @@ public class GameState {
     public int getReadyPlayers() {
         int readyPlayers = 0;
         for (Player player : players) {
-            if (player.isReady()) {
+            if (player.getReady()) {
                 readyPlayers++;
             }
         }

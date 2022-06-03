@@ -1,6 +1,6 @@
-package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
+package dk.dtu.compute.se.pisd.roborally_server.gamelogic.model.elements;
 
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.model.Space;
 
 // TODO make this stuff
 /**

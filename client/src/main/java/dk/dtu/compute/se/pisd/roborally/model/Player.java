@@ -68,6 +68,8 @@ public class Player extends Subject {
     private Heading heading = SOUTH;
     private int currentCheckpoint;
 
+    private boolean ready;
+
     private CommandCardField[] program;
     private CommandCardField[] cards;
     private ArrayList<CommandCardField> upgrades;
@@ -302,5 +304,13 @@ public class Player extends Subject {
      */
     public int getEnergy() {
         return this.energy;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 }

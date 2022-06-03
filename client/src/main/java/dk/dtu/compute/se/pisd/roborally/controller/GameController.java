@@ -72,6 +72,10 @@ public class GameController {
         this.gameID = gameID;
     }
 
+    public UUID getGameID() {
+        return gameID;
+    }
+
 
     public void updateGameState() {
         JSONObject gameState = GameService.getGameState(gameID);
@@ -100,7 +104,7 @@ public class GameController {
             JSONObject positionJSON = playerJSON.getJSONObject("position");
             updatePlayer(board.getPlayer(i),
                     playerJSON.getString("color"), playerJSON.getString("name"),
-                    playerJSON.getInt("currentCheckpoint"),
+                    playerJSON.getInt("currentCheckpoint"), playerJSON.getBoolean("ready"),
                     positionJSON.getInt("x"), positionJSON.getInt("y"), Heading.valueOf(positionJSON.getString("heading")));
 
             // Update their deck
@@ -119,12 +123,13 @@ public class GameController {
         board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
     }
 
-    private void updatePlayer(Player player, String color, String name, int currentCheckpoint, int x, int y, Heading heading) {
+    private void updatePlayer(Player player, String color, String name, int currentCheckpoint, boolean ready, int x, int y, Heading heading) {
         player.setColor(color);
         player.setName(name);
         player.setCurrentCheckpoint(currentCheckpoint);
         player.setSpace(board.getSpace(x, y));
         player.setHeading(heading);
+        player.setReady(ready);
     }
 
     private void updatePlayerDeck(Player player, int energy, JSONArray program, JSONArray cards, JSONArray upgrades) {
@@ -333,5 +338,4 @@ public class GameController {
     private void resetGame() {
         // TODO: reset the game with same map and same players
     }
-
 }

@@ -20,17 +20,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally_server.gamelogic;
+package dk.dtu.compute.se.pisd.roborally_server.gamelogic.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.FieldElement;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.RebootToken;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.SpawnGear;
+import dk.dtu.compute.se.pisd.roborally_server.model.Heading;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import static dk.dtu.compute.se.pisd.roborally_server.gamelogic.Heading.SOUTH;
+import static dk.dtu.compute.se.pisd.roborally_server.model.Heading.SOUTH;
 
 /**
  * A Player in the game.

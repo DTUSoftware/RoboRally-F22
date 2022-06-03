@@ -20,41 +20,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally_server.gamelogic;
+package dk.dtu.compute.se.pisd.roborally_server.model;
 
 /**
- * An enum used for directions.
+ * The different phases in the game.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public enum Heading {
-
-    /** South */
-    SOUTH,
-    /** West */
-    WEST,
-    /** North */
-    NORTH,
-    /** East */
-    EAST;
-
-    /**
-     * Gets the next {@link Heading Heading}.
-     * Example: if NORTH, returns EAST.
-     *
-     * @return the next {@link Heading Heading}.
-     */
-    public Heading next() {
-        return values()[(this.ordinal() + 1) % values().length];
-    }
-
-    /**
-     * Gets the previous {@link Heading Heading}.
-     * Example: if NORTH, returns WEST.
-     *
-     * @return the previous {@link Heading Heading}.
-     */
-    public Heading prev() {
-        return values()[(this.ordinal() + values().length - 1) % values().length];
-    }
+public enum Phase {
+    WAITING,
+    /** The initialization phase */
+    INITIALISATION,
+    /** The programming phase */
+    PROGRAMMING,
+    /** The activation phase */
+    ACTIVATION,
+    /** The player interaction phase */
+    PLAYER_INTERACTION
 }

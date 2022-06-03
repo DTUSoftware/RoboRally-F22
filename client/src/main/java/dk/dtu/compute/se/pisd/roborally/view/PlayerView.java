@@ -25,6 +25,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.server.GameService;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -107,8 +108,11 @@ public class PlayerView extends Tab implements ViewObserver {
         //      players, but on the PlayersView (view for all players). This should be
         //      refactored.
 
-        finishButton = new Button("Finish Programming");
-        finishButton.setOnAction( e -> gameController.finishProgrammingPhase());
+        finishButton = new Button("Ready");
+        finishButton.setOnAction( e -> {
+            GameService.markPlayerReady(gameController.getGameID(), player.getID());
+            finishButton.setDisable(true);
+        });
 
         buttonPanel = new VBox(finishButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
@@ -198,7 +202,7 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
                 switch (player.board.getPhase()) {
                     case WAITING:
-                        finishButton.setDisable(true);
+                        finishButton.setDisable(false);
                         break;
                     case INITIALISATION:
                         finishButton.setDisable(true);
@@ -216,6 +220,10 @@ public class PlayerView extends Tab implements ViewObserver {
 
                     default:
                         finishButton.setDisable(true);
+                }
+
+                if (player.isReady()) {
+                    finishButton.setDisable(true);
                 }
 
 

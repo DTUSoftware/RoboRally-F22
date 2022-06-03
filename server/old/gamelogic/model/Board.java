@@ -20,17 +20,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally_server.gamelogic;
+package dk.dtu.compute.se.pisd.roborally_server.gamelogic.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally_server.model.Heading;
+import dk.dtu.compute.se.pisd.roborally_server.model.Phase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static dk.dtu.compute.se.pisd.roborally_server.gamelogic.Phase.INITIALISATION;
+import static dk.dtu.compute.se.pisd.roborally_server.model.Phase.INITIALISATION;
 
 /**
  * The Board holds all the players, spaces and keeps track of the

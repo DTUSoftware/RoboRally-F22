@@ -1,9 +1,7 @@
-package dk.dtu.compute.se.pisd.roborally_server.gamelogic.elements;
+package dk.dtu.compute.se.pisd.roborally_server.gamelogic.model.elements;
 
-import dk.dtu.compute.se.pisd.roborally_server.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.GameLogicController;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.IGameLogicController;
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.model.Space;
 import org.jetbrains.annotations.NotNull;
 
 /**
