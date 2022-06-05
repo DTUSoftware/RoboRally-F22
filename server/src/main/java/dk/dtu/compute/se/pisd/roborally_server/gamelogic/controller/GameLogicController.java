@@ -33,17 +33,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 /**
- * Controls stuff that happens on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
+ * Controls stuff that happens on the {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Map Map}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class GameController {
+public class GameLogicController {
     /**
      * The board linked to the controller
      */
     public Map map;
-
-    final private RoboRally roboRally;
 
     /**
      * The elements on the boards with actions
@@ -57,7 +55,7 @@ public class GameController {
      * @param roboRally the roborally class
      * @param map     the board to control.
      */
-    public GameController(RoboRally roboRally, Map map) {
+    public GameLogicController(RoboRally roboRally, Map map) {
         this.map = map;
         this.roboRally = roboRally;
     }

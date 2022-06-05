@@ -103,4 +103,9 @@ public class Game {
     public Player getPlayer(UUID uuid) {
         return players.get(uuid);
     }
+
+    @JsonIgnore
+    public boolean hasPlayer(Player player) {
+        return players.containsValue(player);
+    }
 }

@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -9,17 +10,17 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class ActionElement extends FieldElement implements Comparable {
 
-    private GameController gameController;
+    private GameLogicController gameLogicController;
 
     /**
      * Constructer for action element
-     * @param gameController the game controller
+     * @param gameLogicController the game controller
      * @param space the space
      */
-    public ActionElement(GameController gameController, Space space) {
+    public ActionElement(GameLogicController gameLogicController, Space space) {
         super(space);
-        this.gameController = gameController;
-        this.gameController.addElement(this);
+        this.gameLogicController = gameLogicController;
+        this.gameLogicController.addElement(this);
     }
 
     /**
@@ -31,8 +32,8 @@ public abstract class ActionElement extends FieldElement implements Comparable {
      * game controller getterclass
      * @return gamecontroller
      */
-    public GameController getGameController() {
-        return gameController;
+    public GameLogicController getGameController() {
+        return gameLogicController;
     }
 
     @Override

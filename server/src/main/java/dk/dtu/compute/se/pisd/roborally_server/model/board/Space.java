@@ -23,13 +23,14 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.board;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
+import dk.dtu.compute.se.pisd.roborally_server.model.Player;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.FieldElement;
 
 import java.util.ArrayList;
 
 /**
- * A 'field' on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board} which
- * the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}s can be on.
+ * A 'field' on the {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Map Map} which
+ * the {@link dk.dtu.compute.se.pisd.roborally_server.model.Player Player}s can be on.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
@@ -46,9 +47,9 @@ public class Space extends Subject {
     private ArrayList<FieldElement> objects = new ArrayList<>();
 
     /**
-     * Initializes a Space on a {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
+     * Initializes a Space on a {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Map Board}.
      *
-     * @param map the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board} the Space belongs to.
+     * @param map the {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Map Board} the Space belongs to.
      * @param x the x-coordinate of the Space.
      * @param y the y-coordinate of the Space.
      */
@@ -60,23 +61,23 @@ public class Space extends Subject {
     }
 
     /**
-     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} currently on the Space.
+     * Gets the {@link dk.dtu.compute.se.pisd.roborally_server.model.Player Player} currently on the Space.
      *
-     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.
+     * @return the {@link dk.dtu.compute.se.pisd.roborally_server.model.Player Player}.
      */
     public Player getPlayer() {
         return player;
     }
 
     /**
-     * Sets the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to be on the space.
+     * Sets the {@link dk.dtu.compute.se.pisd.roborally_server.model.Player Player} to be on the space.
      *
-     * @param player the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.
+     * @param player the {@link dk.dtu.compute.se.pisd.roborally_server.model.Player Player}.
      */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
-                (player == null || map == player.board)) {
+                (player == null || map.getGame().hasPlayer(player))) {
             this.player = player;
             if (oldPlayer != null) {
                 // this should actually not happen

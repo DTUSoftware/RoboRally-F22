@@ -5,6 +5,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
 
 
 /**
@@ -27,15 +28,15 @@ public class PushPanel extends ActionElement {
     /**
      * Constructer for action element
      *
-     * @param gameController the game controller
+     * @param gameLogicController the game controller
      * @param space          the space
      * @param direction the direction
      * @param register1 register 1
      * @param register2 register 2
      */
-    public PushPanel(GameController gameController, Space space, Heading direction, int register1, int register2) {
+    public PushPanel(GameLogicController gameLogicController, Space space, Heading direction, int register1, int register2) {
 
-        super(gameController, space);
+        super(gameLogicController, space);
 
         this.direction = direction;
         this.register1 = register1;

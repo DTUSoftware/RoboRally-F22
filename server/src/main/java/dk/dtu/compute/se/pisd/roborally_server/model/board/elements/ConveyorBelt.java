@@ -4,6 +4,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,13 +17,13 @@ public class ConveyorBelt extends ActionElement {
     /**
      * Creates a new conveyor belt.
      *
-     * @param gameController the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space the space to put the conveyorbelt
      * @param color the color of the belt blue/green is true/false
      * @param direction the direction for the conveyorbelt
      */
-    public ConveyorBelt(GameController gameController, Space space, boolean color, Heading direction) {
-        super(gameController, space);
+    public ConveyorBelt(GameLogicController gameLogicController, Space space, boolean color, Heading direction) {
+        super(gameLogicController, space);
         this.color = color;
         this.direction = direction;
     }

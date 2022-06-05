@@ -23,19 +23,15 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.board;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
-import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
-import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
+import dk.dtu.compute.se.pisd.roborally_server.model.Game;
+import dk.dtu.compute.se.pisd.roborally_server.model.Heading;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.Checkpoint;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.SpawnGear;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
-
 /**
- * The Board holds all the players, spaces and keeps track of the
- * current {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
+ * The Map holds all the spaces.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
@@ -46,34 +42,26 @@ public class Map extends Subject {
     public final int height;
 
     /** The name of the board */
-    public final String boardName;
-    /** The ID of the board */
-    private Integer gameId;
-
+    public final String mapName;
     private final Space[][] spaces;
-    private final List<Player> players = new ArrayList<>();
 
-    private Player current;
+    /** The game */
+    private Game game;
+
     private Checkpoint[] checkpoints;
     private RebootToken[] rebootTokens;
     private SpawnGear[] spawnGears;
     private Space priorityAntenna;
-
-    private Phase phase = INITIALISATION;
-
-    private int step = 0;
-
-    private boolean stepMode;
 
     /**
      * Creates a new board.
      *
      * @param width the width of the board.
      * @param height the height of the board.
-     * @param boardName the name of the board.
+     * @param mapName the name of the board.
      */
-    public Map(int width, int height, String boardName) {
-        this.boardName = boardName;
+    public Map(int width, int height, String mapName) {
+        this.mapName = mapName;
         this.width = width;
         this.height = height;
         spaces = new Space[width][height];
@@ -83,7 +71,6 @@ public class Map extends Subject {
                 spaces[x][y] = space;
             }
         }
-        this.stepMode = false;
     }
 
     /**
@@ -97,27 +84,21 @@ public class Map extends Subject {
     }
 
     /**
-     * Gets the ID of the game running on the board.
+     * Gets the game running on the board.
      *
-     * @return the game ID.
+     * @return the game.
      */
-    public Integer getGameId() {
-        return gameId;
+    public Game getGame() {
+        return game;
     }
 
     /**
-     * Sets the ID of the game to run on the board.
+     * Sets the game to run on the board.
      *
-     * @param gameId the game ID.
+     * @param game the game.
      */
-    public void setGameId(int gameId) {
-        if (this.gameId == null) {
-            this.gameId = gameId;
-        } else {
-            if (!this.gameId.equals(gameId)) {
-                throw new IllegalStateException("A game with a set id may not be assigned a new id!");
-            }
-        }
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     /**
@@ -157,12 +138,12 @@ public class Map extends Subject {
     }
 
     /**
-     * Gets a {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} from its coordinates
+     * Gets a {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Space Space} from its coordinates
      * on the board.
      *
      * @param x The x-coordinate of the Space.
      * @param y The y-coordinate of the Space.
-     * @return The {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}, if found, else null.
+     * @return The {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Space Space}, if found, else null.
      */
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
@@ -170,159 +151,6 @@ public class Map extends Subject {
             return spaces[x][y];
         } else {
             return null;
-        }
-    }
-
-    /**
-     * Gets the number of players.
-     *
-     * @return the number of players.
-     */
-    public int getPlayersNumber() {
-        return players.size();
-    }
-
-    /**
-     * Adds a player to the game.
-     * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to add to the game.
-     */
-    public void addPlayer(@NotNull Player player) {
-        if (player.board == this && !players.contains(player)) {
-            players.add(player);
-            notifyChange();
-        }
-    }
-
-    /**
-     * Gets a player from the player number.
-     *
-     * @param i The player number of the Player.
-     * @return The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} if found, else null.
-     */
-    public Player getPlayer(int i) {
-        if (i >= 0 && i < players.size()) {
-            return players.get(i);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Gets list of all players.
-     *
-     * @return The {@link dk.dtu.compute.se.pisd.roborally.model.Board players} if found, else null.
-     */
-    public Player getPlayers() {
-        if (players != null) {
-            return (Player) players;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Gets the current player.
-     *
-     * @return The current {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.
-     */
-    public Player getCurrentPlayer() {
-        return current;
-    }
-
-    /**
-     * Sets the current player.
-     *
-     * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to become the new current player.
-     */
-    public void setCurrentPlayer(Player player) {
-        if (player != this.current && players.contains(player)) {
-            this.current = player;
-            notifyChange();
-        }
-    }
-
-    /**
-     * Changes the current player to the next player - ends the turn of the current player.
-     */
-    public void endCurrentPlayerTurn() {
-        setCurrentPlayer(getPlayer((getPlayerNumber(getCurrentPlayer()) + 1) % getPlayersNumber()));
-        notifyChange();
-    }
-
-    /**
-     * Gets the current {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
-     *
-     * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
-     */
-    public Phase getPhase() {
-        return phase;
-    }
-
-    /**
-     * Change the {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
-     *
-     * @param phase the new {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
-     */
-    public void setPhase(Phase phase) {
-        if (phase != this.phase) {
-            this.phase = phase;
-            notifyChange();
-        }
-    }
-
-    /**
-     * Gets the current step.
-     *
-     * @return the current step.
-     */
-    public int getStep() {
-        return step;
-    }
-
-    /**
-     * Sets the step.
-     *
-     * @param step the new step.
-     */
-    public void setStep(int step) {
-        if (step != this.step) {
-            this.step = step;
-            notifyChange();
-        }
-    }
-
-    /**
-     * Whether the game currently is running in step mode.
-     *
-     * @return <code>true</code> if stepMode, else <code>false</code>.
-     */
-    public boolean isStepMode() {
-        return stepMode;
-    }
-
-    /**
-     * Enable/disable step mode.
-     *
-     * @param stepMode whether to enable or disable step mode.
-     */
-    public void setStepMode(boolean stepMode) {
-        if (stepMode != this.stepMode) {
-            this.stepMode = stepMode;
-            notifyChange();
-        }
-    }
-
-    /**
-     * Gets the Player's player number.
-     *
-     * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to get the number of.
-     * @return the Player's player number.
-     */
-    public int getPlayerNumber(@NotNull Player player) {
-        if (player.board == this) {
-            return players.indexOf(player);
-        } else {
-            return -1;
         }
     }
 
@@ -381,25 +209,7 @@ public class Map extends Subject {
      * Gets the name of the board.
      * @return the name of the board.
      */
-    public String getBoardName() {
-        return this.boardName;
-    }
-
-    /**
-     * Gets a string representation of the current status of the game.
-     *
-     * @return The current status of the game.
-     */
-    public String getStatusMessage() {
-        // this is actually a view aspect, but for making assignment V1 easy for
-        // the students, this method gives a string representation of the current
-        // status of the game
-
-        // XXX: V2 changed the status so that it shows the phase, the player and the step
-        return "Phase: " + getPhase().name() +
-                ", Player: " + getCurrentPlayer().getName() +
-                ", Step: " + getStep() +
-                ", Player checkpoint: " + getCurrentPlayer().getCurrentCheckpoint() +
-                ", Player power: " + getCurrentPlayer().getPower();
+    public String getMapName() {
+        return this.mapName;
     }
 }

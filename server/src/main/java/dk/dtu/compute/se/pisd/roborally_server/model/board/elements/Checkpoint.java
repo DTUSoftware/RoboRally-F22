@@ -2,6 +2,7 @@ package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -21,7 +22,7 @@ public class Checkpoint extends ActionElement {
      * @param space  takes the space the checkpoint is on
      * @param number the number that the checkpoint needs to be
      */
-    public Checkpoint(GameController gamecontroller, Space space, int number) {
+    public Checkpoint(GameLogicController gamecontroller, Space space, int number) {
         super(gamecontroller, space);
         numberOfCheckpointsCreated++;
         this.number = number;

@@ -4,6 +4,7 @@ import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
 import org.jetbrains.annotations.NotNull;
 
 // TODO make this stuff
@@ -18,12 +19,12 @@ public class Laser extends ActionElement {
     /**
      * constructor for the laser
      *
-     * @param gameController the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space          the space to put the lazer
      * @param direction      the direction for the laser
      */
-    public Laser(GameController gameController, Space space, Heading direction, int lazer) {
-        super(gameController, space);
+    public Laser(GameLogicController gameLogicController, Space space, Heading direction, int lazer) {
+        super(gameLogicController, space);
         this.direction = direction;
         this.lazer = lazer;
     }

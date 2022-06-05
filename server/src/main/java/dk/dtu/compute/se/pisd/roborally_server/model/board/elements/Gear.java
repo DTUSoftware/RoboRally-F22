@@ -3,6 +3,7 @@ package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -14,12 +15,12 @@ public class Gear extends ActionElement {
     /**
      * Creates a new conveyor belt.
      *
-     * @param gameController the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space where to put the gear
      * @param direction the direction of the gear
      */
-    public Gear(GameController gameController, Space space, boolean direction) {
-        super(gameController, space);
+    public Gear(GameLogicController gameLogicController, Space space, boolean direction) {
+        super(gameLogicController, space);
         this.direction = direction;
     }
 

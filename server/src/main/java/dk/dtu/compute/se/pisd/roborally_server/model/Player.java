@@ -1,6 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 import java.util.UUID;
 
@@ -129,6 +130,13 @@ public class Player {
         if (this.position != null) {
             this.position.setX(x);
             this.position.setY(y);
+        }
+    }
+
+    public void setSpace(Space space) {
+        if (space != null) {
+            this.position.setX(space.x);
+            this.position.setY(space.y);
         }
     }
 

@@ -3,6 +3,7 @@ package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,7 +18,7 @@ public class RebootToken extends SpawnableElement {
     /**
      * Creates a new reboot token.
      *
-     * @param gameController the gamecontroller
+     * @param gameLogicController the gamecontroller
      * @param space the space
      * @param direction the direction to put other players, and for players to face
      * @param x1 The x-coordinate for the first corner of the bounds
@@ -25,8 +26,8 @@ public class RebootToken extends SpawnableElement {
      * @param x2 The x-coordinate for the second corner of the bounds
      * @param y2 The y-coordinate for the second corner of the bounds
      */
-    public RebootToken(GameController gameController, Space space, Heading direction, int x1, int y1, int x2, int y2) {
-        super(gameController, space, direction);
+    public RebootToken(GameLogicController gameLogicController, Space space, Heading direction, int x1, int y1, int x2, int y2) {
+        super(gameLogicController, space, direction);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
