@@ -4,7 +4,7 @@ public class UpgradeCard extends Card {
     private Upgrade upgrade;
 
     public UpgradeCard(Upgrade upgrade) {
-        super();
+        super(CardType.UPGRADE);
         this.upgrade = upgrade;
     }
 

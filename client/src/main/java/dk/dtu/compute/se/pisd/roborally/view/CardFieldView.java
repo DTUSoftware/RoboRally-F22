@@ -41,6 +41,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
+import static dk.dtu.compute.se.pisd.roborally.server.GameService.updatePlayerDeck;
+
 /**
  * The CardFieldView is the visual representation of a
  * {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
@@ -344,12 +346,17 @@ public class CardFieldView extends GridPane implements ViewObserver {
                         if (object instanceof String) {
                             CommandCardField source = cardFieldFromRepresentation((String) object);
                             if (source != null && gameController.moveCards(source, cardField)) {
-                                // CommandCard card = source.getCard();
-                                // if (card != null) {
-                                // if (gameController.moveCards(source, cardField)) {
+                                if (updatePlayerDeck(gameController.getGameID(), cardField.player)) {
+                                    // CommandCard card = source.getCard();
+                                    // if (card != null) {
+                                    // if (gameController.moveCards(source, cardField)) {
                                     // cardField.setCard(card);
                                     success = true;
-                                // }
+                                    // }
+                                }
+                                else {
+                                    gameController.moveCards(cardField, source);
+                                }
                             }
                         }
                     }

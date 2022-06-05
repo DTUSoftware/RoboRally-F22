@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
 
@@ -47,10 +48,7 @@ public class Player extends Subject {
      */
     final public static int NO_CARDS = 8;
 
-    /**
-     * The Board the Player is playing on
-     */
-    final public Board board;
+    public Board board;
 
     /**
      * The name of the Player
@@ -60,19 +58,17 @@ public class Player extends Subject {
      * The color of the Player
      */
     private String color;
-    /**
-     * keep track of the power
-     */
-    private int power = 5;
+
+    private UUID id;
+
     /** keep track of the energy */
     private int energy = 5;
 
     private Space space;
-    private Space startGearSpace;
     private Heading heading = SOUTH;
     private int currentCheckpoint;
 
-    private boolean movedByAction = false;
+    private boolean ready;
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
@@ -82,16 +78,11 @@ public class Player extends Subject {
     /**
      * Initializes a Player.
      *
-     * @param board The board which the player belongs to.
-     * @param color The color of the player.
-     * @param name  The name of the player.
+     * @param id The player ID.
      */
-    public Player(@NotNull Board board, String color, @NotNull String name) {
+    public Player(UUID id, Board board) {
+        this.id = id;
         this.board = board;
-        this.name = name;
-        this.color = color;
-
-        this.startGearSpace = null;
         this.space = null;
 
         program = new CommandCardField[NO_REGISTERS];
@@ -105,6 +96,14 @@ public class Player extends Subject {
         }
 
         upgrades = new ArrayList<>();
+    }
+
+    public UUID getID() {
+        return id;
+    }
+
+    public void setID(UUID id) {
+        this.id = id;
     }
 
     /**
@@ -154,45 +153,6 @@ public class Player extends Subject {
     }
 
     /**
-     * the damage part, where a bad card is given
-     */
-    public void damage() {
-        // TODO: give player a bad card
-    }
-
-    /**
-     * Reboot/respawn the player.
-     */
-    public void reboot() {
-        RebootToken[] rebootTokens = board.getRebootTokens();
-        RebootToken rebootToken = null;
-        for (RebootToken rebootToken1 : rebootTokens) {
-            if (rebootToken1.isWithinBounds(getSpace())) {
-                rebootToken = rebootToken1;
-                break;
-            }
-        }
-
-        if (rebootToken != null) {
-            rebootToken.spawnPlayer(this);
-        }
-        else {
-            if (getStartGearSpace() != null) {
-                FieldElement[] fieldElements = getStartGearSpace().getFieldObjects();
-                for (FieldElement fieldElement : fieldElements) {
-                    if (fieldElement instanceof SpawnGear) {
-                        ((SpawnGear) fieldElement).spawnPlayer(this);
-                        break;
-                    }
-                }
-            }
-            else {
-                System.out.println("Cannot reboot player, no reboot tokens or start gears assigned!");
-            }
-        }
-    }
-
-    /**
      * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} the player is currently on.
      *
      * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
@@ -208,8 +168,7 @@ public class Player extends Subject {
      */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
-        if (space != oldSpace &&
-                (space == null || space.board == this.board)) {
+        if (space != oldSpace && (space == null || space.board != null)) {
             this.space = space;
             if (oldSpace != null) {
                 oldSpace.setPlayer(null);
@@ -219,23 +178,6 @@ public class Player extends Subject {
             }
             notifyChange();
         }
-    }
-
-    /**
-     * Sets the players startGear {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
-     * @param startGear the starting gear
-     */
-    public void setStartGearSpace(Space startGear) {
-        this.startGearSpace = startGear;
-    }
-
-    /**
-     * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} the startGear is on.
-     *
-     * @return the players startGearPosition {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
-     */
-    public Space getStartGearSpace() {
-        return startGearSpace;
     }
 
     /**
@@ -324,44 +266,28 @@ public class Player extends Subject {
      * @param checkpoint sets the checkpoints :)
      */
     public void setCurrentCheckpoint(int checkpoint) {
-        this.currentCheckpoint = checkpoint;
-        notifyChange();
+        if (this.currentCheckpoint != checkpoint) {
+            this.currentCheckpoint = checkpoint;
+            notifyChange();
+        }
     }
 
     /**
-     * set the players power
-     *
-     * @param power the power you want to set the players power to
-     */
-    public void setPower(int power) {
-        this.power = power;
-    }
-
-    /**
-     * gives the current power of the player
-     *
-     * @return the current power of the player
-     */
-    public int getPower() {
-        return this.power;
-    }
-
-    /**
-     * add x amount of power to the player
+     * add x amount of energy to the player
      *
      * @param toAdd how much you want to add to the player
      */
-    public void addPower(int toAdd) {
-        this.power += toAdd;
+    public void addEnergy(int toAdd) {
+        this.energy += toAdd;
     }
 
     /**
-     * subtracts x amount of power, when for example paying to get other cards
+     * subtracts x amount of energy, when for example paying to get other cards
      *
-     * @param toSubtract the power you wish to subtract
+     * @param toSubtract the energy you wish to subtract
      */
-    public void subtractPower(int toSubtract) {
-        this.power -= toSubtract;
+    public void subtractEnergy(int toSubtract) {
+        this.energy -= toSubtract;
     }
 
     /**
@@ -373,6 +299,10 @@ public class Player extends Subject {
         this.energy = energy;
     }
 
+    public void setDamage(int damage) {
+
+    }
+
     /**
      * gives the current energy of the player
      *
@@ -382,19 +312,14 @@ public class Player extends Subject {
         return this.energy;
     }
 
-    /**
-     * Returns whether the player has moved or not for this action.
-     * @return whether they have moved or not
-     */
-    public boolean isMovedByAction() {
-        return movedByAction;
+    public boolean isReady() {
+        return ready;
     }
 
-    /**
-     * Sets the player bool of whether the player has moved from this action.
-     * @param movedByAction whether they have moved
-     */
-    public void setMovedByAction(boolean movedByAction) {
-        this.movedByAction = movedByAction;
+    public void setReady(boolean ready) {
+        if (this.ready != ready) {
+            this.ready = ready;
+            super.notifyChange();
+        }
     }
 }

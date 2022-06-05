@@ -1,6 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally_server.model;
 
-import dk.dtu.compute.se.pisd.roborally_server.gamelogic.Phase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,15 @@ public class GameState {
 
     private List<Player> players;
 
+    private boolean stepMode;
+
     public GameState() {
-        this.phase = Phase.INITIALISATION;
+        this.phase = Phase.WAITING;
         this.step = 0;
         this.currentPlayer = 0;
         this.players = new ArrayList<>();
+
+        this.stepMode = true;
     }
 
     public Phase getPhase() {
@@ -35,6 +39,15 @@ public class GameState {
         this.step = step;
     }
 
+    @JsonIgnore
+    public boolean isStepMode() {
+        return stepMode;
+    }
+
+    public void setStepMode(boolean stepMode) {
+        this.stepMode = stepMode;
+    }
+
     public int getCurrentPlayer() {
         return currentPlayer;
     }
@@ -51,11 +64,44 @@ public class GameState {
         this.players = players;
     }
 
+    public void clearPlayers() {
+        players.clear();
+    }
+
     public void addPlayer(Player player) {
         players.add(player);
     }
 
     public void removePlayer(Player player) {
         players.remove(player);
+    }
+
+    public int getReadyPlayers() {
+        int readyPlayers = 0;
+        for (Player player : players) {
+            if (player.getReady()) {
+                readyPlayers++;
+            }
+        }
+        return readyPlayers;
+    }
+
+    @JsonIgnore
+    public Player getPlayerCurrent() {
+        return getPlayer(currentPlayer);
+    }
+
+    @JsonIgnore
+    public Player getPlayer(int i) {
+        return players.get(i);
+    }
+
+    @JsonIgnore
+    public int getPlayerNumber(Player player) {
+        return players.indexOf(player);
+    }
+
+    public void endCurrentPlayerTurn() {
+        setCurrentPlayer((currentPlayer + 1) % players.size());
     }
 }

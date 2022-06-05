@@ -70,21 +70,29 @@ public class ServerConnector {
         return "http://localhost";
     }
 
-    private static JSONObject sendRequest(String endpoint, RequestType requestType, HttpRequest.BodyPublisher body) {
+    static JSONObject sendRequest(String endpoint, RequestType requestType, HttpRequest.BodyPublisher body) {
         HttpRequest request;
 
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
         requestBuilder.setHeader("User-Agent", "RoboRally Client");
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
         requestBuilder.uri(URI.create(getServerURL() + endpoint));
 
         switch (requestType) {
             case POST:
+                if (body == null) {
+                    return null;
+                }
                 requestBuilder.POST(body);
                 break;
             case GET:
                 requestBuilder.GET();
                 break;
             case PUT:
+                if (body == null) {
+                    return null;
+                }
                 requestBuilder.PUT(body);
                 break;
             case DELETE:
@@ -94,8 +102,9 @@ public class ServerConnector {
 
         request = requestBuilder.build();
 
-        CompletableFuture<HttpResponse<String>> response =
-                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(request.toString());
+
+        CompletableFuture<HttpResponse<String>> response = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
 
         String result = null;
         try {

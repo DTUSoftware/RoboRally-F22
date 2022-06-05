@@ -10,51 +10,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * the pit object that forces a reboot
  */
-public class Pit extends ActionElement{
+public class Pit extends FieldElement {
     /**
      * Constructer for the Pit object
-     * @param gameController gamecontroller
      * @param space spacce
      */
-    public Pit(GameController gameController, Space space){
-        super(gameController,space);
-
-    }
-
-    /**
-     * does damage to the player and reboots the player
-     */
-    @Override
-    public void doLandingAction() {
-        if (!getSpace().free()) {
-            Player player = getSpace().getPlayer();
-
-            // give bad card
-            player.damage();
-
-            // reboot the player
-            player.reboot();
-        }
-
-    }
-
-    /**
-     * not used
-     */
-    @Override
-    public void activate() {
-
-    }
-
-    @Override
-    public int compareTo(@NotNull Object o) {
-        if (!(o instanceof ActionElement)) {
-            throw new ClassCastException();
-        }
-
-        if (o instanceof ConveyorBelt || o instanceof PushPanel || o instanceof Gear || o instanceof Laser || o instanceof EnergySpace || o instanceof Checkpoint) {
-            return 1;
-        }
-        return -1;
+    public Pit(Space space){
+        super(space);
     }
 }
