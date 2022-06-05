@@ -1,0 +1,66 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+Player -> Player: newGame()
+Player -> Server: getMaps()
+Server --> Player: mapIDs
+Player -> Player: choosePlayerNumber() -> playerNum
+Player -> Server: newGame(mapID, playerNum)
+Server -> Server: create new game in WAITING phase
+Server --> Player: gameID, playerIDs
+
+loop every player not ready
+    Player -> Player: choose Player to play as
+    Player -> Server: joinGame(gameID, playerID)
+    Server -> Server: open websocket with Player
+    Server --> Player: OK, joined game with gameID as player with playerID
+    Player -> Server: getGameState(gameID)
+    Server --> Player: gameState (phase, step, currentPlayer, playerPositions)
+    Player -> Server: getDeck(gameID, playerID)
+    Server --> Player: deck (energy, cards, program, upgrades)
+    Player -> Server: ready(gameID, playerID)
+    Server --> Player: OK
+    Player -> Player: hide ready button
+end
+
+loop player has not reached goal
+    Server -> Server: change phase to PROGRAMMING
+    Server --> Player: websocket: gameState updated
+    Player -> Server: getGameState(gameID)
+    Server --> Player: gameState (phase, step, currentPlayer, playerPositions)
+
+    loop every player not ready
+        loop player programming
+            Player -> Player: move card in deck (for example from cards to program)
+            Player -> Server: updateDeck(gameID, playerID, newDeck)
+            Server -> Server: check if deck change is valid
+            alt deck valid
+                Server -> Server: update deck
+                Server --> Player: OK
+            else deck not valid
+                Server --> Player: error
+            end
+        end
+        Player -> Server: ready(gameID, playerID)
+        Server --> Player: OK
+        Player -> Player: hide ready button
+    end
+
+    Server -> Server: change phase to ACTIVATION
+    Server --> Player: websocket: gameState updated
+    Player -> Server: getGameState(gameID)
+    Server --> Player: gameState (phase, step, currentPlayer, playerPositions)
+
+    alt all players ready
+        loop every program register - sleep 1 sec between iterations
+            Server -> Server: execute all players' registers
+            Server --> Player: websocket: gameState updated
+            Player -> Server: getGameState(gameID)
+            Server --> Player: gameState (phase, step, currentPlayer, playerPositions)
+        end
+    end
+end
+
+Server -> Server: end game & close websockets
+
+@enduml
