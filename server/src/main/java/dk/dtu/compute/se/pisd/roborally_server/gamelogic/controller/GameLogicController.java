@@ -22,26 +22,28 @@
  */
 package dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller;
 
-import dk.dtu.compute.se.pisd.roborally.RoboRally;
-import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.elements.*;
-import dk.dtu.compute.se.pisd.roborally_server.model.board.Map;
+import dk.dtu.compute.se.pisd.roborally_server.model.*;
 import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
-import javafx.scene.control.ChoiceDialog;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.ActionElement;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.FieldElement;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.PriorityAntenna;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.Wall;
+import dk.dtu.compute.se.pisd.roborally_server.model.cards.*;
+import dk.dtu.compute.se.pisd.roborally_server.server.service.GameService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 /**
- * Controls stuff that happens on the {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Map Map}.
+ * Controls stuff that happens on the {@link Game Game}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class GameLogicController {
     /**
-     * The board linked to the controller
+     * The game linked to the controller
      */
-    public Map map;
+    private Game game;
 
     /**
      * The elements on the boards with actions
@@ -52,23 +54,10 @@ public class GameLogicController {
      * The GameController constructor.
      *
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
-     * @param roboRally the roborally class
-     * @param map     the board to control.
+     * @param game the game class
      */
-    public GameLogicController(RoboRally roboRally, Map map) {
-        this.map = map;
-        this.roboRally = roboRally;
-    }
-
-    /**
-     * Set the board for the gamecontroller to control.
-     * Used for initialization that needs the gamecontroller.
-     *
-     * @author Ekkart Kindler, ekki@dtu.dk
-     * @param map the board.
-     */
-    public void setBoard(Map map) {
-        this.map = map;
+    public GameLogicController(Game game) {
+        this.game = game;
     }
 
     /**
@@ -93,7 +82,7 @@ public class GameLogicController {
     }
 
     /**
-     * Activates all action elements on the board.
+     * Activates all action elements on the game.getGameState().
      * Used after each round of register activations.
      *
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
@@ -106,8 +95,8 @@ public class GameLogicController {
             if (!actionElement.getClass().getName().equals(currentType)) {
                 currentType = actionElement.getClass().getName();
                 // reset every player's moved by action
-                for (int i = 0; i < map.getPlayersNumber(); i++) {
-                    map.getPlayer(i).setMovedByAction(false);
+                for (int i = 0; i < game.getPlayerCount(); i++) {
+                    game.getGameState().getPlayer(i).setMovedByAction(false);
                 }
             }
             actionElement.activate();
@@ -116,7 +105,7 @@ public class GameLogicController {
 
     /**
      * This is just some dummy controller operation to make a simple move to see something
-     * happening on the board. This method should eventually be deleted!
+     * happening on the game.getGameState(). This method should eventually be deleted!
      * <p>
      * - the current player should be moved to the given space
      * (if it is free()
@@ -131,16 +120,16 @@ public class GameLogicController {
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
         if (space.free()) {
-            space.setPlayer(map.getCurrentPlayer());
-            map.endCurrentPlayerTurn();
+            space.setPlayer(game.getGameState().getPlayer(game.getGameState().getCurrentPlayer()));
+            game.getGameState().endCurrentPlayerTurn();
         }
 
-        if (space != null && space.map == map) {
-            Player currentPlayer = map.getCurrentPlayer();
+        if (space != null && space.board == game.getBoard()) {
+            Player currentPlayer = game.getGameState().getPlayerCurrent();
             if (currentPlayer != null && space.getPlayer() == null) {
                 currentPlayer.setSpace(space);
-                int playerNumber = (map.getPlayerNumber(currentPlayer) + 1) % map.getPlayersNumber();
-                map.setCurrentPlayer(map.getPlayer(playerNumber));
+                int playerNumber = (game.getGameState().getPlayerNumber(currentPlayer) + 1) % game.getPlayerCount();
+                game.getGameState().setCurrentPlayer(playerNumber);
             }
         }
 
@@ -157,30 +146,26 @@ public class GameLogicController {
      * @author Nicolai Udbye
      */
     public void startProgrammingPhase() {
-        map.setPhase(Phase.PROGRAMMING);
-        map.setCurrentPlayer(map.getPlayer(0));
-        map.setStep(0);
+        game.getGameState().setPhase(Phase.PROGRAMMING);
+        game.getGameState().setCurrentPlayer(0);
+        game.getGameState().setStep(0);
 
-        for (int i = 0; i < map.getPlayersNumber(); i++) {
-            Player player = map.getPlayer(i);
+        for (int i = 0; i < game.getPlayerCount(); i++) {
+            Player player = game.getGameState().getPlayer(i);
             if (player != null) {
-                for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                    CommandCardField field = player.getProgramField(j);
-                    field.setCard(null);
-                    field.setVisible(true);
-                }
+                player.getDeck().clearProgram();
 
-                for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
-                    CommandCardField field = player.getCardField(j);
+                player.getDeck().populateCards();
+                for (int j = 0; j < PlayerDeck.NO_CARDS; j++) {
+                    Card field;
 
-                    if (20 < (int) ((Math.random() * (player.getDamage() + 20)) + 1)) {
-
-                        field.setCard(generateRandomDamageCard(9, 12)); //TODO change if cards chance
-                        field.setVisible(true);
+                    if (20 < (int) ((Math.random() * (player.getDeck().getDamage() + 20)) + 1)) {
+                        field = generateRandomDamageCard(9, 12); //TODO change if cards chance
                     } else {
-                        field.setCard(generateRandomCommandCard(0, 8)); //TODO change if cards chance
-                        field.setVisible(true);
+                        field = generateRandomCommandCard(0, 8); //TODO change if cards chance
                     }
+                    field.setVisible(true);
+                    player.getDeck().setCardField(j, field);
                 }
             }
         }
@@ -192,25 +177,24 @@ public class GameLogicController {
      * Generates a random command card.
      *
      * @author Ekkart Kindler, ekki@dtu.dk
-     * @return the random {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard}.
+     * @return the random {@link CommandCard CommandCard}.
      */
-    private CommandCard generateRandomCommandCard(int from, int to) {
+    private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
-        int random = (int) ((Math.random() * (to + 1 - from)) + from);
+        int random = (int) ((Math.random() * (commands.length+1));
         return new CommandCard(commands[random]);
     }
 
     /**
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Oscar Maxwell
-     * @param from
-     * @param to
-     * @return
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @return the random damage card
      */
-    private CommandCard generateRandomDamageCard(int from, int to) {
-        Command[] commands = Command.values();
-        int random = (int) ((Math.random() * (to + 1 - from)) + from);
-        return new CommandCard(commands[random]);
+    private DamageCard generateRandomDamageCard() {
+        Damage[] damages = Damage.values();
+        int random = (int) ((Math.random() * (damages.length +1));
+        return new DamageCard(damages[random]);
     }
 
     // XXX: V2
@@ -223,9 +207,9 @@ public class GameLogicController {
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
-        map.setPhase(Phase.ACTIVATION);
-        map.setCurrentPlayer(map.getPlayer(0));
-        map.setStep(0);
+        game.getGameState().setPhase(Phase.ACTIVATION);
+        game.getGameState().setCurrentPlayer(0);
+        game.getGameState().setStep(0);
     }
 
     // XXX: V2
@@ -237,10 +221,10 @@ public class GameLogicController {
      * @param register the register to show?
      */
     private void makeProgramFieldsVisible(int register) {
-        if (register >= 0 && register < Player.NO_REGISTERS) {
-            for (int i = 0; i < map.getPlayersNumber(); i++) {
-                Player player = map.getPlayer(i);
-                CommandCardField field = player.getProgramField(register);
+        if (register >= 0 && register < PlayerDeck.NO_REGISTERS) {
+            for (int i = 0; i < game.getPlayerCount(); i++) {
+                Player player = game.getGameState().getPlayer(i);
+                Card field = player.getDeck().getProgramField(register);
                 field.setVisible(true);
             }
         }
@@ -254,10 +238,10 @@ public class GameLogicController {
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     private void makeProgramFieldsInvisible() {
-        for (int i = 0; i < map.getPlayersNumber(); i++) {
-            Player player = map.getPlayer(i);
-            for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                CommandCardField field = player.getProgramField(j);
+        for (int i = 0; i < game.getPlayerCount(); i++) {
+            Player player = game.getGameState().getPlayer(i);
+            for (int j = 0; j < PlayerDeck.NO_REGISTERS; j++) {
+                Card field = player.getDeck().getProgramField(j);
                 field.setVisible(false);
             }
         }
@@ -270,7 +254,7 @@ public class GameLogicController {
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void executePrograms() {
-        map.setStepMode(false);
+        game.getGameState().setStepMode(false);
         continuePrograms();
     }
 
@@ -281,7 +265,7 @@ public class GameLogicController {
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void executeStep() {
-        map.setStepMode(true);
+        game.getGameState().setStepMode(true);
         continuePrograms();
     }
 
@@ -294,7 +278,7 @@ public class GameLogicController {
     private void continuePrograms() {
         do {
             executeNextStep();
-        } while (map.getPhase() == Phase.ACTIVATION && !map.isStepMode());
+        } while (game.getGameState().getPhase() == Phase.ACTIVATION && !game.getGameState().isStepMode());
     }
 
     // XXX: V2
@@ -320,12 +304,12 @@ public class GameLogicController {
      */
     // TODO the stuff with the PriorityAntenna
     private void executeNextStep() {
-        Player currentPlayer = map.getCurrentPlayer();
-        int playerAmmount = map.getPlayersNumber();
+        Player currentPlayer = game.getGameState().getPlayer(game.getGameState().getCurrentPlayer());
+        int playerAmmount = game.getPlayerCount();
         ArrayList<Double> playerDistances = new ArrayList<Double>();
-        Space prorityantennaPosition = map.getPriorityAntennaPosition();
+        Space prorityantennaPosition = game.getBoard().getPriorityAntennaPosition();
         for (int i = 0; i < playerAmmount; i++) {
-            Player player2Check = map.getPlayer(i);
+            Player player2Check = game.getGameState().getPlayer(i);
             playerDistances.add(getDistance(prorityantennaPosition, player2Check.getSpace()));
         }
         for (int i = 0; i < playerAmmount; i++) {
@@ -334,31 +318,31 @@ public class GameLogicController {
             }
         }
 
-        if (map.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
-            int step = map.getStep();
-            if (step >= 0 && step < Player.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getProgramField(step).getCard();
+        if (game.getGameState().getPhase() == Phase.ACTIVATION && currentPlayer != null) {
+            int step = game.getGameState().getStep();
+            if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
+                CommandCard card = currentPlayer.getDeck().getProgramField(step);
                 if (card != null) {
-                    Command command = card.command;
-                    if (card.command.isInteractive()) {
-                        map.setPhase(Phase.PLAYER_INTERACTION);
+                    Command command = card.getCommand();
+                    if (card.getCommand().isInteractive()) {
+                        game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
                         return;
                     }
                     executeCommand(currentPlayer, command);
                 }
 
-                int nextPlayerNumber = map.getPlayerNumber(currentPlayer) + 1;
-                if (nextPlayerNumber < map.getPlayersNumber()) {
-                    map.setCurrentPlayer(map.getPlayer(nextPlayerNumber));
+                int nextPlayerNumber = game.getGameState().getPlayerNumber(currentPlayer) + 1;
+                if (nextPlayerNumber < game.getPlayerCount()) {
+                    game.getGameState().setCurrentPlayer(nextPlayerNumber);
                 } else {
                     // Activate all elements on the board
                     activateElements();
 
                     step++;
-                    if (step < Player.NO_REGISTERS) {
+                    if (step < PlayerDeck.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
-                        map.setStep(step);
-                        map.setCurrentPlayer(map.getPlayer(0));
+                        game.getGameState().setStep(step);
+                        game.getGameState().setCurrentPlayer(0);
                     } else {
                         startProgrammingPhase();
                     }
@@ -386,7 +370,7 @@ public class GameLogicController {
      * @param command the command to execute
      */
     private void executeCommand(@NotNull Player player, Command command) {
-        if (player != null && player.board == map && command != null) {
+        if (player != null && game.hasPlayer(player) && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
@@ -414,46 +398,46 @@ public class GameLogicController {
                     this.turnRight(player);
                     this.turnRight(player);
                     break;
-                case POWER_UP:
-                    this.powerUp(player);
-                    break;
-                case AGAIN:
-                    this.again(player);
-                    break;
-                case SPAM:
-                    this.SPAM(player);
-                    player.removeDamage();
-                    break;
-                case TROJAN_HORSE:
-                    this.TROJAN_HORSE(player);
-                    player.removeDamage();
-                    break;
-                case WORM:
-                    this.WORM(player);
-                    player.removeDamage();
-                    break;
-                case VIRUS:
-                    this.VIRUS(player);
-                    player.removeDamage();
-                    break;
-                case ENERGY_ROUTINE:
-                    this.powerUp(player);
-                    break;
-                case SANDBOX_ROUTINE:
-                    this.sandboxRoutine(player, command);
-                    break;
-                case WEASEL_ROUTINE:
-                    this.optionLeftRight(player, command);
-                    break;
-                case SPEED_ROUTINE:
-                    this.fastfastForward(player);
-                    break;
-                case SPAM_FOLDER:
-                    player.removeDamage();
-                    break;
-                case REPEAT_ROUTINE:
-                    this.again(player);
-                    break;
+//                case POWER_UP:
+//                    this.powerUp(player);
+//                    break;
+//                case AGAIN:
+//                    this.again(player);
+//                    break;
+//                case SPAM:
+//                    this.SPAM(player);
+//                    player.removeDamage();
+//                    break;
+//                case TROJAN_HORSE:
+//                    this.TROJAN_HORSE(player);
+//                    player.removeDamage();
+//                    break;
+//                case WORM:
+//                    this.WORM(player);
+//                    player.removeDamage();
+//                    break;
+//                case VIRUS:
+//                    this.VIRUS(player);
+//                    player.removeDamage();
+//                    break;
+//                case ENERGY_ROUTINE:
+//                    this.powerUp(player);
+//                    break;
+//                case SANDBOX_ROUTINE:
+//                    this.sandboxRoutine(player, command);
+//                    break;
+//                case WEASEL_ROUTINE:
+//                    this.optionLeftRight(player, command);
+//                    break;
+//                case SPEED_ROUTINE:
+//                    this.fastfastForward(player);
+//                    break;
+//                case SPAM_FOLDER:
+//                    player.removeDamage();
+//                    break;
+//                case REPEAT_ROUTINE:
+//                    this.again(player);
+//                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -472,8 +456,8 @@ public class GameLogicController {
     private boolean canMove(@NotNull Player player, Heading direction) {
         Space space = player.getSpace();
         boolean canMove = false;
-        if (player != null && player.board == map && space != null) {
-            Space target = map.getNeighbour(space, direction);
+        if (player != null && game.hasPlayer(player) && space != null) {
+            Space target = game.getBoard().getNeighbour(space, direction);
             if (target != null) {
                 canMove = true;
                 for (FieldElement fieldElement : space.getFieldObjects()) {
@@ -496,7 +480,6 @@ public class GameLogicController {
                     }
                 }
             } else {
-                player.takeDamage();
                 player.reboot();
             }
         }
@@ -510,7 +493,7 @@ public class GameLogicController {
      * @param player The player to move backwards.
      */
     public void moveBackwards(@NotNull Player player) {
-        if (player != null && player.board == map) {
+        if (player != null && game.hasPlayer(player)) {
             Heading heading = player.getHeading().next().next();
 
             moveDirection(player, heading);
@@ -528,8 +511,8 @@ public class GameLogicController {
      */
     public void moveDirection(@NotNull Player player, Heading direction) {
         Space space = player.getSpace();
-        if (player != null && player.board == map && space != null && canMove(player, direction)) {
-            Space target = map.getNeighbour(space, direction);
+        if (player != null && game.hasPlayer(player) && space != null && canMove(player, direction)) {
+            Space target = game.getBoard().getNeighbour(space, direction);
             if (target != null) {
                 // when there is another player on the target. The other player is pushed away!
                 if (target.free()) {
@@ -543,7 +526,6 @@ public class GameLogicController {
                     }
                 }
             } else {
-                player.takeDamage();
                 player.reboot();
             }
         }
@@ -572,7 +554,7 @@ public class GameLogicController {
      * @param player The player to move forward.
      */
     public void moveForward(@NotNull Player player) {
-        if (player != null && player.board == map) {
+        if (player != null && game.hasPlayer(player)) {
             Heading heading = player.getHeading();
             moveDirection(player, heading);
         }
@@ -632,7 +614,7 @@ public class GameLogicController {
      * @param player The player to turn right.
      */
     public void turnRight(@NotNull Player player) {
-        if (player != null && player.board == map) {
+        if (player != null && game.hasPlayer(player)) {
             player.setHeading(player.getHeading().next());
         }
     }
@@ -644,7 +626,7 @@ public class GameLogicController {
      * @param player The player to turn left.
      */
     public void turnLeft(@NotNull Player player) {
-        if (player != null && player.board == map) {
+        if (player != null && game.hasPlayer(player)) {
             player.setHeading(player.getHeading().prev());
         }
     }
@@ -702,19 +684,19 @@ public class GameLogicController {
      * @param player
      */
     public void powerUp (@NotNull Player player) {
-        player.addPower(1);
+        player.getDeck().addEnergy(1);
     }
 
     public void again (@NotNull Player player) {
-        int step = map.getStep();
+        int step = game.getGameState().getStep();
         if (step <= 0) {
             return;
         }
-        CommandCard card = player.getProgramField(step - 1).getCard();
+        CommandCard card = player.getDeck().getProgramField(step - 1);
         if (card != null) {
-            Command command = card.command;
+            Command command = card.getCommand();
             if (command.isInteractive()) {
-                map.setPhase(Phase.PLAYER_INTERACTION);
+                game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
                 return;
             }
             executeCommand(player, command);
@@ -746,12 +728,12 @@ public class GameLogicController {
         Command[] commands = Command.values();
         Space playerSpace = player.getSpace();
 
-        for (int i = 0; i < map.getPlayersNumber(); i++) {
-            Player checkPlayer = map.getPlayer(i);
+        for (int i = 0; i < game.getPlayerCount(); i++) {
+            Player checkPlayer = game.getGameState().getPlayer(i);
             Space checkPlayerSpace = checkPlayer.getSpace();
 
             if (getDistance(playerSpace, checkPlayerSpace) > 0 && getDistance(playerSpace, checkPlayerSpace) < 6) {
-                checkPlayer.takeDamage();
+                checkPlayer.getDeck().takeDamage();
             }
         }
 
@@ -761,28 +743,33 @@ public class GameLogicController {
 
 
     /**
-     * Moves a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} on a source
-     * {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to
-     * another {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     * Moves a {@link Command Command} on a source {@link Card Card} to another {@link Card Card}.
      * Only moves the card, if there is a card on the source field, and there is no card on the target field.
      *
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Oscar Maxwell
-     * @param source The source {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
-     * @param target The {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to move the card to.
+     * @param source The source {@link Card card}.
+     * @param target The {@link Card Card} to move the card to.
      * @return <code>true</code> if the card is moved, else <code>false</code>.
      */
-    public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        CommandCard sourceCard = source.getCard();
-        CommandCard targetCard = target.getCard();
-        if (sourceCard != null && targetCard == null) {
-            target.setCard(sourceCard);
-            source.setCard(null);
-            return true;
-        } else {
-            return false;
+    public boolean moveCards(@NotNull Card source, @NotNull Card target) {
+        if (source.getType() != null && source.getType().equals(target.getType())) {
+            switch (source.getType()) {
+                case COMMAND:
+                    Command sourceCommand = ((CommandCard) source).getCommand();
+                    Command targetCommand = ((CommandCard) target).getCommand();
+                    if (sourceCommand != null && targetCommand == null) {
+                        ((CommandCard) target).setCommand(sourceCommand);
+                        ((CommandCard) source).setCommand(null);
+                        return true;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
+        return false;
     }
 
     /**
@@ -794,21 +781,21 @@ public class GameLogicController {
      */
     public void executeCommandOptionAndContinue(Command cardOptions) {
 
-        map.setPhase(Phase.ACTIVATION);
-        Player currentPlayer = map.getCurrentPlayer();
-        executeCommand(map.getCurrentPlayer(), cardOptions);
+        game.getGameState().setPhase(Phase.ACTIVATION);
+        Player currentPlayer = game.getGameState().getPlayerCurrent();
+        executeCommand(game.getGameState().getPlayerCurrent(), cardOptions);
 
-        int step = map.getStep();
-        if (step >= 0 && step < Player.NO_REGISTERS) {
-            int nextPlayerNumber = map.getPlayerNumber(currentPlayer) + 1;
-            if (nextPlayerNumber < map.getPlayersNumber()) {
-                map.setCurrentPlayer(map.getPlayer(nextPlayerNumber));
+        int step = game.getGameState().getStep();
+        if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
+            int nextPlayerNumber = game.getGameState().getPlayerNumber(currentPlayer) + 1;
+            if (nextPlayerNumber < game.getPlayerCount()) {
+                game.getGameState().setCurrentPlayer(nextPlayerNumber);
             } else {
                 step++;
-                if (step < Player.NO_REGISTERS) {
+                if (step < PlayerDeck.NO_REGISTERS) {
                     makeProgramFieldsVisible(step);
-                    map.setStep(step);
-                    map.setCurrentPlayer(map.getPlayer(0));
+                    game.getGameState().setStep(step);
+                    game.getGameState().setCurrentPlayer(0);
                 } else {
                     startProgrammingPhase();
                 }
@@ -828,37 +815,10 @@ public class GameLogicController {
      * @param player the player that wins the game
      */
     public void winTheGame(Player player) {
-        // show popup
-        if (roboRally != null) {
-            List<String> yesno = new ArrayList<>();
-            yesno.add("Yes");
-            yesno.add("Yes, and reset the board");
-            yesno.add("No");
-            yesno.add("No, exit game");
-
-            ChoiceDialog<String> dialogContinue = new ChoiceDialog<>(yesno.get(0), yesno);
-            dialogContinue.setTitle(player.getName() + " won the game!");
-            dialogContinue.setHeaderText("Do you want to continue playing?");
-            Optional<String> continueResult = dialogContinue.showAndWait();
-
-            if (continueResult.isPresent()) {
-                // yes
-                if (continueResult.get().equals(yesno.get(0))) {
-                    // do nothing
-                }
-                // yes, reset
-                else if (continueResult.get().equals(yesno.get(1))) {
-                    resetGame();
-                }
-                // no (go to menu)
-                else if (continueResult.get().equals(yesno.get(2))) {
-                    roboRally.createBoardView(null, null);
-                }
-                // no, exit (exit app)
-                else if (continueResult.get().equals(yesno.get(3))) {
-                    roboRally.exitApplication();
-                }
-            }
+        // TODO: send won over server before killing
+        if (game != null) {
+            GameService gameService = new GameService();
+            gameService.deleteGameByID(game.getID());
         }
     }
 
@@ -871,4 +831,11 @@ public class GameLogicController {
         // TODO: reset the game with same map and same players
     }
 
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 }

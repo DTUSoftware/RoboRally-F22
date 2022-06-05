@@ -1,7 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.model.Heading;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 /**
  * the wall object

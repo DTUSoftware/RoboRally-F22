@@ -1,9 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
+import dk.dtu.compute.se.pisd.roborally_server.model.Player;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -39,11 +38,11 @@ public class EnergySpace extends ActionElement {
         if (!super.getSpace().free()) {
             Player player = super.getSpace().getPlayer();
             if (hasEnergy) {
-                player.addPower(1);
+                player.getDeck().addEnergy(1);
                 hasEnergy = false;
             }
-            else if(super.getGameController().board.getStep() == 5){
-                player.addPower(1);
+            else if(super.getGameController().getGame().getGameState().getStep() == 5) {
+                player.getDeck().addEnergy(1);
             }
         }
     }

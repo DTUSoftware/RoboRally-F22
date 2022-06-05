@@ -1,11 +1,10 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
+import dk.dtu.compute.se.pisd.roborally_server.model.Heading;
+import dk.dtu.compute.se.pisd.roborally_server.model.Player;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Board;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 
 /**
@@ -74,7 +73,7 @@ public class PushPanel extends ActionElement {
     public void activate() {
         Player player = super.getSpace().getPlayer();
         if (player != null && !player.isMovedByAction()){
-            if (getRegister1() == super.getGameController().board.getStep()|| getRegister2() == super.getGameController().board.getStep()) {
+            if (getRegister1() == super.getGameController().getGame().getGameState().getStep()|| getRegister2() == super.getGameController().getGame().getGameState().getStep()) {
                 super.getGameController().moveDirectionX(player, direction.next().next(), 1);
                 player.setMovedByAction(true);
             }

@@ -1,8 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 // TODO make this stuff
 /**
@@ -17,7 +16,7 @@ public class PriorityAntenna extends ActionElement {
      */
     public PriorityAntenna(GameLogicController gameLogicController, Space space) {
         super(gameLogicController,space);
-        super.getGameController().board.setPriorityAntenna(space);
+        super.getGameController().getGame().getBoard().setPriorityAntenna(space);
     }
 
     @Override

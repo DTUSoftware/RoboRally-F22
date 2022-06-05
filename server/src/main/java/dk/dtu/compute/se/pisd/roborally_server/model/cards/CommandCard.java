@@ -26,4 +26,8 @@ public class CommandCard extends Card {
     public String getName() {
         return command.displayName;
     }
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
 }

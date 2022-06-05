@@ -19,20 +19,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally.fileaccess;
+package dk.dtu.compute.se.pisd.roborally_server.fileaccess;
 
 import com.google.common.io.Resources;
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
-import dk.dtu.compute.se.pisd.roborally.model.elements.*;
-import dk.dtu.compute.se.pisd.roborally.server.MapService;
+import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
+import dk.dtu.compute.se.pisd.roborally_server.model.Game;
+import dk.dtu.compute.se.pisd.roborally_server.model.Heading;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Board;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -51,48 +53,47 @@ public class LoadBoard {
 
     /**
      *  Loads the board
-     * @param gameController the gaecontroller
-     * @param boardname the name of the board to load
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @param game the game
      * @return the board.
      */
-    public static Board loadBoard(GameController gameController, String boardname) {
-        if (boardname == null) {
-            boardname = DEFAULTBOARD;
+    public static Board loadBoard(Game game) {
+        // Ready the board
+        Checkpoint.setNumberOfCheckpointsCreated(0);
+
+        String mapID = game.getMapID();
+        if (mapID == null) {
+            game.setMapID(DEFAULTBOARD);
+            mapID = game.getMapID();
         }
 
-        JSONObject boardJSON = null;
+        GameLogicController gameController = game.getGameLogicController();
 
-        boardJSON = MapService.getMap(boardname);
-
-        if (boardJSON == null) {
-            System.out.println("COULD NOT CONNECT TO SERVER!!!!");
-            return null;
-            // as fallback, load from files
-//            System.out.println("COULD NOT CONNECT TO SERVER - LOADING FROM FILESYSTEM");
-//            InputStream inputStream = null;
-//            try {
-//                inputStream = Resources.getResource(BOARDSFOLDER + "/" + boardname + ".json").openStream();
-//            }
-//            catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            if (inputStream == null) {
-//                Board board = new Board(defaultBoardWidth,defaultBoardHeight, boardname);
-//                gameController.setBoard(board);
-//                return board;
-//            }
-//
-//            JSONTokener tokener = new JSONTokener(inputStream);
-//            boardJSON = new JSONObject(tokener);
+        // load from filesystem
+        InputStream inputStream = null;
+        try {
+            inputStream = Resources.getResource(BOARDSFOLDER + "/" + mapID + ".json").openStream();
         }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (inputStream == null) {
+            Board board = new Board(defaultBoardWidth, defaultBoardHeight, mapID);
+            game.setBoard(board);
+            return board;
+        }
+
+        JSONTokener tokener = new JSONTokener(inputStream);
+        JSONObject boardJSON = new JSONObject(tokener);
 
 		Board board = null;
 		try {
             JSONObject size = boardJSON.getJSONObject("size");
-            board = new Board(size.getInt("width"), size.getInt("height"), boardname);
+            board = new Board(size.getInt("width"), size.getInt("height"), mapID);
 
             // Add the board to the gamecontroller
-            gameController.setBoard(board);
+            game.setBoard(board);
 
             // add all spaces
             JSONArray boardObjects = boardJSON.getJSONArray("board");
@@ -110,37 +111,38 @@ public class LoadBoard {
                     JSONObject elementJSON = elementsJSON.getJSONObject(j);
                     switch (elementJSON.getString("type")) {
                         case "checkpoint":
-                            new Checkpoint(space, elementJSON.getInt("number"));
+                            new Checkpoint(gameController,space, elementJSON.getInt("number"));
                             break;
                         case "conveyor_belt":
                             new ConveyorBelt(
+                                    gameController,
                                     space,
                                     elementJSON.getBoolean("color"),
                                     Heading.valueOf(elementJSON.getString("direction"))
                             );
                             break;
                         case "energy_space":
-                            new EnergySpace(space);
+                            new EnergySpace(gameController, space);
                             break;
                         case "gear":
-                            new Gear(space, elementJSON.getBoolean("direction"));
+                            new Gear(gameController, space, elementJSON.getBoolean("direction"));
                             break;
                         case "laser":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
-                            new Laser(space, Heading.valueOf(elementJSON.getString("direction")), elementJSON.getInt("number"));
+                            new Laser(gameController, space, Heading.valueOf(elementJSON.getString("direction")), elementJSON.getInt("number"));
                             break;
                         case "pit":
-                            new Pit(space);
+                            new Pit(gameController, space);
                             break;
                         case "priority_antenna":
-                            new PriorityAntenna(space);
+                            new PriorityAntenna(gameController,space);
                             break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
-                            rebootTokens.add(new RebootToken(space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2")));
+                            rebootTokens.add(new RebootToken(gameController, space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2")));
                             break;
                         case "spawn_gear":
-                            spawnGears.add(new SpawnGear(space, Heading.valueOf(elementJSON.getString("direction"))));
+                            spawnGears.add(new SpawnGear(gameController, space, Heading.valueOf(elementJSON.getString("direction"))));
                             break;
                         case "wall":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), false);
@@ -148,7 +150,7 @@ public class LoadBoard {
                         case "push_panel":
                             new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
                             JSONObject pushPanel = elementJSON.getJSONObject("registers");
-                            new PushPanel(space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
+                            new PushPanel(gameController, space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
                             break;
                     }
                 }
@@ -156,6 +158,7 @@ public class LoadBoard {
 
             // add reboot tokens
             board.setRebootTokens(rebootTokens.toArray(new RebootToken[0]));
+            // add spawn gears
             board.setSpawnGears(spawnGears.toArray(new SpawnGear[0]));
         }
         catch (Exception e) {
@@ -166,6 +169,8 @@ public class LoadBoard {
 
     /**
      * saves the current board
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param board the board to save
      * @param name the nake to give
      */

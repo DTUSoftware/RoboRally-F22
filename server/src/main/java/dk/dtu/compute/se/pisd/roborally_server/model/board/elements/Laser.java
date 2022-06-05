@@ -1,10 +1,9 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally_server.gamelogic.controller.GameLogicController;
+import dk.dtu.compute.se.pisd.roborally_server.model.Heading;
+import dk.dtu.compute.se.pisd.roborally_server.model.Player;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 import org.jetbrains.annotations.NotNull;
 
 // TODO make this stuff
@@ -56,14 +55,14 @@ public class Laser extends ActionElement {
         Player player = super.getSpace().getPlayer();
         if (player != null && !player.isMovedByAction()) {
             if (this.lazer == 1 || this.lazer == 4) {
-                player.takeDamage();
+                player.getDeck().takeDamage();
             } else if (this.lazer == 2 || this.lazer == 5) {
-                player.takeDamage();
-                player.takeDamage();
+                player.getDeck().takeDamage();
+                player.getDeck().takeDamage();
             } else if (this.lazer == 3 || this.lazer == 6) {
-                player.takeDamage();
-                player.takeDamage();
-                player.takeDamage();
+                player.getDeck().takeDamage();
+                player.getDeck().takeDamage();
+                player.getDeck().takeDamage();
             }
         }
 

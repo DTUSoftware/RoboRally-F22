@@ -1,6 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.board.elements;
 
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 /**
  * abstract clase field element for making the field obejcts

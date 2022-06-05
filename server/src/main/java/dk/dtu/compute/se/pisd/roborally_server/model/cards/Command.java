@@ -49,9 +49,20 @@ public enum Command {
     RIGHT("turn_right"),
     /** Turn left */
     LEFT("turn_left"),
-    // XXX Assignment P3
     /** Left or Right */
-    OPTION_LEFT_RIGHT("weasel_routine", LEFT, RIGHT);
+    OPTION_LEFT_RIGHT("weasel_routine", LEFT, RIGHT),
+    /** Give 1 energy  */
+    ENERGY_ROUTINE("energy_routine"),
+    /** Move 1, 2, 3, Back Up, Left, Right or U-Turn  */
+    SANDBOX_ROUTINE("sandbox_routine",MOVE_1,MOVE_2,MOVE_3,MOVE_BACKWARDS,LEFT,RIGHT,U_TURN),
+    /** Left, Right or U-Turn  */
+    WEASEL_ROUTINE("weasel_routine", LEFT, RIGHT, U_TURN),
+    /** Move 3  */
+    SPEED_ROUTINE("speed_routine"),
+    /** Discard 1 spam card from discard pile  */
+    SPAM_FOLDER("spam_routine"),
+    /** Repeat previous register  */
+    REPEAT_ROUTINE("repeat_routine");
 
     /** The displayName of a command */
     final public String displayName;

@@ -29,14 +29,14 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.FieldElement
 import java.util.ArrayList;
 
 /**
- * A 'field' on the {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Map Map} which
+ * A 'field' on the {@link Board Map} which
  * the {@link dk.dtu.compute.se.pisd.roborally_server.model.Player Player}s can be on.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Space extends Subject {
     /** The Board the Space is on */
-    public final Map map;
+    public final Board board;
 
     /** The x-coordinate of the Space */
     public final int x;
@@ -47,14 +47,14 @@ public class Space extends Subject {
     private ArrayList<FieldElement> objects = new ArrayList<>();
 
     /**
-     * Initializes a Space on a {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Map Board}.
+     * Initializes a Space on a {@link Board Board}.
      *
-     * @param map the {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Map Board} the Space belongs to.
+     * @param board the {@link Board Board} the Space belongs to.
      * @param x the x-coordinate of the Space.
      * @param y the y-coordinate of the Space.
      */
-    public Space(Map map, int x, int y) {
-        this.map = map;
+    public Space(Board board, int x, int y) {
+        this.board = board;
         this.x = x;
         this.y = y;
         player = null;
@@ -77,7 +77,7 @@ public class Space extends Subject {
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
-                (player == null || map.getGame().hasPlayer(player))) {
+                (player == null || board.getGame().hasPlayer(player))) {
             this.player = player;
             if (oldPlayer != null) {
                 // this should actually not happen

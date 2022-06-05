@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class Map extends Subject {
+public class Board extends Subject {
     /** The width of the board */
     public final int width;
     /** The height of the board */
@@ -60,7 +60,7 @@ public class Map extends Subject {
      * @param height the height of the board.
      * @param mapName the name of the board.
      */
-    public Map(int width, int height, String mapName) {
+    public Board(int width, int height, String mapName) {
         this.mapName = mapName;
         this.width = width;
         this.height = height;
@@ -79,7 +79,7 @@ public class Map extends Subject {
      * @param width the width of the board.
      * @param height the height of the board.
      */
-    public Map(int width, int height) {
+    public Board(int width, int height) {
         this(width, height, null);
     }
 

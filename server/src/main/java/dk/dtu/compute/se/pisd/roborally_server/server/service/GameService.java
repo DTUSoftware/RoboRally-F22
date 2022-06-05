@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GameService implements IGameService {
-    private HashMap<UUID, Game> games = new HashMap<>();
+    private static HashMap<UUID, Game> games = new HashMap<>();
 
     public GameService() {
 //        games.put(10, new Game(10));
@@ -84,6 +84,12 @@ public class GameService implements IGameService {
         return getPlayer(id, playerID).getDeck();
     }
 
+    private void resetReady(UUID id) {
+        for (Player player : games.get(id).getPlayers()) {
+            player.setReady(false);
+        }
+    }
+
     @Override
     public boolean updatePlayerReady(UUID id, UUID playerID) {
         // todo: update and let the controller handle it
@@ -95,11 +101,8 @@ public class GameService implements IGameService {
             case WAITING:
                 getPlayer(id, playerID).setReady(true);
                 if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
-                    for (Player player : game.getPlayers()) {
-                        player.setReady(false);
-                    }
-                    // todo: set correct phase
-                    game.getGameState().setPhase(Phase.PROGRAMMING);
+                    resetReady(id);
+                    game.getGameLogicController().startProgrammingPhase();
                 }
                 return true;
             default:
