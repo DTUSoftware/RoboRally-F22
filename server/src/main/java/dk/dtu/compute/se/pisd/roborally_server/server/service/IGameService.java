@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally_server.service;
+package dk.dtu.compute.se.pisd.roborally_server.server.service;
 
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;

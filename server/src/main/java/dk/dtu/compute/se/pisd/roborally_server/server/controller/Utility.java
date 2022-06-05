@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally_server.controller;
+package dk.dtu.compute.se.pisd.roborally_server.server.controller;
 
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;

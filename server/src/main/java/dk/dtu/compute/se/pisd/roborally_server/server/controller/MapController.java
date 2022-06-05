@@ -1,6 +1,6 @@
-package dk.dtu.compute.se.pisd.roborally_server.controller;
+package dk.dtu.compute.se.pisd.roborally_server.server.controller;
 
-import dk.dtu.compute.se.pisd.roborally_server.service.IMapService;
+import dk.dtu.compute.se.pisd.roborally_server.server.service.IMapService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static dk.dtu.compute.se.pisd.roborally_server.controller.Utility.getResponseEntity;
+import static dk.dtu.compute.se.pisd.roborally_server.server.controller.Utility.getResponseEntity;
 
 @RestController
 public class MapController {

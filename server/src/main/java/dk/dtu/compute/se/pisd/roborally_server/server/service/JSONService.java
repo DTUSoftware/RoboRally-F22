@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally_server.service;
+package dk.dtu.compute.se.pisd.roborally_server.server.service;
 
 import com.google.common.io.Resources;
 import net.harawata.appdirs.AppDirs;

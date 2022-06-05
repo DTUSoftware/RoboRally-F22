@@ -1,4 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally_server.controller;
+package dk.dtu.compute.se.pisd.roborally_server.server.controller;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,9 +6,8 @@ import java.util.UUID;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
-import dk.dtu.compute.se.pisd.roborally_server.model.Player;
 import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
-import dk.dtu.compute.se.pisd.roborally_server.service.IGameService;
+import dk.dtu.compute.se.pisd.roborally_server.server.service.IGameService;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static dk.dtu.compute.se.pisd.roborally_server.controller.Utility.getResponseEntity;
+import static dk.dtu.compute.se.pisd.roborally_server.server.controller.Utility.getResponseEntity;
 
 @RestController
 public class GameController {

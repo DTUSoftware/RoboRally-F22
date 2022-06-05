@@ -125,6 +125,13 @@ public class Player {
         }
     }
 
+    public void setPosition(int x, int y) {
+        if (this.position != null) {
+            this.position.setX(x);
+            this.position.setY(y);
+        }
+    }
+
     @JsonIgnore
     public PlayerDeck getDeck() {
         return this.deck;
