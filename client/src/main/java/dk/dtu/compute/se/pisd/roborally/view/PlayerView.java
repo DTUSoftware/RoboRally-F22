@@ -111,7 +111,7 @@ public class PlayerView extends Tab implements ViewObserver {
         finishButton = new Button("Ready");
         finishButton.setOnAction( e -> {
             GameService.markPlayerReady(gameController.getGameID(), player.getID());
-            finishButton.setDisable(true);
+//            finishButton.setDisable(true);
         });
 
         buttonPanel = new VBox(finishButton);
@@ -223,9 +223,9 @@ public class PlayerView extends Tab implements ViewObserver {
                         finishButton.setDisable(true);
                 }
 
-                if (player.isReady()) {
-                    finishButton.setDisable(true);
-                }
+//                if (player.isReady()) {
+//                    finishButton.setDisable(true);
+//                }
 
 
             } else {

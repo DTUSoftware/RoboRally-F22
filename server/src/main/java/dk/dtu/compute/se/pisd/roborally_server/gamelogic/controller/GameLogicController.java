@@ -525,6 +525,7 @@ public class GameLogicController {
                     // check that we aren't trying to move the other player through a wall
                     Player otherPlayer = target.getPlayer();
                     if (canMove(otherPlayer, direction)) {
+                        // TODO: infinite loop?
                         moveDirection(target.getPlayer(), direction);
                         target.setPlayer(player);
                     }
