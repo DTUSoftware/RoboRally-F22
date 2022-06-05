@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CommandCard extends Card {
     /** The command linked to the card */
     private Command command;
@@ -23,6 +25,7 @@ public class CommandCard extends Card {
      *
      * @return the displayName of the Command.
      */
+    @JsonIgnore
     public String getName() {
         return command.displayName;
     }

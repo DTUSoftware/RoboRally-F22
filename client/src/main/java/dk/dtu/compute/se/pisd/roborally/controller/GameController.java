@@ -115,7 +115,7 @@ public class GameController {
                 continue;
             }
 
-            updatePlayerDeck(player, playerDeck.getInt("energy"), playerDeck.getJSONArray("program"), playerDeck.getJSONArray("cards"), playerDeck.getJSONArray("upgrades"));
+            updatePlayerDeck(player, playerDeck.getInt("energy"), playerDeck.getInt("damage"), playerDeck.getJSONArray("program"), playerDeck.getJSONArray("cards"), playerDeck.getJSONArray("upgrades"));
         }
 
 
@@ -124,31 +124,52 @@ public class GameController {
     }
 
     private void updatePlayer(Player player, String color, String name, int currentCheckpoint, boolean ready, int x, int y, Heading heading) {
-        player.setColor(color);
-        player.setName(name);
-        player.setCurrentCheckpoint(currentCheckpoint);
-        player.setSpace(board.getSpace(x, y));
-        player.setHeading(heading);
-        player.setReady(ready);
+        if (player.getColor() == null || !player.getColor().equals(color)) {
+            player.setColor(color);
+        }
+        if (player.getName() == null || !player.getName().equals(name)) {
+            player.setName(name);
+        }
+        if (player.getCurrentCheckpoint() != currentCheckpoint) {
+            player.setCurrentCheckpoint(currentCheckpoint);
+        }
+        if (player.getSpace() == null || player.getSpace().x != x || player.getSpace().y != y) {
+            player.setSpace(board.getSpace(x, y));
+        }
+        if (!player.getHeading().equals(heading)) {
+            player.setHeading(heading);
+        }
+        if (player.isReady() != ready) {
+            player.setReady(ready);
+        }
     }
 
-    private void updatePlayerDeck(Player player, int energy, JSONArray program, JSONArray cards, JSONArray upgrades) {
+    private void updatePlayerDeck(Player player, int energy, int damage, JSONArray program, JSONArray cards, JSONArray upgrades) {
         player.setEnergy(energy);
+        player.setDamage(damage);
 
         // Program
-        for (int j = 0; j < program.length(); j++) {
-            JSONObject programJSON = program.getJSONObject(j);
+        for (int i = 0; i < Player.NO_REGISTERS; i++) {
+            CommandCardField field = player.getProgramField(i);
+            field.setCard(null);
+        }
+        for (int i = 0; i < program.length(); i++) {
+            JSONObject programJSON = program.getJSONObject(i);
             CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("command")));
-            CommandCardField field = player.getProgramField(j);
+            CommandCardField field = player.getProgramField(i);
             field.setCard(commandCard);
             field.setVisible(programJSON.getBoolean("visible"));
         }
 
         // Cards
-        for (int j = 0; j < cards.length(); j++) {
-            JSONObject card = cards.getJSONObject(j);
+        for (int i = 0; i < Player.NO_CARDS; i++) {
+            CommandCardField field = player.getCardField(i);
+            field.setCard(null);
+        }
+        for (int i = 0; i < cards.length(); i++) {
+            JSONObject card = cards.getJSONObject(i);
             CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("command")));
-            CommandCardField field = player.getCardField(j);
+            CommandCardField field = player.getCardField(i);
             field.setCard(commandCard);
             field.setVisible(card.getBoolean("visible"));
         }

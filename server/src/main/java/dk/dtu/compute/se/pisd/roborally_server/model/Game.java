@@ -42,19 +42,7 @@ public class Game {
         this.gameLogicController = new GameLogicController(this);
         loadBoard(this);
 
-        for (int i = 0; i < playerCount; i++) {
-            UUID uuid = UUID.randomUUID();
-            addPlayer(uuid, "Player " + Integer.toString(i+1), PLAYER_COLORS.get(i));
-
-            SpawnGear[] spawnGears = board.getSpawnGears();
-            if (spawnGears.length >= playerCount) {
-                SpawnGear spawnGear = board.getSpawnGears()[i];
-                Player player = getPlayer(uuid);
-                player.setSpace(spawnGear.getSpace());
-                player.setHeading(spawnGear.getDirection());
-                player.setStartGear(spawnGear);
-            }
-        }
+        initializePlayers();
     }
 
     public Game(String mapID, int playerCount) {
@@ -71,6 +59,24 @@ public class Game {
 
     public void setID(UUID id) {
         this.id = id;
+    }
+
+    public void initializePlayers() {
+        players.clear();
+        gameState.clearPlayers();
+        for (int i = 0; i < playerCount; i++) {
+            UUID uuid = UUID.randomUUID();
+            addPlayer(uuid, "Player " + Integer.toString(i+1), PLAYER_COLORS.get(i));
+
+            SpawnGear[] spawnGears = board.getSpawnGears();
+            if (spawnGears.length >= playerCount) {
+                SpawnGear spawnGear = board.getSpawnGears()[i];
+                Player player = getPlayer(uuid);
+                player.setSpace(spawnGear.getSpace());
+                player.setHeading(spawnGear.getDirection());
+                player.setStartGear(spawnGear);
+            }
+        }
     }
 
     public Date getCreated() {

@@ -64,6 +64,10 @@ public class GameState {
         this.players = players;
     }
 
+    public void clearPlayers() {
+        players.clear();
+    }
+
     public void addPlayer(Player player) {
         players.add(player);
     }

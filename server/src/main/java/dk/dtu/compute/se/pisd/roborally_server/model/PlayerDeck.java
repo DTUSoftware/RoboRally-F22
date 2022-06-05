@@ -6,6 +6,7 @@ import dk.dtu.compute.se.pisd.roborally_server.model.cards.CommandCard;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.UpgradeCard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PlayerDeck {
     private int energy;
@@ -25,12 +26,23 @@ public class PlayerDeck {
      */
     final public static int NO_CARDS = 8;
 
+    /**
+     * The number of upgrades the player can have
+     */
+    final public static int NO_UPGRADES = 8;
+
     public PlayerDeck() {
         this.cards = new ArrayList<>(NO_CARDS);
         this.program = new ArrayList<>(NO_REGISTERS);
-        this.upgrades = new ArrayList<>();
+        this.upgrades = new ArrayList<>(NO_UPGRADES);
 
         this.energy = 5;
+    }
+
+    public PlayerDeck(Card[] cards, CommandCard[] program, UpgradeCard[] upgrades) {
+        this.cards = (ArrayList<Card>) Arrays.asList(cards);
+        this.program = (ArrayList<CommandCard>) Arrays.asList(program);
+        this.upgrades = (ArrayList<UpgradeCard>) Arrays.asList(upgrades);
     }
 
     public int getEnergy() {
@@ -57,6 +69,18 @@ public class PlayerDeck {
         return upgrades;
     }
 
+    public void setCards(ArrayList<Card> cards) {
+        this.cards = cards;
+    }
+
+    public void setProgram(ArrayList<CommandCard> program) {
+        this.program = program;
+    }
+
+    public void setUpgrades(ArrayList<UpgradeCard> upgrades) {
+        this.upgrades = upgrades;
+    }
+
     /**
      * the takeDamage part, where a bad card is given
      */
@@ -74,6 +98,10 @@ public class PlayerDeck {
         }
     }
 
+    public void setDamage(int damage) {
+        this.damageTaken = damage;
+    }
+
     /**
      * Gets the {@link CommandCard CommandCard} in the player's
      * program, on the index i.
@@ -83,6 +111,9 @@ public class PlayerDeck {
      */
     @JsonIgnore
     public CommandCard getProgramField(int i) {
+        if (i >= program.size()) {
+            return null;
+        }
         return program.get(i);
     }
 
@@ -91,7 +122,7 @@ public class PlayerDeck {
     }
 
     public void populateCards() {
-        for (int i = 0; i < NO_CARDS; i++) {
+        while (cards.size() < NO_CARDS) {
             cards.add(null);
         }
     }
@@ -105,6 +136,9 @@ public class PlayerDeck {
      */
     @JsonIgnore
     public Card getCardField(int i) {
+        if (i >= cards.size()) {
+            return null;
+        }
         return cards.get(i);
     }
 
@@ -138,6 +172,23 @@ public class PlayerDeck {
     }
 
     public void setCardField(int i, Card card) {
+        if (i >= cards.size()) {
+            return;
+        }
         cards.set(i, card);
+    }
+
+    public void setProgramField(int i, CommandCard card) {
+        if (i >= program.size()) {
+            return;
+        }
+        program.set(i, card);
+    }
+
+    public void setUpgradeField(int i, UpgradeCard card) {
+        if (i >= upgrades.size()) {
+            return;
+        }
+        upgrades.set(i, card);
     }
 }

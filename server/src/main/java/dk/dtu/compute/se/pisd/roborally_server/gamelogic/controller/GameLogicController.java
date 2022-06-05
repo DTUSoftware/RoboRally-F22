@@ -225,7 +225,9 @@ public class GameLogicController {
             for (int i = 0; i < game.getPlayerCount(); i++) {
                 Player player = game.getGameState().getPlayer(i);
                 Card field = player.getDeck().getProgramField(register);
-                field.setVisible(true);
+                if (field != null) {
+                    field.setVisible(true);
+                }
             }
         }
     }
@@ -242,7 +244,9 @@ public class GameLogicController {
             Player player = game.getGameState().getPlayer(i);
             for (int j = 0; j < PlayerDeck.NO_REGISTERS; j++) {
                 Card field = player.getDeck().getProgramField(j);
-                field.setVisible(false);
+                if (field != null) {
+                    field.setVisible(false);
+                }
             }
         }
     }

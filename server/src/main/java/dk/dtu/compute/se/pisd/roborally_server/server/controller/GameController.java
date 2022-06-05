@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadGameState.getPlayerDeckFromJSON;
 import static dk.dtu.compute.se.pisd.roborally_server.server.controller.Utility.getResponseEntity;
 
 @RestController
@@ -101,7 +102,8 @@ public class GameController {
     }
 
     @PostMapping(value = "/games/{id}/gameState/{playerID}", produces = "application/json")
-    public ResponseEntity<String> updatePlayerDeck(@PathVariable UUID id, @PathVariable UUID playerID, @RequestBody PlayerDeck playerDeck) {
+    public ResponseEntity<String> updatePlayerDeck(@PathVariable UUID id, @PathVariable UUID playerID, @RequestBody String playerDeckJSON) {
+        PlayerDeck playerDeck = getPlayerDeckFromJSON(new JSONObject(playerDeckJSON));
         boolean status = gameService.updatePlayerDeck(id, playerID, playerDeck);
         return getResponseEntity(status, "player deck not updated");
     }

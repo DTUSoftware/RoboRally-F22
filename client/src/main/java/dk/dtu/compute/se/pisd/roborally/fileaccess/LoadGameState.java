@@ -100,6 +100,49 @@ public class LoadGameState {
         board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
     }
 
+    public static JSONObject getPlayerGameState(Player player) {
+        JSONObject playerJSON = new JSONObject();
+
+        playerJSON.put("name", player.getName());
+        playerJSON.put("color", player.getColor());
+        playerJSON.put("energy", player.getEnergy());
+        playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
+
+        JSONObject position = new JSONObject();
+        position.put("x", player.getSpace().x);
+        position.put("y", player.getSpace().y);
+        position.put("heading", player.getHeading().name());
+        playerJSON.put("position", position);
+
+        JSONArray program = new JSONArray();
+        for (int j = 0; j < Player.NO_REGISTERS; j++) {
+            JSONObject programCard = new JSONObject();
+            CommandCardField field = player.getProgramField(j);
+            if (field != null && field.getCard() != null) {
+                programCard.put("type", "COMMAND");
+                programCard.put("command", field.getCard().command.name());
+                programCard.put("visible", field.isVisible());
+                program.put(programCard);
+            }
+        }
+        playerJSON.put("program", program);
+
+        JSONArray cards = new JSONArray();
+        for (int j = 0; j < Player.NO_CARDS; j++) {
+            JSONObject cardsJSON = new JSONObject();
+            CommandCardField field = player.getCardField(j);
+            if (field != null && field.getCard() != null) {
+                cardsJSON.put("type", "COMMAND");
+                cardsJSON.put("command", field.getCard().command.name());
+                cardsJSON.put("visible", field.isVisible());
+                cards.put(cardsJSON);
+            }
+        }
+        playerJSON.put("cards", cards);
+
+        return playerJSON;
+    }
+
     /**
      * Saves the current gamestate to a file.
      *
@@ -115,45 +158,7 @@ public class LoadGameState {
 
         JSONArray players = new JSONArray();
         for (int i = 0; i < board.getPlayersNumber(); i++) {
-            Player player = board.getPlayer(i);
-            JSONObject playerJSON = new JSONObject();
-
-            playerJSON.put("name", player.getName());
-            playerJSON.put("color", player.getColor());
-            playerJSON.put("energy", player.getEnergy());
-            playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
-
-            JSONObject position = new JSONObject();
-            position.put("x", player.getSpace().x);
-            position.put("y", player.getSpace().y);
-            position.put("heading", player.getHeading().name());
-            playerJSON.put("position", position);
-
-            JSONArray program = new JSONArray();
-            for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                JSONObject programCard = new JSONObject();
-                CommandCardField field = player.getProgramField(j);
-                if (field != null && field.getCard() != null) {
-                    programCard.put("command", field.getCard().command.name());
-                    programCard.put("visible", field.isVisible());
-                    program.put(programCard);
-                }
-            }
-            playerJSON.put("program", program);
-
-            JSONArray cards = new JSONArray();
-            for (int j = 0; j < Player.NO_CARDS; j++) {
-                JSONObject cardsJSON = new JSONObject();
-                CommandCardField field = player.getCardField(j);
-                if (field != null && field.getCard() != null) {
-                    cardsJSON.put("command", field.getCard().command.name());
-                    cardsJSON.put("visible", field.isVisible());
-                    cards.put(cardsJSON);
-                }
-            }
-            playerJSON.put("cards", cards);
-
-            players.put(playerJSON);
+            players.put(getPlayerGameState(board.getPlayer(i)));
         }
         gameState.put("players", players);
 

@@ -75,6 +75,8 @@ public class ServerConnector {
 
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
         requestBuilder.setHeader("User-Agent", "RoboRally Client");
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
         requestBuilder.uri(URI.create(getServerURL() + endpoint));
 
         switch (requestType) {
@@ -99,6 +101,8 @@ public class ServerConnector {
         }
 
         request = requestBuilder.build();
+
+        System.out.println(request.toString());
 
         CompletableFuture<HttpResponse<String>> response = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
 

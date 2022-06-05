@@ -266,8 +266,10 @@ public class Player extends Subject {
      * @param checkpoint sets the checkpoints :)
      */
     public void setCurrentCheckpoint(int checkpoint) {
-        this.currentCheckpoint = checkpoint;
-        notifyChange();
+        if (this.currentCheckpoint != checkpoint) {
+            this.currentCheckpoint = checkpoint;
+            notifyChange();
+        }
     }
 
     /**
@@ -297,6 +299,10 @@ public class Player extends Subject {
         this.energy = energy;
     }
 
+    public void setDamage(int damage) {
+
+    }
+
     /**
      * gives the current energy of the player
      *
@@ -311,6 +317,9 @@ public class Player extends Subject {
     }
 
     public void setReady(boolean ready) {
-        this.ready = ready;
+        if (this.ready != ready) {
+            this.ready = ready;
+            super.notifyChange();
+        }
     }
 }

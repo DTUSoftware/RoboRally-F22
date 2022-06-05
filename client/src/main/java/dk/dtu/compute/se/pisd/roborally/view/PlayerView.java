@@ -157,6 +157,7 @@ public class PlayerView extends Tab implements ViewObserver {
         top.getChildren().add(upgradeCardsLabel);
         top.getChildren().add(upgradeCardsPane);
 
+        player.attach(this);
         if (player.board != null) {
             player.board.attach(this);
             update(player.board);
@@ -171,7 +172,7 @@ public class PlayerView extends Tab implements ViewObserver {
      */
     @Override
     public void updateView(Subject subject) {
-        if (subject == player.board) {
+        if (subject == player.board || subject == player) {
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
                 CardFieldView cardFieldView = programCardViews[i];
                 if (cardFieldView != null) {

@@ -91,6 +91,7 @@ public class LoadBoard {
 		try {
             JSONObject size = boardJSON.getJSONObject("size");
             board = new Board(size.getInt("width"), size.getInt("height"), mapID);
+            board.setGame(game);
 
             // Add the board to the gamecontroller
             game.setBoard(board);

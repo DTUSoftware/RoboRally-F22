@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -203,6 +204,22 @@ public class Board extends Subject {
         } else {
             return null;
         }
+    }
+
+    /**
+     * get player from uuid
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @param playerID uuid
+     * @return the player
+     */
+    public Player getPlayerFromID(UUID playerID) {
+        for (Player player : players) {
+            if (player.getID().equals(playerID)) {
+                return player;
+            }
+        }
+        return null;
     }
 
     /**

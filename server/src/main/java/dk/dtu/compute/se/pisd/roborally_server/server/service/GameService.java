@@ -9,6 +9,9 @@ import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
 import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
+import dk.dtu.compute.se.pisd.roborally_server.model.cards.Card;
+import dk.dtu.compute.se.pisd.roborally_server.model.cards.CommandCard;
+import dk.dtu.compute.se.pisd.roborally_server.model.cards.UpgradeCard;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -71,7 +74,15 @@ public class GameService implements IGameService {
 
     @Override
     public boolean updatePlayerDeck(UUID id, UUID playerID, PlayerDeck playerDeck) {
-        return false;
+        PlayerDeck currentPlayerDeck = games.get(id).getPlayer(playerID).getDeck();
+
+        // only check cards
+        // TODO: card check to prevent cheating
+        currentPlayerDeck.setCards(playerDeck.getCards());
+        currentPlayerDeck.setProgram(playerDeck.getProgram());
+        currentPlayerDeck.setUpgrades(playerDeck.getUpgrades());
+
+        return true;
     }
 
     @Override
@@ -97,12 +108,17 @@ public class GameService implements IGameService {
         switch (game.getGameState().getPhase()) {
             case PROGRAMMING:
                 getPlayer(id, playerID).setReady(true);
+                if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
+                    game.getGameLogicController().finishProgrammingPhase();
+                    game.getGameLogicController().executePrograms();
+                    resetReady(id);
+                }
                 return true;
             case WAITING:
                 getPlayer(id, playerID).setReady(true);
                 if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
-                    resetReady(id);
                     game.getGameLogicController().startProgrammingPhase();
+                    resetReady(id);
                 }
                 return true;
             default:

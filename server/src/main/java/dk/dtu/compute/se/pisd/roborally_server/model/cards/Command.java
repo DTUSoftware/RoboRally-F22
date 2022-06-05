@@ -22,6 +22,8 @@
  */
 package dk.dtu.compute.se.pisd.roborally_server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -87,6 +89,7 @@ public enum Command {
      * checks if it's interactive
      * @return if its empty
      */
+    @JsonIgnore
     public boolean isInteractive() {
         return !options.isEmpty();
     }
@@ -95,6 +98,7 @@ public enum Command {
      * gets the options
      * @return options
      */
+    @JsonIgnore
     public List<Command> getOptions() {
         return options;
     }

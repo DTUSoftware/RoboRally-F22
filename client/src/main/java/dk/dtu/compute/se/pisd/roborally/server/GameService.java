@@ -1,10 +1,13 @@
 package dk.dtu.compute.se.pisd.roborally.server;
 
+import dk.dtu.compute.se.pisd.roborally.model.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.http.HttpRequest;
 import java.util.UUID;
+
+import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.getPlayerGameState;
 
 public class GameService {
     public static JSONObject getGame(UUID id) {
@@ -49,6 +52,15 @@ public class GameService {
 
     public static boolean markPlayerReady(UUID gameID, UUID playerID) {
         JSONObject responseJSON = ServerConnector.sendRequest("/games/"+gameID+"/gameState/"+playerID+"/ready", ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(""));
+        if (responseJSON.has("result")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean updatePlayerDeck(UUID gameID, Player player) {
+        JSONObject playerGameState = getPlayerGameState(player);
+        JSONObject responseJSON = ServerConnector.sendRequest("/games/"+gameID+"/gameState/"+player.getID(), ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(playerGameState.toString()));
         if (responseJSON.has("result")) {
             return true;
         }
