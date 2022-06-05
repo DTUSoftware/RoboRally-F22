@@ -144,7 +144,7 @@ public class LoadGameState {
             playerJSON.put("program", program);
 
             JSONArray cards = new JSONArray();
-            for (int j = 0; j < Player.NO_CARDS; j++) {
+            for (int j = 0; j < Player.NO_COMMAND_CARDS; j++) {
                 JSONObject cardsJSON = new JSONObject();
                 CommandCardField field = player.getCardField(j);
                 if (field != null && field.getCard() != null) {

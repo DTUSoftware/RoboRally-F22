@@ -5,7 +5,7 @@ import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import org.jetbrains.annotations.NotNull;
+
 
 /**
  * the pushpanel object that pushes player on certain registers
@@ -62,7 +62,7 @@ public class PushPanel extends ActionElement {
     }
 
     /**
-     * the scond register where pushpanel reacts
+     * the second register where pushpanel reacts
      * @return register2
      */
     public int getRegister2() {
@@ -73,8 +73,10 @@ public class PushPanel extends ActionElement {
     public void activate() {
         Player player = super.getSpace().getPlayer();
         if (player != null && !player.isMovedByAction()){
-            super.getGameController().moveDirectionX(player, direction.next().next(), 1);
-            player.setMovedByAction(true);
+            if (getRegister1() == super.getGameController().board.getStep()|| getRegister2() == super.getGameController().board.getStep()) {
+                super.getGameController().moveDirectionX(player, direction.next().next(), 1);
+                player.setMovedByAction(true);
+            }
         }
 
     }
@@ -85,7 +87,7 @@ public class PushPanel extends ActionElement {
     }
 
     @Override
-    public int compareTo(@NotNull Object o) {
+    public int compareTo(Object o) {
         if (!(o instanceof ActionElement)) {
             throw new ClassCastException();
         }

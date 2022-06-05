@@ -133,7 +133,7 @@ public class LoadBoard {
                             new Pit(gameController, space);
                             break;
                         case "priority_antenna":
-                            new PriorityAntenna(space);
+                            new PriorityAntenna(gameController,space);
                             break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");

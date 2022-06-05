@@ -70,6 +70,7 @@ public class CommandCardField extends Subject {
         }
     }
 
+
     /**
      * Whether the field is visible.
      *
