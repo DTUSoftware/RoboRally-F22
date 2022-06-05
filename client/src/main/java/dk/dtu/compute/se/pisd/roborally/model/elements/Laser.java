@@ -10,18 +10,17 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The laser object
  */
-public class Laser extends ActionElement{
+public class Laser extends FieldElement{
     private Heading direction;
     private int lazer;
 
     /**
      * constructor for the laser
-     * @param gameController the gamecontroller
      * @param space the space to put the lazer
      * @param direction the direction for the laser
      */
-    public Laser(GameController gameController, Space space, Heading direction, int lazer) {
-        super(gameController, space);
+    public Laser(Space space, Heading direction, int lazer) {
+        super(space);
         this.direction = direction;
         this.lazer = lazer;
     }
@@ -40,36 +39,5 @@ public class Laser extends ActionElement{
      */
     public int getLazer() {
         return lazer;
-    }
-
-    /**
-     * not used
-     */
-    @Override
-    public void activate() {
-
-    }
-
-    /**
-     * not used
-     */
-    @Override
-    public void doLandingAction() {
-
-    }
-
-    @Override
-    public int compareTo(@NotNull Object o) {
-        if (!(o instanceof ActionElement)) {
-            throw new ClassCastException();
-        }
-
-        if (o instanceof ConveyorBelt || o instanceof PushPanel || o instanceof Gear) {
-            return 1;
-        }
-        else if (o instanceof EnergySpace || o instanceof Checkpoint) {
-            return -1;
-        }
-        return -1;
     }
 }

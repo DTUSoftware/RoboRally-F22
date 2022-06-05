@@ -16,9 +16,4 @@ public class PriorityAntenna extends FieldElement {
     public PriorityAntenna(Space space) {
         super(space);
     }
-
-    @Override
-    public void doLandingAction() {
-
-    }
 }

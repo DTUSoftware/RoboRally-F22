@@ -29,12 +29,11 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.ServerConnector;
+import dk.dtu.compute.se.pisd.roborally.server.GameService;
+import dk.dtu.compute.se.pisd.roborally.server.MapService;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
-import dk.dtu.compute.se.pisd.roborally.model.Space;
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import net.harawata.appdirs.AppDirs;
@@ -42,10 +41,8 @@ import net.harawata.appdirs.AppDirsFactory;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
@@ -160,8 +157,7 @@ public class AppController implements Observer {
     private List<String> getMapOptions() {
         List<String> mapOptions = null;
 
-        ServerConnector serverConnector = new ServerConnector();
-        JSONArray maps = serverConnector.getMaps();
+        JSONArray maps = MapService.getMaps();
 
         if (maps != null && maps.length() > 0) {
             mapOptions = new ArrayList<>();
@@ -218,74 +214,28 @@ public class AppController implements Observer {
             if (mapResult.isPresent()) {
                 Checkpoint.setNumberOfCheckpointsCreated(0);
                 gameController = new GameController(this.roboRally, null);
-                Board board = loadBoard(gameController, mapResult.get());
 
-                // debug adding
-//                {
-//                    Space space = board.getSpace(1, 2);
-//                    new Wall(space, Heading.EAST);
-//                    new Checkpoint(space, 2);
-//
-//                    space = board.getSpace(1,3);
-//                    new ConveyorBelt(gameController, space, true, Heading.SOUTH);
-//
-//                    space = board.getSpace(1, 4);
-//                    new Checkpoint(space, 1);
-//                    new Wall(space, Heading.NORTH);
-//
-//                    space = board.getSpace(3, 4);
-//                    new Gear(gameController, space, false);
-//                    new Wall(space, Heading.SOUTH);
-//                }
+                loadBoard(gameController, mapResult.get());
 
-                final String BOARDSFOLDER = "maps";
-                InputStream inputStream = null;
-                try {
-                    inputStream = Resources.getResource(BOARDSFOLDER + "/" + mapResult.get() + ".json").openStream();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-                JSONTokener tokener = new JSONTokener(inputStream);
-                JSONObject boardJSON = new JSONObject(tokener);
-                JSONArray boardObjects = boardJSON.getJSONArray("board");
+                JSONObject gameJSON = GameService.newGame(mapResult.get(), playerNumberResult.get());
+                gameController.setGameID(UUID.fromString(gameJSON.getString("id")));
 
-                String spawn_gear_element;
-                JSONArray elementsJSON = null;
-                Space space = null;
-                int l = 0;
+                gameController.updateGameState();
 
-                int no = playerNumberResult.get();
-                for (int i = 0; i < no; i++) {
-                    Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
-                    board.addPlayer(player);
-                    //TODO: skriv linjen under om til at skaffe et gear til hver spiller, og gem det
-
-                    outerloop:
-                    for (; l < boardObjects.length(); l++) {
-                        JSONObject spaceJSON = boardObjects.getJSONObject(l);
-
-                        JSONObject positionJSON = spaceJSON.getJSONObject("position");
-                        space = board.getSpace(positionJSON.getInt("x"), positionJSON.getInt("y"));
-
-                        elementsJSON = spaceJSON.getJSONArray("elements");
-
-                        for (int j = 0; j < elementsJSON.length(); j++) {
-                            JSONObject elementJSON = elementsJSON.getJSONObject(j);
-                            if (elementJSON.getString("type").equals("spawn_gear")) {
-                                player.setSpace(space);
-                                player.setHeading(Heading.valueOf(elementJSON.getString("direction")));
-                                player.setStartGearSpace(space);
-                                l++;
-                                break outerloop;
-                            }
+                new Timer().scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (gameController != null) {
+                            System.out.println("----------------------------");
+                            System.out.println("Game Controller still exists...\nChecking Game State!");
+                            gameController.updateGameState();
+                            System.out.println("----------------------------");
+                        }
+                        else {
+                            this.cancel();
                         }
                     }
-
-                }
-                // XXX: V2
-                // board.setCurrentPlayer(board.getPlayer(0));
-                gameController.startProgrammingPhase();
+                }, 0, 1000);
 
                 roboRally.createBoardView(gameController, null);
             }

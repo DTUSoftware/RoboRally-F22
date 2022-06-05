@@ -25,10 +25,12 @@ package dk.dtu.compute.se.pisd.roborally.model;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.model.elements.Checkpoint;
 import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
+import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
 
@@ -54,6 +56,7 @@ public class Board extends Subject {
 
     private Player current;
     private Checkpoint[] checkpoints;
+    private SpawnGear[] spawnGears;
     private RebootToken[] rebootTokens;
 
     private Phase phase = INITIALISATION;
@@ -135,6 +138,24 @@ public class Board extends Subject {
     }
 
     /**
+     * Gets array of spawnGears
+     *
+     * @return spawnGears
+     */
+    public SpawnGear[] getSpawnGears() {
+        return spawnGears != null ? spawnGears : new SpawnGear[0];
+    }
+
+    /**
+     * Sets spawnGears
+     *
+     * @param spawnGears resets spawnGears
+     */
+    public void setSpawnGears(SpawnGear[] spawnGears) {
+        this.spawnGears = spawnGears;
+    }
+
+    /**
      * Gets a {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} from its coordinates
      * on the board.
      *
@@ -165,7 +186,7 @@ public class Board extends Subject {
      * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to add to the game.
      */
     public void addPlayer(@NotNull Player player) {
-        if (player.board == this && !players.contains(player)) {
+        if (!players.contains(player)) {
             players.add(player);
             notifyChange();
         }
@@ -183,6 +204,22 @@ public class Board extends Subject {
         } else {
             return null;
         }
+    }
+
+    /**
+     * get player from uuid
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @param playerID uuid
+     * @return the player
+     */
+    public Player getPlayerFromID(UUID playerID) {
+        for (Player player : players) {
+            if (player.getID().equals(playerID)) {
+                return player;
+            }
+        }
+        return null;
     }
 
     /**
@@ -284,11 +321,7 @@ public class Board extends Subject {
      * @return the Player's player number.
      */
     public int getPlayerNumber(@NotNull Player player) {
-        if (player.board == this) {
-            return players.indexOf(player);
-        } else {
-            return -1;
-        }
+        return players.indexOf(player);
     }
 
     /**
@@ -359,6 +392,6 @@ public class Board extends Subject {
                 ", Player: " + getCurrentPlayer().getName() +
                 ", Step: " + getStep() +
                 ", Player checkpoint: " + getCurrentPlayer().getCurrentCheckpoint() +
-                ", Player power: " + getCurrentPlayer().getPower();
+                ", Player energy: " + getCurrentPlayer().getEnergy();
     }
 }

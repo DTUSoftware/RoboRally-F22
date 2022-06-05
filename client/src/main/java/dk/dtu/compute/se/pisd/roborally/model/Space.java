@@ -76,7 +76,7 @@ public class Space extends Subject {
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
-                (player == null || board == player.board)) {
+                (player == null || board != null)) {
             this.player = player;
             if (oldPlayer != null) {
                 // this should actually not happen
@@ -92,7 +92,7 @@ public class Space extends Subject {
     void playerChanged() {
         if (getPlayer() != null) {
             for (FieldElement fieldElement : objects) {
-                fieldElement.doLandingAction();
+//                fieldElement.doLandingAction();
             }
         }
 
