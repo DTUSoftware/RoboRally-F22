@@ -58,11 +58,7 @@ public enum Command {
     /** Left, Right or U-Turn  */
     WEASEL_ROUTINE("weasel_routine", LEFT, RIGHT, U_TURN),
     /** Move 3  */
-    SPEED_ROUTINE("speed_routine"),
-    /** Discard 1 spam card from discard pile  */
-    SPAM_FOLDER("spam_routine"),
-    /** Repeat previous register  */
-    REPEAT_ROUTINE("repeat_routine");
+    SPEED_ROUTINE("speed_routine");
 
     /** The displayName of a command */
     final public String displayName;

@@ -160,9 +160,9 @@ public class GameLogicController {
                     Card field;
 
                     if (20 < (int) ((Math.random() * (player.getDeck().getDamage() + 20)) + 1)) {
-                        field = generateRandomDamageCard(9, 12); //TODO change if cards chance
+                        field = generateRandomDamageCard(); //TODO change if cards chance
                     } else {
-                        field = generateRandomCommandCard(0, 8); //TODO change if cards chance
+                        field = generateRandomCommandCard(); //TODO change if cards chance
                     }
                     field.setVisible(true);
                     player.getDeck().setCardField(j, field);
@@ -181,7 +181,7 @@ public class GameLogicController {
      */
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
-        int random = (int) ((Math.random() * (commands.length+1));
+        int random = (int) ((Math.random() * commands.length));
         return new CommandCard(commands[random]);
     }
 
@@ -193,7 +193,7 @@ public class GameLogicController {
      */
     private DamageCard generateRandomDamageCard() {
         Damage[] damages = Damage.values();
-        int random = (int) ((Math.random() * (damages.length +1));
+        int random = (int) ((Math.random() * damages.length));
         return new DamageCard(damages[random]);
     }
 
