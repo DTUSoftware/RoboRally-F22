@@ -154,9 +154,20 @@ public class Board extends Subject {
         }
     }
 
+    /**
+     * sets the position of the priority antenna
+     * @author Mads Legard Nielsen
+     * @param position
+     */
     public void setPriorityAntenna(Space position){
         this.priorityAntenna = position;
     }
+
+    /**
+     * gets the position of the priority antenna
+     * @author Mads Legard Nielsen
+     * @return the Space / position for the priority antenna
+     */
     public Space getPriorityAntennaPosition(){
         return this.priorityAntenna;
     }

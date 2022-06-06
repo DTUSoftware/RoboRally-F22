@@ -7,12 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The energyspace object that gives the player energy
+ * @author Mads Legard Nielsen
  */
 public class EnergySpace extends ActionElement {
     boolean hasEnergy = true;
 
     /**
      * The constructer for the energyspace
+     * @author Mads Legard Nielsen
      * @param gameLogicController the gamecontroller
      * @param space the place t put the energyspace
      */
@@ -30,11 +32,12 @@ public class EnergySpace extends ActionElement {
     }
 
     /**
-     * gives the palyer energy
+     * gives the player energy if the is the first one to land on the unused energy field, and does the register 5
+     * rule where it adds energy to the player if it's landed on during the 5th register
+     * @author Mads Legard Nielsen
      */
     @Override
     public void activate() {
-        // TODO make the thingy with the specific register reached
         if (!super.getSpace().free()) {
             Player player = super.getSpace().getPlayer();
             if (hasEnergy) {
@@ -47,6 +50,12 @@ public class EnergySpace extends ActionElement {
         }
     }
 
+    /**
+     * for the activation order
+     * @author Marcus Sand
+     * @param o object to compare to.
+     * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     */
     @Override
     public int compareTo(@NotNull Object o) {
         if (!(o instanceof ActionElement)) {

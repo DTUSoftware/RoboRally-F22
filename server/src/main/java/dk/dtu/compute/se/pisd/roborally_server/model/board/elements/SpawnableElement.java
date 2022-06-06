@@ -7,13 +7,14 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 /**
  * Spawnablelement abstract class that extends actionelement and helps spawning the elements.
+ * @author Marcus Sand
  */
 public abstract class SpawnableElement extends ActionElement {
     private Heading spawnDirection;
 
     /**
      * Constructer for spawnableelement
-     *
+     * @author Marcus Sand
      * @param gameLogicController the game controller
      * @param space          the space
      * @param spawnDirection the direction
@@ -25,6 +26,7 @@ public abstract class SpawnableElement extends ActionElement {
 
     /**
      * getter for direction
+     * @author Marcus Sand
      * @return spawnDirection which is the direction a wall or pushpanel should spawn
      */
     public Heading getDirection() {
@@ -33,6 +35,7 @@ public abstract class SpawnableElement extends ActionElement {
 
     /**
      * Spawns a player at a certain space.
+     * @author Marcus Sand
      * @param player takes the player
      */
     public void spawnPlayer(Player player) {

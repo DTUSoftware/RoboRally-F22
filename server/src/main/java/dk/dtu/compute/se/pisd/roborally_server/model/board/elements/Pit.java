@@ -5,10 +5,11 @@ import dk.dtu.compute.se.pisd.roborally_server.model.Player;
 import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 import org.jetbrains.annotations.NotNull;
 
-// TODO make this stuff
 
 /**
  * the pit object that forces a reboot
+ * @author Mads Legard Nielsen
+ * @author Marcus Sand
  */
 public class Pit extends ActionElement{
     /**
@@ -23,6 +24,7 @@ public class Pit extends ActionElement{
 
     /**
      * does takeDamage to the player and reboots the player
+     * @auther Marcus Sand
      */
     @Override
     public void doLandingAction() {
@@ -43,6 +45,13 @@ public class Pit extends ActionElement{
 
     }
 
+
+    /**
+     * for the activation order
+     * @author Marcus Sand
+     * @param o object to compare to.
+     * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     */
     @Override
     public int compareTo(@NotNull Object o) {
         if (!(o instanceof ActionElement)) {

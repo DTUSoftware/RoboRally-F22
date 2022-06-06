@@ -9,6 +9,7 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 /**
  * the pushpanel object that pushes player on certain registers
+ * @author Mads Legard Nielsen
  */
 public class PushPanel extends ActionElement {
     private Heading direction;
@@ -26,7 +27,7 @@ public class PushPanel extends ActionElement {
 
     /**
      * Constructer for action element
-     *
+     * @author Mads Legard Nielsen
      * @param gameLogicController the game controller
      * @param space          the space
      * @param direction the direction
@@ -46,7 +47,7 @@ public class PushPanel extends ActionElement {
 
     /**
      * gets the heading
-     *
+     * @author Mads Legard Nielsen
      * @return direction
      */
     public Heading getDirection() {
@@ -55,6 +56,7 @@ public class PushPanel extends ActionElement {
 
     /**
      * the first register where the pushpanel reacts
+     * @author Mads Legard Nielsen
      * @return register1
      */
     public int getRegister1() {
@@ -63,12 +65,18 @@ public class PushPanel extends ActionElement {
 
     /**
      * the second register where pushpanel reacts
+     * @author Mads Legard Nielsen
      * @return register2
      */
     public int getRegister2() {
         return register2;
     }
 
+    /**
+     * Activates the pushpanel and makes sure the rules are followed, with the register to use and
+     * and whether a player was moved by and action
+     * @author Mads Legard Nielsen
+     */
     @Override
     public void activate() {
         Player player = super.getSpace().getPlayer();
@@ -81,11 +89,19 @@ public class PushPanel extends ActionElement {
 
     }
 
+    /**
+     * not used here
+     */
     @Override
     public void doLandingAction() {
 
     }
-
+    /**
+     * for the activation order
+     * @author Marcus Sand
+     * @param o object to compare to.
+     * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     */
     @Override
     public int compareTo(Object o) {
         if (!(o instanceof ActionElement)) {

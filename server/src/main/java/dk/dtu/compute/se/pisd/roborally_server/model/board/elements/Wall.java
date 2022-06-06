@@ -5,6 +5,8 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 /**
  * the wall object
+ * @author Mads Legard Nielsen
+ * @author Marcus Sand
  */
 public class Wall extends FieldElement {
     Heading direction;
@@ -12,6 +14,8 @@ public class Wall extends FieldElement {
 
     /**
      * constructer for the wall objct
+     * @author Mads Legard Nielsen
+     * @author Marcus Sand
      * @param space where its located
      * @param direction the direction of the wall
      * @param invisible whether a wall is visible or not
@@ -25,6 +29,8 @@ public class Wall extends FieldElement {
 
     /**
      * gets the heading
+     * @author Mads Legard Nielsen
+     * @author Marcus Sand
      * @return directioon
      */
     public Heading getDirection() {
@@ -33,6 +39,7 @@ public class Wall extends FieldElement {
 
     /**
      * gets if invisible
+     * @author Oscar Maxwell
      * @return invisible
      */
 

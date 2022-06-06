@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * converyorbelt object
+ * @author Marcus Sand
  */
 public class ConveyorBelt extends ActionElement {
     private boolean color;
@@ -15,7 +16,7 @@ public class ConveyorBelt extends ActionElement {
 
     /**
      * Creates a new conveyor belt.
-     *
+     * @author Marcus Sand
      * @param gameLogicController the gamecontroller
      * @param space the space to put the conveyorbelt
      * @param color the color of the belt blue/green is true/false
@@ -29,6 +30,7 @@ public class ConveyorBelt extends ActionElement {
 
     /**
      * gets the color
+     * @author Marcus Sand
      * @return color
      */
     public boolean getColor() {
@@ -37,6 +39,7 @@ public class ConveyorBelt extends ActionElement {
 
     /**
      * gets the heading
+     * @author Marcus Sand
      * @return direction
      */
     public Heading getDirection() {
@@ -53,6 +56,7 @@ public class ConveyorBelt extends ActionElement {
 
     /**
      * activates onveryorbelt
+     * @author Marcus Sand
      */
     @Override
     public void activate() {
@@ -69,7 +73,12 @@ public class ConveyorBelt extends ActionElement {
             player.setMovedByAction(true);
         }
     }
-
+    /**
+     * for the activation order
+     * @author Marcus Sand
+     * @param o object to compare to.
+     * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     */
     @Override
     public int compareTo(@NotNull Object o) {
         if (!(o instanceof ActionElement)) {
