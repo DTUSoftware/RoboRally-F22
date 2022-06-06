@@ -18,7 +18,7 @@ public class PitView extends ElementView {
 
     static {
         try {
-            image = new Image(Resources.getResource("objects/pit.jpg").openStream());
+            image = new Image(Resources.getResource("objects/hole.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
