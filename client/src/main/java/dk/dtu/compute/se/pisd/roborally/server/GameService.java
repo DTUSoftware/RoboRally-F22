@@ -52,18 +52,17 @@ public class GameService {
 
     public static boolean markPlayerReady(UUID gameID, UUID playerID) {
         JSONObject responseJSON = ServerConnector.sendRequest("/games/"+gameID+"/gameState/"+playerID+"/ready", ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(""));
-        if (responseJSON != null && responseJSON.has("result")) {
-            return true;
-        }
-        return false;
+        return responseJSON != null && responseJSON.has("result");
     }
 
     public static boolean updatePlayerDeck(UUID gameID, Player player) {
         JSONObject playerGameState = getPlayerGameState(player);
         JSONObject responseJSON = ServerConnector.sendRequest("/games/"+gameID+"/gameState/"+player.getID(), ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(playerGameState.toString()));
-        if (responseJSON != null && responseJSON.has("result")) {
-            return true;
-        }
-        return false;
+        return responseJSON != null && responseJSON.has("result");
+    }
+
+    public static boolean chooseOption(UUID gameID, UUID playerID, String cardOption) {
+        JSONObject responseJSON = ServerConnector.sendRequest("/games/"+gameID+"/gameState/"+playerID+"/chooseOption?cardOption="+cardOption, ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(""));
+        return responseJSON != null && responseJSON.has("result");
     }
 }

@@ -145,4 +145,10 @@ public class GameController {
         boolean status = gameService.updatePlayerReady(id, playerID);
         return getResponseEntity(status, "could not mark as ready!");
     }
+
+    @PostMapping(value = "/games/{id}/gameState/{playerID}/chooseOption", produces = "application/json")
+    public ResponseEntity<String> playerActivationChooseOption(@PathVariable UUID id, @PathVariable UUID playerID, @RequestParam(defaultValue = "none") String cardOption) {
+        boolean status = gameService.chooseInteractionOption(id, playerID, cardOption);
+        return getResponseEntity(status, "could not choose option!");
+    }
 }
