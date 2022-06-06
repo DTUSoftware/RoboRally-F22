@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class JSONService implements IJSONService {
-    final private AppDirs appDirs = AppDirsFactory.getInstance();
+    final private static AppDirs appDirs = AppDirsFactory.getInstance();
 
-    private String getAppDataFolder() {
+    public static String getAppDataFolder() {
         return appDirs.getUserDataDir("RoboRally-Server", "prod", "DTU");
     }
 
@@ -45,8 +45,13 @@ public class JSONService implements IJSONService {
             folderURL = Resources.getResource(foldername);
             folder = new File(folderURL.getFile());
         } catch (Exception e) {
-            if (!e.toString().contains("gamestates not found")) {
-                e.printStackTrace();
+            if (!e.toString().contains("folder files not found")) {
+                if (e.toString().contains("gamestates not found")) {
+                    System.out.println("Gamestate folder not found in resources");
+                }
+                else {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -70,22 +75,24 @@ public class JSONService implements IJSONService {
                         .getLocation()
                         .toURI()
                         .getPath();
-                System.out.println("JAR Path :" + jarPath);
+//                System.out.println("JAR Path :" + jarPath);
 
-                // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. fix it or smthn idk
-                // file walks JAR
-                URI uri = URI.create("jar:file:" + jarPath.replace(" ","%20"));
-                try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
-                    resourceFolderFiles = Files.walk(fs.getPath(foldername))
-                            .filter(Files::isRegularFile)
-                            .map(p -> p.toString().replace(foldername + "/", "").replace(foldername + "\\", "").replace(".json", ""))
-                            .collect(Collectors.toList());
-                } catch (NoSuchFileException e) {
-                    if (!e.toString().contains("gamestates")) {
+                if (jarPath != null) {
+                    // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. fix it or smthn idk
+                    // file walks JAR
+                    URI uri = URI.create("jar:file:" + jarPath.replace(" ","%20"));
+                    try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
+                        resourceFolderFiles = Files.walk(fs.getPath(foldername))
+                                .filter(Files::isRegularFile)
+                                .map(p -> p.toString().replace(foldername + "/", "").replace(foldername + "\\", "").replace(".json", ""))
+                                .collect(Collectors.toList());
+                    } catch (NoSuchFileException e) {
+                        if (!e.toString().contains("gamestates")) {
+                            e.printStackTrace();
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

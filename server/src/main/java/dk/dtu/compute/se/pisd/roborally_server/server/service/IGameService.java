@@ -4,6 +4,8 @@ import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
 import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,11 +14,14 @@ public interface IGameService {
     List<Game> findAll();
     public Game getGameByID(UUID id);
     public Game newGame(String mapID, int playerCount);
+    public Game loadSavedGame(UUID id);
     boolean addGame(Game game);
     public boolean updateGame(UUID id, Game game);
     public boolean deleteGameByID(UUID id);
 
+    JSONArray findAllSavedGameStateUnique();
     GameState getGameStateByID(UUID id);
+    public boolean saveGameStateByID(UUID id);
     String updatePlayerState(UUID id, UUID playerID);
 
     boolean updatePlayerDeck(UUID id, UUID playerID, PlayerDeck playerDeck);
