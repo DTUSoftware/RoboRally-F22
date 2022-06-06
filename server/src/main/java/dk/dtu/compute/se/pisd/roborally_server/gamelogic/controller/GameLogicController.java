@@ -282,6 +282,11 @@ public class GameLogicController {
     private void continuePrograms() {
         do {
             executeNextStep();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } while (game.getGameState().getPhase() == Phase.ACTIVATION && !game.getGameState().isStepMode());
     }
 

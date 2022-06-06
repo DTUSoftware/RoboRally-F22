@@ -235,7 +235,7 @@ public class AppController implements Observer {
                             this.cancel();
                         }
                     }
-                }, 0, 1000);
+                }, 0, 100);
 
                 roboRally.createBoardView(gameController, null);
             }

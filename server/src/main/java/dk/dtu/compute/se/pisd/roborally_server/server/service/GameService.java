@@ -1,8 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.server.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 import dk.dtu.compute.se.pisd.roborally_server.model.Phase;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
@@ -95,7 +94,7 @@ public class GameService implements IGameService {
         return getPlayer(id, playerID).getDeck();
     }
 
-    private void resetReady(UUID id) {
+    public void resetReady(UUID id) {
         for (Player player : games.get(id).getPlayers()) {
             player.setReady(false);
         }
@@ -110,8 +109,21 @@ public class GameService implements IGameService {
                 getPlayer(id, playerID).setReady(true);
                 if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
                     game.getGameLogicController().finishProgrammingPhase();
-                    game.getGameLogicController().executePrograms();
-                    resetReady(id);
+
+                    CompletableFuture<Void> executionFuture = CompletableFuture.runAsync(() -> {
+                        game.getGameLogicController().executePrograms();
+                    });
+
+                    // Reset ready when the activation phase is over
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            if (executionFuture.isDone()) {
+                                resetReady(id);
+                                this.cancel();
+                            }
+                        }
+                    }, 0, 10);
                 }
                 return true;
             case WAITING:
