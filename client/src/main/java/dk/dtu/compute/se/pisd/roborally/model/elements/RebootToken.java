@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * the reboottoken object for rebooting the robots
  */
-public class RebootToken extends SpawnableElement {
+public class RebootToken extends FieldElement {
     private int x1;
     private int y1;
     private int x2;
@@ -18,7 +18,6 @@ public class RebootToken extends SpawnableElement {
     /**
      * Creates a new reboot token.
      *
-     * @param gameController the gamecontroller
      * @param space the space
      * @param direction the direction to put other players, and for players to face
      * @param x1 The x-coordinate for the first corner of the bounds
@@ -26,20 +25,12 @@ public class RebootToken extends SpawnableElement {
      * @param x2 The x-coordinate for the second corner of the bounds
      * @param y2 The y-coordinate for the second corner of the bounds
      */
-    public RebootToken(GameController gameController, Space space, Heading direction, int x1, int y1, int x2, int y2) {
-        super(gameController, space, direction);
+    public RebootToken(Space space, Heading direction, int x1, int y1, int x2, int y2) {
+        super(space);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
-    }
-
-    /**
-     * not used
-     */
-    @Override
-    public void doLandingAction() {
-
     }
 
     /**
@@ -94,25 +85,5 @@ public class RebootToken extends SpawnableElement {
                                 ((this.y1 > this.y2) && (space.y < this.y1 && space.y >= this.y2))
                         )
                 );
-    }
-
-    /**
-     * not used
-     */
-    @Override
-    public void activate() {
-
-    }
-
-    @Override
-    public int compareTo(@NotNull Object o) {
-        if (!(o instanceof ActionElement)) {
-            throw new ClassCastException();
-        }
-
-        if (o instanceof ConveyorBelt || o instanceof PushPanel || o instanceof Gear || o instanceof Laser || o instanceof EnergySpace || o instanceof Checkpoint) {
-            return 1;
-        }
-        return -1;
     }
 }

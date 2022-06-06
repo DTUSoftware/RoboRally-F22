@@ -67,9 +67,8 @@ public class LoadGameState {
         JSONArray players = gameState.getJSONArray("players");
         for (int i = 0; i < players.length(); i++) {
             JSONObject playerJSON = players.getJSONObject(i);
-            Player player = new Player(board, playerJSON.getString("color"), playerJSON.getString("name"));
+            Player player = new Player(null, board);
 
-            player.setPower(playerJSON.getInt("power"));
             player.setEnergy(playerJSON.getInt("energy"));
             player.setCurrentCheckpoint(playerJSON.getInt("currentCheckpoint"));
 
@@ -80,7 +79,7 @@ public class LoadGameState {
             JSONArray program = playerJSON.getJSONArray("program");
             for (int j = 0; j < program.length(); j++) {
                 JSONObject programJSON = program.getJSONObject(j);
-                CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("command")));
+                CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("program")));
                 CommandCardField field = player.getProgramField(j);
                 field.setCard(commandCard);
                 field.setVisible(programJSON.getBoolean("visible"));
@@ -89,7 +88,7 @@ public class LoadGameState {
             JSONArray cards = playerJSON.getJSONArray("cards");
             for (int j = 0; j < cards.length(); j++) {
                 JSONObject card = cards.getJSONObject(j);
-                CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("command")));
+                CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("program")));
                 CommandCardField field = player.getCardField(j);
                 field.setCard(commandCard);
                 field.setVisible(card.getBoolean("visible"));
@@ -99,6 +98,49 @@ public class LoadGameState {
         }
 
         board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
+    }
+
+    public static JSONObject getPlayerGameState(Player player) {
+        JSONObject playerJSON = new JSONObject();
+
+        playerJSON.put("name", player.getName());
+        playerJSON.put("color", player.getColor());
+        playerJSON.put("energy", player.getEnergy());
+        playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
+
+        JSONObject position = new JSONObject();
+        position.put("x", player.getSpace().x);
+        position.put("y", player.getSpace().y);
+        position.put("heading", player.getHeading().name());
+        playerJSON.put("position", position);
+
+        JSONArray program = new JSONArray();
+        for (int j = 0; j < Player.NO_REGISTERS; j++) {
+            JSONObject programCard = new JSONObject();
+            CommandCardField field = player.getProgramField(j);
+            if (field != null && field.getCard() != null) {
+                programCard.put("type", "PROGRAM");
+                programCard.put("program", field.getCard().command.name());
+                programCard.put("visible", field.isVisible());
+                program.put(programCard);
+            }
+        }
+        playerJSON.put("program", program);
+
+        JSONArray cards = new JSONArray();
+        for (int j = 0; j < Player.NO_CARDS; j++) {
+            JSONObject cardsJSON = new JSONObject();
+            CommandCardField field = player.getCardField(j);
+            if (field != null && field.getCard() != null) {
+                cardsJSON.put("type", "PROGRAM");
+                cardsJSON.put("program", field.getCard().command.name());
+                cardsJSON.put("visible", field.isVisible());
+                cards.put(cardsJSON);
+            }
+        }
+        playerJSON.put("cards", cards);
+
+        return playerJSON;
     }
 
     /**
@@ -116,46 +158,7 @@ public class LoadGameState {
 
         JSONArray players = new JSONArray();
         for (int i = 0; i < board.getPlayersNumber(); i++) {
-            Player player = board.getPlayer(i);
-            JSONObject playerJSON = new JSONObject();
-
-            playerJSON.put("name", player.getName());
-            playerJSON.put("color", player.getColor());
-            playerJSON.put("power", player.getPower());
-            playerJSON.put("energy", player.getEnergy());
-            playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
-
-            JSONObject position = new JSONObject();
-            position.put("x", player.getSpace().x);
-            position.put("y", player.getSpace().y);
-            position.put("heading", player.getHeading().name());
-            playerJSON.put("position", position);
-
-            JSONArray program = new JSONArray();
-            for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                JSONObject programCard = new JSONObject();
-                CommandCardField field = player.getProgramField(j);
-                if (field != null && field.getCard() != null) {
-                    programCard.put("command", field.getCard().command.name());
-                    programCard.put("visible", field.isVisible());
-                    program.put(programCard);
-                }
-            }
-            playerJSON.put("program", program);
-
-            JSONArray cards = new JSONArray();
-            for (int j = 0; j < Player.NO_CARDS; j++) {
-                JSONObject cardsJSON = new JSONObject();
-                CommandCardField field = player.getCardField(j);
-                if (field != null && field.getCard() != null) {
-                    cardsJSON.put("command", field.getCard().command.name());
-                    cardsJSON.put("visible", field.isVisible());
-                    cards.put(cardsJSON);
-                }
-            }
-            playerJSON.put("cards", cards);
-
-            players.put(playerJSON);
+            players.put(getPlayerGameState(board.getPlayer(i)));
         }
         gameState.put("players", players);
 

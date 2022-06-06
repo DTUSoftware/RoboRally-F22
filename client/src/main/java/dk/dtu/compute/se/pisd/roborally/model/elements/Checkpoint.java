@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * checkpoint class, inherits from FieldElement
  */
-public class Checkpoint extends ActionElement {
+public class Checkpoint extends FieldElement {
     /**
      * the number of the checkpoint
      */
@@ -17,12 +17,11 @@ public class Checkpoint extends ActionElement {
 
     /**
      * constructer of the checkpoint class
-     * @param gamecontroller the gamecontroller
      * @param space  takes the space the checkpoint is on
      * @param number the number that the checkpoint needs to be
      */
-    public Checkpoint(GameController gamecontroller, Space space, int number) {
-        super(gamecontroller, space);
+    public Checkpoint(Space space, int number) {
+        super(space);
         numberOfCheckpointsCreated++;
         this.number = number;
     }
@@ -70,43 +69,5 @@ public class Checkpoint extends ActionElement {
      */
     public boolean allCheckpointsReached(int checkpointsReached) {
         return checkpointsReached == numberOfCheckpointsCreated;
-    }
-
-    /**
-     * does the landing action for the checkpoint card
-     */
-    @Override
-    public void doLandingAction() {
-        if (checkCheckpoint(super.getSpace().getPlayer().getCurrentCheckpoint())) {
-            super.getSpace().getPlayer().setCurrentCheckpoint(getNumber());
-            if (allCheckpointsReached(super.getSpace().getPlayer().getCurrentCheckpoint())){
-                super.getGameController().winTheGame(getSpace().getPlayer());
-                // TODO win function
-                //Use the button feature from left right, then find out how to quit / restart the game from scratch.
-                //brug evt. new game function for restart.
-                // Brug Wincondition nederst i Gamecontroller
-
-            }
-        }
-    }
-
-    /**
-     * not used here
-     */
-    @Override
-    public void activate() {
-
-    }
-
-    @Override
-    public int compareTo(@NotNull Object o) {
-        if (!(o instanceof ActionElement)) {
-            throw new ClassCastException();
-        }
-
-        if (o instanceof ConveyorBelt || o instanceof PushPanel || o instanceof Gear || o instanceof Laser || o instanceof EnergySpace || o instanceof Checkpoint) {
-            return 1;
-        }
-        return -1;
     }
 }
