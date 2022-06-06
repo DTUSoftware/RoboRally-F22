@@ -361,7 +361,9 @@ public class GameLogicController {
      */
     private void executeNextStep() {
         // ======== Priority Antenna choosing ======
-        priorityAntennaMath();
+        if (game.getGameState().getCurrentPlayer() == 0) {
+            priorityAntennaMath();
+        }
         Player currentPlayer = game.getGameState().getPlayer(game.getGameState().getCurrentPlayer());
 
         // Do the activation
