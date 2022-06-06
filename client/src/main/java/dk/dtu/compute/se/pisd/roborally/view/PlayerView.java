@@ -245,7 +245,7 @@ public class PlayerView extends Tab implements ViewObserver {
 
                         for (Program cardOption : cardOptions) {
                             Button optionButton = new Button(cardOption.displayName);
-//                        optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(cardOption));
+                            optionButton.setOnAction(e -> GameService.chooseOption(gameController.getGameID(), player.getID(), cardOption.name()));
                             optionButton.setDisable(false);
                             playerInteractionPanel.getChildren().add(optionButton);
                         }
@@ -255,7 +255,7 @@ public class PlayerView extends Tab implements ViewObserver {
 
                         for (Damage cardOption : cardOptions) {
                             Button optionButton = new Button(cardOption.displayName);
-//                        optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(cardOption));
+                            optionButton.setOnAction(e -> GameService.chooseOption(gameController.getGameID(), player.getID(), cardOption.name()));
                             optionButton.setDisable(false);
                             playerInteractionPanel.getChildren().add(optionButton);
                         }

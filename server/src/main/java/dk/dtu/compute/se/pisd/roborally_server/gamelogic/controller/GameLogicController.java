@@ -50,6 +50,9 @@ public class GameLogicController {
      **/
     private SortedSet<ActionElement> actionElements = new TreeSet<>();
 
+    /** I don't care about this little shitty part of memory used to store this */
+    private String cardOption = null;
+
     /**
      * The GameController constructor.
      *
@@ -309,15 +312,11 @@ public class GameLogicController {
     }
 
     /**
-     * Executes the next step.
+     * Choose the order of the players, depending on priority antenna location and player locations.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Mads Nielsen
-     * @author Oscar Maxwell
      */
-    // TODO the stuff with the PriorityAntenna
-    private void executeNextStep() {
-        Player currentPlayer = game.getGameState().getPlayer(game.getGameState().getCurrentPlayer());
+    private void priorityAntennaMath() {
         int playerAmount = game.getPlayerCount();
         double[] playerDistances = new double[playerAmount];
         Space priorityAntennaPosition = game.getBoard().getPriorityAntennaPosition();
@@ -350,6 +349,21 @@ public class GameLogicController {
         }
 
         game.getGameState().setPlayers(playerMoveOrderAsList);
+    }
+
+    /**
+     * Executes the next step.
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Mads Nielsen
+     * @author Oscar Maxwell
+     */
+    private void executeNextStep() {
+        // ======== Priority Antenna choosing ======
+        priorityAntennaMath();
+        Player currentPlayer = game.getGameState().getPlayer(game.getGameState().getCurrentPlayer());
+
+        // Do the activation
         if (game.getGameState().getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = game.getGameState().getStep();
             if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
@@ -360,7 +374,27 @@ public class GameLogicController {
                             Program program = ((ProgramCard) card).getProgram();
                             if (program.isInteractive()) {
                                 game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
-                                return;
+                                this.cardOption = null;
+                                while (game.getGameState().getPhase() == Phase.PLAYER_INTERACTION || this.cardOption == null) {
+                                    try {
+                                        Thread.sleep(100);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                // get card from option
+                                try {
+                                    program = Program.valueOf(cardOption);
+                                }
+                                catch (IllegalArgumentException e) {
+                                    try {
+                                        Damage damage_check = Damage.valueOf(cardOption);
+                                        executeDamage(currentPlayer, damage_check);
+                                    }
+                                    catch (IllegalArgumentException e2) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
                             executeProgram(currentPlayer, program);
                             break;
@@ -368,11 +402,33 @@ public class GameLogicController {
                             Damage damage = ((DamageCard) card).getDamage();
                             if (damage.isInteractive()) {
                                 game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
-                                return;
+                                this.cardOption = null;
+                                while (game.getGameState().getPhase() == Phase.PLAYER_INTERACTION || this.cardOption == null) {
+                                    try {
+                                        Thread.sleep(100);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                // get card from option
+                                try {
+                                    damage = Damage.valueOf(cardOption);
+                                }
+                                catch (IllegalArgumentException e) {
+                                    try {
+                                        Program program_check = Program.valueOf(cardOption);
+                                        executeProgram(currentPlayer, program_check);
+                                    }
+                                    catch (IllegalArgumentException e2) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
                             executeDamage(currentPlayer, damage);
                             break;
                     }
+                    this.cardOption = null;
                 }
 
                 int nextPlayerNumber = game.getGameState().getPlayerNumber(currentPlayer) + 1;
@@ -856,34 +912,15 @@ public class GameLogicController {
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
      *
-     * @param cardOptions the card used
+     * @param cardOption the card used
      * @author Oscar Maxwell
+     * @author Marcus Sand
      */
-    public void executeCommandOptionAndContinue(Program cardOptions) {
-
-        game.getGameState().setPhase(Phase.ACTIVATION);
-        Player currentPlayer = game.getGameState().getPlayerCurrent();
-        executeProgram(game.getGameState().getPlayerCurrent(), cardOptions);
-
-        int step = game.getGameState().getStep();
-        if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
-            int nextPlayerNumber = game.getGameState().getPlayerNumber(currentPlayer) + 1;
-            if (nextPlayerNumber < game.getPlayerCount()) {
-                game.getGameState().setCurrentPlayer(nextPlayerNumber);
-            } else {
-                step++;
-                if (step < PlayerDeck.NO_REGISTERS) {
-                    makeProgramFieldsVisible(step);
-                    game.getGameState().setStep(step);
-                    game.getGameState().setCurrentPlayer(0);
-                } else {
-                    startProgrammingPhase();
-                }
-            }
-            continuePrograms();
-
+    public void setCommandCardOptionAndContinue(String cardOption) {
+        if (!cardOption.isEmpty()) {
+            this.cardOption = cardOption;
+            game.getGameState().setPhase(Phase.ACTIVATION);
         }
-
     }
 
     /**

@@ -284,6 +284,10 @@ public class GameService implements IGameService {
 
     @Override
     public boolean chooseInteractionOption(UUID id, UUID playerID, String optionName) {
+        if (optionName == null || optionName.isEmpty() || optionName.equals("none")) {
+            return false;
+        }
+
         Game game = getGameByID(id);
         if (game == null) {
             return false;
@@ -302,8 +306,8 @@ public class GameService implements IGameService {
             return false;
         }
 
+        game.getGameLogicController().setCommandCardOptionAndContinue(optionName);
 
-
-        return false;
+        return true;
     }
 }
