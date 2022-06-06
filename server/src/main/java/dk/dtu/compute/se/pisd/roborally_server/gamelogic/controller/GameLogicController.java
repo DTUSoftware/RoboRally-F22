@@ -177,12 +177,12 @@ public class GameLogicController {
      * Generates a random command card.
      *
      * @author Ekkart Kindler, ekki@dtu.dk
-     * @return the random {@link CommandCard CommandCard}.
+     * @return the random {@link ProgramCard CommandCard}.
      */
-    private CommandCard generateRandomCommandCard() {
-        Command[] commands = Command.values();
-        int random = (int) ((Math.random() * commands.length));
-        return new CommandCard(commands[random]);
+    private ProgramCard generateRandomCommandCard() {
+        Program[] programs = Program.values();
+        int random = (int) ((Math.random() * programs.length));
+        return new ProgramCard(programs[random]);
     }
 
     /**
@@ -330,14 +330,14 @@ public class GameLogicController {
         if (game.getGameState().getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = game.getGameState().getStep();
             if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
-                CommandCard card = currentPlayer.getDeck().getProgramField(step);
+                ProgramCard card = currentPlayer.getDeck().getProgramField(step);
                 if (card != null) {
-                    Command command = card.getCommand();
+                    Program program = card.getCommand();
                     if (card.getCommand().isInteractive()) {
                         game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
                         return;
                     }
-                    executeCommand(currentPlayer, command);
+                    executeCommand(currentPlayer, program);
                 }
 
                 int nextPlayerNumber = game.getGameState().getPlayerNumber(currentPlayer) + 1;
@@ -376,15 +376,15 @@ public class GameLogicController {
      * @author Oscar Maxwell
      * @author Nicolai Udbye
      * @param player  the player to execute the command on
-     * @param command the command to execute
+     * @param program the command to execute
      */
-    private void executeCommand(@NotNull Player player, Command command) {
-        if (player != null && game.hasPlayer(player) && command != null) {
+    private void executeCommand(@NotNull Player player, Program program) {
+        if (player != null && game.hasPlayer(player) && program != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
-            switch (command) {
+            switch (program) {
                 case MOVE_1:
                     this.moveForward(player);
                     break;
@@ -470,9 +470,6 @@ public class GameLogicController {
             if (target != null) {
                 canMove = true;
                 for (FieldElement fieldElement : space.getFieldObjects()) {
-                    if (fieldElement instanceof PriorityAntenna) {
-                        canMove = false;
-                    }
                     if (fieldElement instanceof Wall) {
                         if (((Wall) fieldElement).getDirection() == direction) {
                             canMove = false;
@@ -481,6 +478,9 @@ public class GameLogicController {
                 }
                 if (canMove) {
                     for (FieldElement fieldElement : target.getFieldObjects()) {
+                        if (fieldElement instanceof PriorityAntenna) {
+                            canMove = false;
+                        }
                         if (fieldElement instanceof Wall) {
                             if (((Wall) fieldElement).getDirection().next().next() == direction) {
                                 canMove = false;
@@ -646,12 +646,12 @@ public class GameLogicController {
      *
      * @author Oscar Maxwell
      * @param player  the player to turn
-     * @param command to go left or right
+     * @param program to go left or right
      */
-    public void optionLeftRight(@NotNull Player player, Command command) {
-        if (command.equals("LEFT")) {
+    public void optionLeftRight(@NotNull Player player, Program program) {
+        if (program.equals("LEFT")) {
             turnLeft(player);
-        } else if (command.equals("RIGHT")) {
+        } else if (program.equals("RIGHT")) {
             turnRight(player);
         }
     }
@@ -659,11 +659,11 @@ public class GameLogicController {
     /**
      * @author Nicolai Udbye
      * @param player
-     * @param command
+     * @param program
      */
-    public void sandboxRoutine(@NotNull Player player, Command command) {
+    public void sandboxRoutine(@NotNull Player player, Program program) {
 
-        switch (command) {
+        switch (program) {
             case MOVE_1:
                 this.moveForward(player);
                 break;
@@ -702,14 +702,14 @@ public class GameLogicController {
         if (step <= 0) {
             return;
         }
-        CommandCard card = player.getDeck().getProgramField(step - 1);
+        ProgramCard card = player.getDeck().getProgramField(step - 1);
         if (card != null) {
-            Command command = card.getCommand();
-            if (command.isInteractive()) {
+            Program program = card.getCommand();
+            if (program.isInteractive()) {
                 game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
                 return;
             }
-            executeCommand(player, command);
+            executeCommand(player, program);
         }
     }
 
@@ -719,9 +719,9 @@ public class GameLogicController {
      * @param player
      */
     public void SPAM (@NotNull Player player) {
-        Command[] commands = Command.values();
+        Program[] programs = Program.values();
         int random = (int) (Math.random() * 9);  //commands[8] = SPAM Card //TODO Change of cards chance
-        executeCommand(player, commands[random]);
+        executeCommand(player, programs[random]);
     }
 
     public void TROJAN_HORSE(@NotNull Player player) {
@@ -735,7 +735,7 @@ public class GameLogicController {
     }
 
     public void VIRUS(@NotNull Player player) {
-        Command[] commands = Command.values();
+        Program[] programs = Program.values();
         Space playerSpace = player.getSpace();
 
         for (int i = 0; i < game.getPlayerCount(); i++) {
@@ -748,12 +748,12 @@ public class GameLogicController {
         }
 
         int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
-        executeCommand(player, commands[random]);
+        executeCommand(player, programs[random]);
     }
 
 
     /**
-     * Moves a {@link Command Command} on a source {@link Card Card} to another {@link Card Card}.
+     * Moves a {@link Program Command} on a source {@link Card Card} to another {@link Card Card}.
      * Only moves the card, if there is a card on the source field, and there is no card on the target field.
      *
      * @author Ekkart Kindler, ekki@dtu.dk
@@ -766,12 +766,12 @@ public class GameLogicController {
     public boolean moveCards(@NotNull Card source, @NotNull Card target) {
         if (source.getType() != null && source.getType().equals(target.getType())) {
             switch (source.getType()) {
-                case COMMAND:
-                    Command sourceCommand = ((CommandCard) source).getCommand();
-                    Command targetCommand = ((CommandCard) target).getCommand();
-                    if (sourceCommand != null && targetCommand == null) {
-                        ((CommandCard) target).setCommand(sourceCommand);
-                        ((CommandCard) source).setCommand(null);
+                case PROGRAM:
+                    Program sourceProgram = ((ProgramCard) source).getCommand();
+                    Program targetProgram = ((ProgramCard) target).getCommand();
+                    if (sourceProgram != null && targetProgram == null) {
+                        ((ProgramCard) target).setCommand(sourceProgram);
+                        ((ProgramCard) source).setCommand(null);
                         return true;
                     }
                     break;
@@ -789,7 +789,7 @@ public class GameLogicController {
      * @author Oscar Maxwell
      * @param cardOptions the card used
      */
-    public void executeCommandOptionAndContinue(Command cardOptions) {
+    public void executeCommandOptionAndContinue(Program cardOptions) {
 
         game.getGameState().setPhase(Phase.ACTIVATION);
         Player currentPlayer = game.getGameState().getPlayerCurrent();

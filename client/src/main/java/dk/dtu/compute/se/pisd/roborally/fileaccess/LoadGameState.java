@@ -79,7 +79,7 @@ public class LoadGameState {
             JSONArray program = playerJSON.getJSONArray("program");
             for (int j = 0; j < program.length(); j++) {
                 JSONObject programJSON = program.getJSONObject(j);
-                CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("command")));
+                CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("program")));
                 CommandCardField field = player.getProgramField(j);
                 field.setCard(commandCard);
                 field.setVisible(programJSON.getBoolean("visible"));
@@ -88,7 +88,7 @@ public class LoadGameState {
             JSONArray cards = playerJSON.getJSONArray("cards");
             for (int j = 0; j < cards.length(); j++) {
                 JSONObject card = cards.getJSONObject(j);
-                CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("command")));
+                CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("program")));
                 CommandCardField field = player.getCardField(j);
                 field.setCard(commandCard);
                 field.setVisible(card.getBoolean("visible"));
@@ -119,8 +119,8 @@ public class LoadGameState {
             JSONObject programCard = new JSONObject();
             CommandCardField field = player.getProgramField(j);
             if (field != null && field.getCard() != null) {
-                programCard.put("type", "COMMAND");
-                programCard.put("command", field.getCard().command.name());
+                programCard.put("type", "PROGRAM");
+                programCard.put("program", field.getCard().command.name());
                 programCard.put("visible", field.isVisible());
                 program.put(programCard);
             }
@@ -132,8 +132,8 @@ public class LoadGameState {
             JSONObject cardsJSON = new JSONObject();
             CommandCardField field = player.getCardField(j);
             if (field != null && field.getCard() != null) {
-                cardsJSON.put("type", "COMMAND");
-                cardsJSON.put("command", field.getCard().command.name());
+                cardsJSON.put("type", "PROGRAM");
+                cardsJSON.put("program", field.getCard().command.name());
                 cardsJSON.put("visible", field.isVisible());
                 cards.put(cardsJSON);
             }

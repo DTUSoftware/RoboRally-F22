@@ -3,14 +3,10 @@ package dk.dtu.compute.se.pisd.roborally_server.server.service;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-import dk.dtu.compute.se.pisd.roborally_server.model.Phase;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
 import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
-import dk.dtu.compute.se.pisd.roborally_server.model.cards.Card;
-import dk.dtu.compute.se.pisd.roborally_server.model.cards.CommandCard;
-import dk.dtu.compute.se.pisd.roborally_server.model.cards.UpgradeCard;
 import org.springframework.stereotype.Service;
 
 @Service

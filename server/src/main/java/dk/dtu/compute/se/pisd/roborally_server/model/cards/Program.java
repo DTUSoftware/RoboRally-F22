@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public enum Command {
+public enum Program {
 
     // This is a very simplistic way of realizing different commands.
 
@@ -78,9 +78,9 @@ public enum Command {
     /**
      * list of options
      */
-    final private List<Command> options;
+    final private List<Program> options;
 
-    Command(String displayName, Command... options) {
+    Program(String displayName, Program... options) {
         this.displayName = displayName;
         this.options = Collections.unmodifiableList(Arrays.asList(options));
     }
@@ -99,7 +99,7 @@ public enum Command {
      * @return options
      */
     @JsonIgnore
-    public List<Command> getOptions() {
+    public List<Program> getOptions() {
         return options;
     }
 

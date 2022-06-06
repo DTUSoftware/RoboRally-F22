@@ -36,13 +36,13 @@ public class LoadGameState {
             playerDeck.setDamage(playerGameState.getInt("damage"));
         }
 
-        ArrayList<CommandCard> program = new ArrayList<>(PlayerDeck.NO_REGISTERS);
+        ArrayList<ProgramCard> program = new ArrayList<>(PlayerDeck.NO_REGISTERS);
         JSONArray programJSON = playerGameState.getJSONArray("program");
         for (int j = 0; j < programJSON.length(); j++) {
             JSONObject commandCardJSON = programJSON.getJSONObject(j);
-            CommandCard commandCard = new CommandCard(Command.valueOf(commandCardJSON.getString("command")));
-            commandCard.setVisible(commandCardJSON.getBoolean("visible"));
-            program.add(commandCard);
+            ProgramCard programCard = new ProgramCard(Program.valueOf(commandCardJSON.getString("program")));
+            programCard.setVisible(commandCardJSON.getBoolean("visible"));
+            program.add(programCard);
         }
         playerDeck.setProgram(program);
 
@@ -52,8 +52,8 @@ public class LoadGameState {
             JSONObject cardJSON = cardsJSON.getJSONObject(j);
             Card card;
             switch (cardJSON.getEnum(CardType.class, "type")) {
-                case COMMAND:
-                    card = new CommandCard(Command.valueOf(cardJSON.getString("command")));
+                case PROGRAM:
+                    card = new ProgramCard(Program.valueOf(cardJSON.getString("program")));
                     break;
                 case DAMAGE:
                     card = new DamageCard(Damage.valueOf(cardJSON.getString("damage")));
@@ -185,10 +185,10 @@ public class LoadGameState {
             JSONArray program = new JSONArray();
             for (int j = 0; j < PlayerDeck.NO_REGISTERS; j++) {
                 JSONObject programCard = new JSONObject();
-                CommandCard field = player.getDeck().getProgramField(j);
+                ProgramCard field = player.getDeck().getProgramField(j);
                 if (field != null && field.getCommand() != null) {
-                    programCard.put("type", "COMMAND");
-                    programCard.put("command", field.getCommand().name());
+                    programCard.put("type", "PROGRAM");
+                    programCard.put("program", field.getCommand().name());
                     programCard.put("visible", field.getVisible());
                     program.put(programCard);
                 }
@@ -201,13 +201,13 @@ public class LoadGameState {
                 Card field = player.getDeck().getCardField(j);
                 if (field != null && field.getType() != null) {
                     switch (field.getType()) {
-                        case COMMAND:
-                            cardsJSON.put("type", "COMMAND");
-                            cardsJSON.put("command", ((CommandCard) field).getCommand().name());
+                        case PROGRAM:
+                            cardsJSON.put("type", "PROGRAM");
+                            cardsJSON.put("program", ((ProgramCard) field).getCommand().name());
                             break;
                         case DAMAGE:
                             cardsJSON.put("type", "DAMAGE");
-                            cardsJSON.put("command", ((DamageCard) field).getDamage().name());
+                            cardsJSON.put("damage", ((DamageCard) field).getDamage().name());
                             break;
                     }
                     cardsJSON.put("visible", field.getVisible());

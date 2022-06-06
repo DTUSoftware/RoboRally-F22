@@ -2,7 +2,7 @@ package dk.dtu.compute.se.pisd.roborally_server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.Card;
-import dk.dtu.compute.se.pisd.roborally_server.model.cards.CommandCard;
+import dk.dtu.compute.se.pisd.roborally_server.model.cards.ProgramCard;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.UpgradeCard;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class PlayerDeck {
     private int damageTaken = 0;
 
     private ArrayList<Card> cards;
-    private ArrayList<CommandCard> program;
+    private ArrayList<ProgramCard> program;
     private ArrayList<UpgradeCard> upgrades;
 
     /**
@@ -39,9 +39,9 @@ public class PlayerDeck {
         this.energy = 5;
     }
 
-    public PlayerDeck(Card[] cards, CommandCard[] program, UpgradeCard[] upgrades) {
+    public PlayerDeck(Card[] cards, ProgramCard[] program, UpgradeCard[] upgrades) {
         this.cards = (ArrayList<Card>) Arrays.asList(cards);
-        this.program = (ArrayList<CommandCard>) Arrays.asList(program);
+        this.program = (ArrayList<ProgramCard>) Arrays.asList(program);
         this.upgrades = (ArrayList<UpgradeCard>) Arrays.asList(upgrades);
     }
 
@@ -61,7 +61,7 @@ public class PlayerDeck {
         return cards;
     }
 
-    public ArrayList<CommandCard> getProgram() {
+    public ArrayList<ProgramCard> getProgram() {
         return program;
     }
 
@@ -73,7 +73,7 @@ public class PlayerDeck {
         this.cards = cards;
     }
 
-    public void setProgram(ArrayList<CommandCard> program) {
+    public void setProgram(ArrayList<ProgramCard> program) {
         this.program = program;
     }
 
@@ -103,14 +103,14 @@ public class PlayerDeck {
     }
 
     /**
-     * Gets the {@link CommandCard CommandCard} in the player's
+     * Gets the {@link ProgramCard CommandCard} in the player's
      * program, on the index i.
      *
      * @param i the index in the player's program to get the CommandCardField of.
-     * @return the {@link CommandCard CommandCard}.
+     * @return the {@link ProgramCard CommandCard}.
      */
     @JsonIgnore
-    public CommandCard getProgramField(int i) {
+    public ProgramCard getProgramField(int i) {
         if (i >= program.size()) {
             return null;
         }
@@ -178,7 +178,7 @@ public class PlayerDeck {
         cards.set(i, card);
     }
 
-    public void setProgramField(int i, CommandCard card) {
+    public void setProgramField(int i, ProgramCard card) {
         if (i >= program.size()) {
             return;
         }
