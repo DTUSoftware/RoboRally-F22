@@ -13,7 +13,7 @@ public class PlayerDeck {
     private int damageTaken = 0;
 
     private ArrayList<Card> cards;
-    private ArrayList<ProgramCard> program;
+    private ArrayList<Card> program;
     private ArrayList<UpgradeCard> upgrades;
 
     /**
@@ -39,9 +39,9 @@ public class PlayerDeck {
         this.energy = 5;
     }
 
-    public PlayerDeck(Card[] cards, ProgramCard[] program, UpgradeCard[] upgrades) {
+    public PlayerDeck(Card[] cards, Card[] program, UpgradeCard[] upgrades) {
         this.cards = (ArrayList<Card>) Arrays.asList(cards);
-        this.program = (ArrayList<ProgramCard>) Arrays.asList(program);
+        this.program = (ArrayList<Card>) Arrays.asList(program);
         this.upgrades = (ArrayList<UpgradeCard>) Arrays.asList(upgrades);
     }
 
@@ -61,7 +61,7 @@ public class PlayerDeck {
         return cards;
     }
 
-    public ArrayList<ProgramCard> getProgram() {
+    public ArrayList<Card> getProgram() {
         return program;
     }
 
@@ -73,7 +73,7 @@ public class PlayerDeck {
         this.cards = cards;
     }
 
-    public void setProgram(ArrayList<ProgramCard> program) {
+    public void setProgram(ArrayList<Card> program) {
         this.program = program;
     }
 
@@ -103,14 +103,14 @@ public class PlayerDeck {
     }
 
     /**
-     * Gets the {@link ProgramCard CommandCard} in the player's
+     * Gets the {@link Card Card} in the player's
      * program, on the index i.
      *
      * @param i the index in the player's program to get the CommandCardField of.
-     * @return the {@link ProgramCard CommandCard}.
+     * @return the {@link Card Card}.
      */
     @JsonIgnore
-    public ProgramCard getProgramField(int i) {
+    public Card getProgramField(int i) {
         if (i >= program.size()) {
             return null;
         }

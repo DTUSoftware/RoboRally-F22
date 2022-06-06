@@ -36,13 +36,23 @@ public class LoadGameState {
             playerDeck.setDamage(playerGameState.getInt("damage"));
         }
 
-        ArrayList<ProgramCard> program = new ArrayList<>(PlayerDeck.NO_REGISTERS);
+        ArrayList<Card> program = new ArrayList<>(PlayerDeck.NO_REGISTERS);
         JSONArray programJSON = playerGameState.getJSONArray("program");
         for (int j = 0; j < programJSON.length(); j++) {
-            JSONObject commandCardJSON = programJSON.getJSONObject(j);
-            ProgramCard programCard = new ProgramCard(Program.valueOf(commandCardJSON.getString("program")));
-            programCard.setVisible(commandCardJSON.getBoolean("visible"));
-            program.add(programCard);
+            JSONObject cardJSON = programJSON.getJSONObject(j);
+            Card card;
+            switch (cardJSON.getEnum(CardType.class, "type")) {
+                case PROGRAM:
+                    card = new ProgramCard(Program.valueOf(cardJSON.getString("program")));
+                    break;
+                case DAMAGE:
+                    card = new DamageCard(Damage.valueOf(cardJSON.getString("damage")));
+                    break;
+                default:
+                    continue;
+            }
+            card.setVisible(cardJSON.getBoolean("visible"));
+            program.add(card);
         }
         playerDeck.setProgram(program);
 
@@ -188,10 +198,20 @@ public class LoadGameState {
             JSONArray program = new JSONArray();
             for (int j = 0; j < PlayerDeck.NO_REGISTERS; j++) {
                 JSONObject programCard = new JSONObject();
-                ProgramCard field = player.getDeck().getProgramField(j);
-                if (field != null && field.getProgram() != null) {
-                    programCard.put("type", "PROGRAM");
-                    programCard.put("program", field.getProgram().name());
+                Card field = player.getDeck().getProgramField(j);
+                if (field != null) {
+                    switch (field.getType()) {
+                        case PROGRAM:
+                            programCard.put("type", "PROGRAM");
+                            programCard.put("program", ((ProgramCard) field).getProgram().name());
+                            break;
+                        case DAMAGE:
+                            programCard.put("type", "DAMAGE");
+                            programCard.put("damage", ((DamageCard) field).getDamage().name());
+                            break;
+                        default:
+                            continue;
+                    }
                     programCard.put("visible", field.getVisible());
                     program.put(programCard);
                 }

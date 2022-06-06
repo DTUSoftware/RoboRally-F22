@@ -118,6 +118,7 @@ public class GameController {
         }
 
         board.setPhase(gameState.getEnum(Phase.class, "phase"));
+        board.setStep(gameState.getInt("step"));
         board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
     }
 

@@ -7,10 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 public enum Damage {
-    /** Giver player one energi cube */
-    POWER_UP("power_up"),
-    /** Plays the last card in register */
-    AGAIN("again"),
     /** Play top card of deck this register */
     SPAM("spam"),
     /** Play 2 top cards of deck this register */
@@ -19,11 +15,7 @@ public enum Damage {
     WORM("worm"),
     /** Robots within a certain radius are immediately rebooted,
      *  and the top card of deck is played this register  */
-    VIRUS("virus"),
-    /** Discard 1 spam card from discard pile  */
-    SPAM_FOLDER("spam_routine"),
-    /** Repeat previous register  */
-    REPEAT_ROUTINE("repeat_routine");
+    VIRUS("virus");
 
     /** The displayName of a command */
     final public String displayName;

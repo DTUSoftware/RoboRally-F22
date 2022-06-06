@@ -281,6 +281,7 @@ public class GameLogicController {
      * Continue programs.
      *
      * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private void continuePrograms() {
         do {
@@ -352,14 +353,26 @@ public class GameLogicController {
         if (game.getGameState().getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = game.getGameState().getStep();
             if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
-                ProgramCard card = currentPlayer.getDeck().getProgramField(step);
+                Card card = currentPlayer.getDeck().getProgramField(step);
                 if (card != null) {
-                    Program program = card.getProgram();
-                    if (card.getProgram().isInteractive()) {
-                        game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
-                        return;
+                    switch (card.getType()) {
+                        case PROGRAM:
+                            Program program = ((ProgramCard) card).getProgram();
+                            if (program.isInteractive()) {
+                                game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
+                                return;
+                            }
+                            executeProgram(currentPlayer, program);
+                            break;
+                        case DAMAGE:
+                            Damage damage = ((DamageCard) card).getDamage();
+                            if (damage.isInteractive()) {
+                                game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
+                                return;
+                            }
+                            executeDamage(currentPlayer, damage);
+                            break;
                     }
-                    executeCommand(currentPlayer, program);
                 }
 
                 int nextPlayerNumber = game.getGameState().getPlayerNumber(currentPlayer) + 1;
@@ -400,7 +413,7 @@ public class GameLogicController {
      * @author Oscar Maxwell
      * @author Nicolai Udbye
      */
-    private void executeCommand(@NotNull Player player, Program program) {
+    private void executeProgram(@NotNull Player player, Program program) {
         if (player != null && game.hasPlayer(player) && program != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
@@ -429,46 +442,69 @@ public class GameLogicController {
                     this.turnRight(player);
                     this.turnRight(player);
                     break;
-//                case POWER_UP:
-//                    this.powerUp(player);
-//                    break;
-//                case AGAIN:
-//                    this.again(player);
-//                    break;
-//                case SPAM:
-//                    this.SPAM(player);
-//                    player.removeDamage();
-//                    break;
-//                case TROJAN_HORSE:
-//                    this.TROJAN_HORSE(player);
-//                    player.removeDamage();
-//                    break;
-//                case WORM:
-//                    this.WORM(player);
-//                    player.removeDamage();
-//                    break;
-//                case VIRUS:
-//                    this.VIRUS(player);
-//                    player.removeDamage();
-//                    break;
-//                case ENERGY_ROUTINE:
-//                    this.powerUp(player);
-//                    break;
-//                case SANDBOX_ROUTINE:
-//                    this.sandboxRoutine(player, command);
-//                    break;
-//                case WEASEL_ROUTINE:
-//                    this.optionLeftRight(player, command);
-//                    break;
-//                case SPEED_ROUTINE:
-//                    this.fastfastForward(player);
-//                    break;
-//                case SPAM_FOLDER:
-//                    player.removeDamage();
-//                    break;
-//                case REPEAT_ROUTINE:
-//                    this.again(player);
-//                    break;
+                case ENERGY_ROUTINE:
+                    this.powerUp(player);
+                    break;
+                case SANDBOX_ROUTINE:
+                    this.sandboxRoutine(player, program);
+                    break;
+                case WEASEL_ROUTINE:
+                    this.optionLeftRight(player, program);
+                    break;
+                case SPEED_ROUTINE:
+                    this.fastfastForward(player);
+                    break;
+                case POWER_UP:
+                    this.powerUp(player);
+                    break;
+                case AGAIN:
+                    this.again(player);
+                    break;
+                case REPEAT_ROUTINE:
+                    this.again(player);
+                    break;
+                case SPAM_FOLDER:
+                    player.getDeck().removeDamage();
+                    break;
+                default:
+                    // DO NOTHING (for now)
+            }
+        }
+    }
+
+    /**
+     * Executes damage.
+     *
+     * @param player  the player to execute the command on
+     * @param damage the damage to execute
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
+     * @author Nicolai Udbye
+     */
+    private void executeDamage(@NotNull Player player, Damage damage) {
+        if (player != null && game.hasPlayer(player) && damage != null) {
+            // XXX This is a very simplistic way of dealing with some basic cards and
+            //     their execution. This should eventually be done in a more elegant way
+            //     (this concerns the way cards are modelled as well as the way they are executed).
+
+            switch (damage) {
+                case SPAM:
+                    this.SPAM(player);
+                    player.getDeck().removeDamage();
+                    break;
+                case TROJAN_HORSE:
+                    this.TROJAN_HORSE(player);
+                    player.getDeck().removeDamage();
+                    break;
+                case WORM:
+                    this.WORM(player);
+                    player.getDeck().removeDamage();
+                    break;
+                case VIRUS:
+                    this.VIRUS(player);
+                    player.getDeck().removeDamage();
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -725,14 +761,26 @@ public class GameLogicController {
         if (step <= 0) {
             return;
         }
-        ProgramCard card = player.getDeck().getProgramField(step - 1);
+        Card card = player.getDeck().getProgramField(step - 1);
         if (card != null) {
-            Program program = card.getProgram();
-            if (program.isInteractive()) {
-                game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
-                return;
+            switch (card.getType()) {
+                case PROGRAM:
+                    Program program = ((ProgramCard) card).getProgram();
+                    if (program.isInteractive()) {
+                        game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
+                        return;
+                    }
+                    executeProgram(player, program);
+                    break;
+                case DAMAGE:
+                    Damage damage = ((DamageCard) card).getDamage();
+                    if (damage.isInteractive()) {
+                        game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
+                        return;
+                    }
+                    executeDamage(player, damage);
+                    break;
             }
-            executeCommand(player, program);
         }
     }
 
@@ -744,11 +792,10 @@ public class GameLogicController {
     public void SPAM(@NotNull Player player) {
         Program[] programs = Program.values();
         int random = (int) (Math.random() * 9);  //commands[8] = SPAM Card //TODO Change of cards chance
-        executeCommand(player, programs[random]);
+        executeProgram(player, programs[random]);
     }
 
     public void TROJAN_HORSE(@NotNull Player player) {
-
         for (int i = 0; i < 2; i++)
             SPAM(player);
     }
@@ -771,7 +818,7 @@ public class GameLogicController {
         }
 
         int random = (int) (Math.random() * 8);  //commands[8] = SPAM Card
-        executeCommand(player, programs[random]);
+        executeProgram(player, programs[random]);
     }
 
 
@@ -816,7 +863,7 @@ public class GameLogicController {
 
         game.getGameState().setPhase(Phase.ACTIVATION);
         Player currentPlayer = game.getGameState().getPlayerCurrent();
-        executeCommand(game.getGameState().getPlayerCurrent(), cardOptions);
+        executeProgram(game.getGameState().getPlayerCurrent(), cardOptions);
 
         int step = game.getGameState().getStep();
         if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
