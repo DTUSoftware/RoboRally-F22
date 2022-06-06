@@ -53,7 +53,8 @@ public class GameService implements IGameService {
 
     @Override
     public boolean addGame(Game game) {
-        return false;
+        games.put(game.getID(), game);
+        return true;
     }
 
     @Override

@@ -557,6 +557,7 @@ public class GameLogicController {
                         target.setPlayer(player);
                     }
                 }
+                space.setPlayer(null);
             } else {
                 player.reboot();
             }
