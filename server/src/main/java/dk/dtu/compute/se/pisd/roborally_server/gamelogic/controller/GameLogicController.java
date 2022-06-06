@@ -53,8 +53,8 @@ public class GameLogicController {
     /**
      * The GameController constructor.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param game the game class
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public GameLogicController(Game game) {
         this.game = game;
@@ -63,8 +63,8 @@ public class GameLogicController {
     /**
      * Adds an action element to the game.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param actionElement the element to add
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void addElement(ActionElement actionElement) {
         actionElements.add(actionElement);
@@ -74,8 +74,8 @@ public class GameLogicController {
     /**
      * Removes an action element from the game.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param actionElement the element to remove
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void removeElement(ActionElement actionElement) {
         actionElements.remove(actionElement);
@@ -114,9 +114,9 @@ public class GameLogicController {
      * - the counter of moves in the game should be increased by one
      * if the player is moved
      *
+     * @param space the space to which the current player should move
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
-     * @param space the space to which the current player should move
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
         if (space.free()) {
@@ -176,8 +176,8 @@ public class GameLogicController {
     /**
      * Generates a random command card.
      *
-     * @author Ekkart Kindler, ekki@dtu.dk
      * @return the random {@link ProgramCard CommandCard}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     private ProgramCard generateRandomCommandCard() {
         Program[] programs = Program.values();
@@ -186,10 +186,10 @@ public class GameLogicController {
     }
 
     /**
+     * @return the random damage card
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Oscar Maxwell
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
-     * @return the random damage card
      */
     private DamageCard generateRandomDamageCard() {
         Damage[] damages = Damage.values();
@@ -217,8 +217,8 @@ public class GameLogicController {
     /**
      * Make the programming field visible.
      *
-     * @author Ekkart Kindler, ekki@dtu.dk
      * @param register the register to show?
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < PlayerDeck.NO_REGISTERS) {
@@ -255,6 +255,7 @@ public class GameLogicController {
 
     /**
      * Executes programs (disables step mode).
+     *
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void executePrograms() {
@@ -266,6 +267,7 @@ public class GameLogicController {
 
     /**
      * Execute steps (enables step mode).
+     *
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void executeStep() {
@@ -277,6 +279,7 @@ public class GameLogicController {
 
     /**
      * Continue programs.
+     *
      * @author Ekkart Kindler, ekki@dtu.dk
      */
     private void continuePrograms() {
@@ -295,10 +298,10 @@ public class GameLogicController {
     /**
      * Calculates the distance between two object position
      *
-     * @author Mads Nielsen
      * @param pos1 the space of the first object
      * @param pos2 the space of the second object
      * @return the distance
+     * @author Mads Nielsen
      */
     private double getDistance(Space pos1, Space pos2) {
         return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2));
@@ -314,19 +317,38 @@ public class GameLogicController {
     // TODO the stuff with the PriorityAntenna
     private void executeNextStep() {
         Player currentPlayer = game.getGameState().getPlayer(game.getGameState().getCurrentPlayer());
-        int playerAmmount = game.getPlayerCount();
-        ArrayList<Double> playerDistances = new ArrayList<Double>();
-        Space prorityantennaPosition = game.getBoard().getPriorityAntennaPosition();
-        for (int i = 0; i < playerAmmount; i++) {
+        int playerAmount = game.getPlayerCount();
+        double[] playerDistances = new double[playerAmount];
+        Space priorityAntennaPosition = game.getBoard().getPriorityAntennaPosition();
+        for (int i = 0; i < playerAmount; i++) {
             Player player2Check = game.getGameState().getPlayer(i);
-            playerDistances.add(getDistance(prorityantennaPosition, player2Check.getSpace()));
+            playerDistances[i] = getDistance(priorityAntennaPosition, player2Check.getSpace());
         }
-        for (int i = 0; i < playerAmmount; i++) {
-            for (int j = 0; j < playerAmmount; j++){
-
+        double smallestdistance;
+        int playerSmallestdistance = 0;
+        Integer[] playerMoveOrder = new Integer[playerAmount];
+        for (int i = 0; i < playerAmount; i++) {
+            smallestdistance = Double.MAX_VALUE;
+            for (int j = 0; j < playerAmount; j++) {
+                if (smallestdistance > playerDistances[j]) {
+                    smallestdistance = playerDistances[j];
+                    playerSmallestdistance = j;
+                } else if (smallestdistance == playerDistances[j]) {
+                    if ((priorityAntennaPosition.x - game.getGameState().getPlayer(j).getSpace().x) < (priorityAntennaPosition.x - game.getGameState().getPlayer(playerSmallestdistance).getSpace().x)) {
+                        smallestdistance = playerDistances[j];
+                        playerSmallestdistance = j;
+                    }
+                }
             }
+            playerDistances[playerSmallestdistance] = Double.MAX_VALUE;
+            playerMoveOrder[i] = playerSmallestdistance;
+        }
+        List<Player> playerMoveOrderAsList = null;
+        for (int i = 0; i < playerAmount; i++) {
+            playerMoveOrderAsList.add(game.getGameState().getPlayer(playerMoveOrder[i]));
         }
 
+        game.getGameState().setPlayers(playerMoveOrderAsList);
         if (game.getGameState().getPhase() == Phase.ACTIVATION && currentPlayer != null) {
             int step = game.getGameState().getStep();
             if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
@@ -371,12 +393,12 @@ public class GameLogicController {
     /**
      * Executes a command.
      *
+     * @param player  the player to execute the command on
+     * @param program the command to execute
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Oscar Maxwell
      * @author Nicolai Udbye
-     * @param player  the player to execute the command on
-     * @param program the command to execute
      */
     private void executeCommand(@NotNull Player player, Program program) {
         if (player != null && game.hasPlayer(player) && program != null) {
@@ -457,10 +479,10 @@ public class GameLogicController {
      * Checks if a player can move in a certain direction.
      * For example, you cannot move from a field into another field, if there is a wall.
      *
+     * @param player The player to check if they can move.
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Mads Nielsen
      * @author Oscar Maxwell
-     * @param player The player to check if they can move.
      */
     private boolean canMove(@NotNull Player player, Heading direction) {
         Space space = player.getSpace();
@@ -498,8 +520,8 @@ public class GameLogicController {
     /**
      * Moves the player backwards.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param player The player to move backwards.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void moveBackwards(@NotNull Player player) {
         if (player != null && game.hasPlayer(player)) {
@@ -512,11 +534,11 @@ public class GameLogicController {
     /**
      * Moves a player in a certain direction WITHOUT CHANGING THE PLAYER'S HEADING.
      *
+     * @param player    the player
+     * @param direction the direction
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Mads Nielsen
      * @author Oscar Maxwell
-     * @param player    the player
-     * @param direction the direction
      */
     public void moveDirection(@NotNull Player player, Heading direction) {
         Space space = player.getSpace();
@@ -560,8 +582,8 @@ public class GameLogicController {
     /**
      * Moves the player forward, with the current heading.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param player The player to move forward.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void moveForward(@NotNull Player player) {
         if (player != null && game.hasPlayer(player)) {
@@ -573,9 +595,9 @@ public class GameLogicController {
     /**
      * Move forward an x amount of times.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param player the player to move forward
      * @param times  the amount of times to move forward
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void forwardX(@NotNull Player player, int times) {
         for (int i = times; i > 0; i--) {
@@ -586,10 +608,10 @@ public class GameLogicController {
     /**
      * Move in a certain direction an x amount of times.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param player    the player to move
      * @param direction the direction to move
      * @param times     the amount of times to move
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void moveDirectionX(@NotNull Player player, Heading direction, int times) {
         for (int i = times; i > 0; i--) {
@@ -600,8 +622,8 @@ public class GameLogicController {
     /**
      * Fast forwards (the card).
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param player The player to fast-forward.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void fastForward(@NotNull Player player) {
         forwardX(player, 2);
@@ -610,8 +632,8 @@ public class GameLogicController {
     /**
      * the fast fast forward card
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param player the player to move
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void fastfastForward(@NotNull Player player) {
         forwardX(player, 3);
@@ -620,8 +642,8 @@ public class GameLogicController {
     /**
      * Turns the player right.
      *
-     * @author Ekkart Kindler, ekki@dtu.dk
      * @param player The player to turn right.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void turnRight(@NotNull Player player) {
         if (player != null && game.hasPlayer(player)) {
@@ -632,8 +654,8 @@ public class GameLogicController {
     /**
      * Turns the player left.
      *
-     * @author Ekkart Kindler, ekki@dtu.dk
      * @param player The player to turn left.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void turnLeft(@NotNull Player player) {
         if (player != null && game.hasPlayer(player)) {
@@ -644,9 +666,9 @@ public class GameLogicController {
     /**
      * if you want to turn left or right
      *
-     * @author Oscar Maxwell
      * @param player  the player to turn
      * @param program to go left or right
+     * @author Oscar Maxwell
      */
     public void optionLeftRight(@NotNull Player player, Program program) {
         if (program.equals("LEFT")) {
@@ -657,9 +679,9 @@ public class GameLogicController {
     }
 
     /**
-     * @author Nicolai Udbye
      * @param player
      * @param program
+     * @author Nicolai Udbye
      */
     public void sandboxRoutine(@NotNull Player player, Program program) {
 
@@ -690,14 +712,14 @@ public class GameLogicController {
     }
 
     /**
-     * @author Oscar Maxwell
      * @param player
+     * @author Oscar Maxwell
      */
-    public void powerUp (@NotNull Player player) {
+    public void powerUp(@NotNull Player player) {
         player.getDeck().addEnergy(1);
     }
 
-    public void again (@NotNull Player player) {
+    public void again(@NotNull Player player) {
         int step = game.getGameState().getStep();
         if (step <= 0) {
             return;
@@ -714,11 +736,11 @@ public class GameLogicController {
     }
 
     /**
+     * @param player
      * @author Oscar Maxwell
      * @author Nicolai Udbye
-     * @param player
      */
-    public void SPAM (@NotNull Player player) {
+    public void SPAM(@NotNull Player player) {
         Program[] programs = Program.values();
         int random = (int) (Math.random() * 9);  //commands[8] = SPAM Card //TODO Change of cards chance
         executeCommand(player, programs[random]);
@@ -756,12 +778,12 @@ public class GameLogicController {
      * Moves a {@link Program Command} on a source {@link Card Card} to another {@link Card Card}.
      * Only moves the card, if there is a card on the source field, and there is no card on the target field.
      *
-     * @author Ekkart Kindler, ekki@dtu.dk
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
-     * @author Oscar Maxwell
      * @param source The source {@link Card card}.
      * @param target The {@link Card Card} to move the card to.
      * @return <code>true</code> if the card is moved, else <code>false</code>.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public boolean moveCards(@NotNull Card source, @NotNull Card target) {
         if (source.getType() != null && source.getType().equals(target.getType())) {
@@ -786,8 +808,8 @@ public class GameLogicController {
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
      *
-     * @author Oscar Maxwell
      * @param cardOptions the card used
+     * @author Oscar Maxwell
      */
     public void executeCommandOptionAndContinue(Program cardOptions) {
 
@@ -819,10 +841,10 @@ public class GameLogicController {
     /**
      * wins the game
      *
+     * @param player the player that wins the game
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Mads Hansen
      * @author Mads Nielsen
-     * @param player the player that wins the game
      */
     public void winTheGame(Player player) {
         // TODO: send won over server before killing
