@@ -5,10 +5,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadGameState;
-import dk.dtu.compute.se.pisd.roborally_server.model.Game;
-import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
-import dk.dtu.compute.se.pisd.roborally_server.model.Player;
-import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
+import dk.dtu.compute.se.pisd.roborally_server.model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -246,9 +243,14 @@ public class GameService implements IGameService {
             return false;
         }
 
+        Player player = getPlayer(id, playerID);
+        if (player == null) {
+            return false;
+        }
+
         switch (game.getGameState().getPhase()) {
             case PROGRAMMING:
-                getPlayer(id, playerID).setReady(true);
+                player.setReady(true);
                 if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
                     game.getGameLogicController().finishProgrammingPhase();
 
@@ -269,7 +271,7 @@ public class GameService implements IGameService {
                 }
                 return true;
             case WAITING:
-                getPlayer(id, playerID).setReady(true);
+                player.setReady(true);
                 if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
                     game.getGameLogicController().startProgrammingPhase();
                     resetReady(id);
@@ -278,5 +280,30 @@ public class GameService implements IGameService {
             default:
                 return false;
         }
+    }
+
+    @Override
+    public boolean chooseInteractionOption(UUID id, UUID playerID, String optionName) {
+        Game game = getGameByID(id);
+        if (game == null) {
+            return false;
+        }
+
+        Player player = getPlayer(id, playerID);
+        if (player == null) {
+            return false;
+        }
+
+        if (game.getGameState().getPhase() != Phase.PLAYER_INTERACTION) {
+            return false;
+        }
+
+        if (game.getGameState().getCurrentPlayer() != game.getGameState().getPlayerNumber(player)) {
+            return false;
+        }
+
+
+
+        return false;
     }
 }

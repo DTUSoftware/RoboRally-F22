@@ -30,4 +30,5 @@ public interface IGameService {
     PlayerDeck getPlayerDeck(UUID id, UUID playerID);
 
     boolean updatePlayerReady(UUID id, UUID playerID);
+    boolean chooseInteractionOption(UUID id, UUID playerID, String optionName);
 }
