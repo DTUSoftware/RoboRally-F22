@@ -23,17 +23,18 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.model.cards.Card;
 
 /**
- * A field to put {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard}s on.
+ * A field to put {@link Card Card}s on.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public class CommandCardField extends Subject {
+public class CardField extends Subject {
     /** The player that has the card field */
     final public Player player;
 
-    private CommandCard card;
+    private Card card;
 
     private boolean visible;
 
@@ -42,28 +43,28 @@ public class CommandCardField extends Subject {
      *
      * @param player the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} that has the card field.
      */
-    public CommandCardField(Player player) {
+    public CardField(Player player) {
         this.player = player;
         this.card = null;
         this.visible = true;
     }
 
     /**
-     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} that's on the field.
+     * Gets the {@link Card Card} that's on the field.
      *
-     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard}, if any.
+     * @return the {@link Card Card}, if any.
      */
-    public CommandCard getCard() {
+    public Card getCard() {
         return card;
     }
 
     /**
-     * Sets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} that is on the field.
+     * Sets the {@link Card Card} that is on the field.
      * Cannot set the card to the same card.
      *
-     * @param card The {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} to put on the field.
+     * @param card The {@link Card Card} to put on the field.
      */
-    public void setCard(CommandCard card) {
+    public void setCard(Card card) {
         if (card != this.card) {
             this.card = card;
             notifyChange();

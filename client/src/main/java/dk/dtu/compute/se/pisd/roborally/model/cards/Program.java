@@ -20,7 +20,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package dk.dtu.compute.se.pisd.roborally.model;
+package dk.dtu.compute.se.pisd.roborally.model.cards;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,9 +31,10 @@ import java.util.List;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  */
-public enum Command {
+public enum Program {
 
     // This is a very simplistic way of realizing different commands.
+
     /** Move forward */
     MOVE_1("move_1"),
     /** Move 2 forward */
@@ -75,9 +76,9 @@ public enum Command {
     /**
      * list of options
      */
-    final private List<Command> options;
+    final private List<Program> options;
 
-    Command(String displayName, Command... options) {
+    Program(String displayName, Program... options) {
         this.displayName = displayName;
         this.options = Collections.unmodifiableList(Arrays.asList(options));
     }
@@ -94,7 +95,7 @@ public enum Command {
      * gets the options
      * @return options
      */
-    public List<Command> getOptions() {
+    public List<Program> getOptions() {
         return options;
     }
 

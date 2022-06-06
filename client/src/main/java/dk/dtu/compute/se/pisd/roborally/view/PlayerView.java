@@ -25,6 +25,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.cards.*;
 import dk.dtu.compute.se.pisd.roborally.server.GameService;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -97,7 +98,7 @@ public class PlayerView extends Tab implements ViewObserver {
         programPane.setHgap(2.0);
         programCardViews = new CardFieldView[Player.NO_REGISTERS];
         for (int i = 0; i < Player.NO_REGISTERS; i++) {
-            CommandCardField cardField = player.getProgramField(i);
+            CardField cardField = player.getProgramField(i);
             if (cardField != null) {
                 programCardViews[i] = new CardFieldView(gameController, cardField);
                 programPane.add(programCardViews[i], i, 0);
@@ -129,7 +130,7 @@ public class PlayerView extends Tab implements ViewObserver {
         cardsPane.setHgap(2.0);
         cardViews = new CardFieldView[Player.NO_CARDS];
         for (int i = 0; i < Player.NO_CARDS; i++) {
-            CommandCardField cardField = player.getCardField(i);
+            CardField cardField = player.getCardField(i);
             if (cardField != null) {
                 cardViews[i] = new CardFieldView(gameController, cardField);
                 cardsPane.add(cardViews[i], i, 0);
@@ -142,9 +143,9 @@ public class PlayerView extends Tab implements ViewObserver {
         upgradeCardsPane.setHgap(2.0);
         upgradeCardViews = new ArrayList<>();
         for (int i = 0; i < player.getUpgradesNum(); i++) {
-            CommandCardField cardField = player.getUpgradeField(i);
+            CardField cardField = player.getUpgradeField(i);
             if (cardField == null) {
-                cardField = new CommandCardField(player);
+                cardField = new CardField(player);
             }
             upgradeCardViews.add(i, new CardFieldView(gameController, cardField));
             upgradeCardsPane.add(upgradeCardViews.get(i), i, 0);
@@ -237,15 +238,27 @@ public class PlayerView extends Tab implements ViewObserver {
 
                 if (player.board.getCurrentPlayer() == player) {
 
-                    CommandCard currentCard = player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard();
-                    List<Command> cardOptions = currentCard.command.getOptions();
+                    Card currentCard = player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard();
 
-                    for (Command cardOption : cardOptions) {
+                    if (currentCard instanceof ProgramCard) {
+                        List<Program> cardOptions = ((ProgramCard) currentCard).getCommand().getOptions();
 
-                        Button optionButton = new Button(cardOption.displayName);
+                        for (Program cardOption : cardOptions) {
+                            Button optionButton = new Button(cardOption.displayName);
 //                        optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(cardOption));
-                        optionButton.setDisable(false);
-                        playerInteractionPanel.getChildren().add(optionButton);
+                            optionButton.setDisable(false);
+                            playerInteractionPanel.getChildren().add(optionButton);
+                        }
+                    }
+                    else if (currentCard instanceof DamageCard) {
+                        List<Damage> cardOptions = ((DamageCard) currentCard).getDamage().getOptions();
+
+                        for (Damage cardOption : cardOptions) {
+                            Button optionButton = new Button(cardOption.displayName);
+//                        optionButton.setOnAction(e -> gameController.executeCommandOptionAndContinue(cardOption));
+                            optionButton.setDisable(false);
+                            playerInteractionPanel.getChildren().add(optionButton);
+                        }
                     }
                 }
             }

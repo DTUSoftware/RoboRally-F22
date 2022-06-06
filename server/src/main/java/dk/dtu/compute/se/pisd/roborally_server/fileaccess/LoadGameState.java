@@ -5,8 +5,6 @@ import dk.dtu.compute.se.pisd.roborally_server.model.*;
 import dk.dtu.compute.se.pisd.roborally_server.model.board.Board;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.*;
 import dk.dtu.compute.se.pisd.roborally_server.server.service.JSONService;
-import net.harawata.appdirs.AppDirs;
-import net.harawata.appdirs.AppDirsFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -191,9 +189,9 @@ public class LoadGameState {
             for (int j = 0; j < PlayerDeck.NO_REGISTERS; j++) {
                 JSONObject programCard = new JSONObject();
                 ProgramCard field = player.getDeck().getProgramField(j);
-                if (field != null && field.getCommand() != null) {
+                if (field != null && field.getProgram() != null) {
                     programCard.put("type", "PROGRAM");
-                    programCard.put("program", field.getCommand().name());
+                    programCard.put("program", field.getProgram().name());
                     programCard.put("visible", field.getVisible());
                     program.put(programCard);
                 }
@@ -208,7 +206,7 @@ public class LoadGameState {
                     switch (field.getType()) {
                         case PROGRAM:
                             cardsJSON.put("type", "PROGRAM");
-                            cardsJSON.put("program", ((ProgramCard) field).getCommand().name());
+                            cardsJSON.put("program", ((ProgramCard) field).getProgram().name());
                             break;
                         case DAMAGE:
                             cardsJSON.put("type", "DAMAGE");

@@ -343,7 +343,7 @@ public class GameLogicController {
             playerDistances[playerSmallestdistance] = Double.MAX_VALUE;
             playerMoveOrder[i] = playerSmallestdistance;
         }
-        List<Player> playerMoveOrderAsList = null;
+        List<Player> playerMoveOrderAsList = new ArrayList<>();
         for (int i = 0; i < playerAmount; i++) {
             playerMoveOrderAsList.add(game.getGameState().getPlayer(playerMoveOrder[i]));
         }
@@ -354,8 +354,8 @@ public class GameLogicController {
             if (step >= 0 && step < PlayerDeck.NO_REGISTERS) {
                 ProgramCard card = currentPlayer.getDeck().getProgramField(step);
                 if (card != null) {
-                    Program program = card.getCommand();
-                    if (card.getCommand().isInteractive()) {
+                    Program program = card.getProgram();
+                    if (card.getProgram().isInteractive()) {
                         game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
                         return;
                     }
@@ -727,7 +727,7 @@ public class GameLogicController {
         }
         ProgramCard card = player.getDeck().getProgramField(step - 1);
         if (card != null) {
-            Program program = card.getCommand();
+            Program program = card.getProgram();
             if (program.isInteractive()) {
                 game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
                 return;
@@ -790,11 +790,11 @@ public class GameLogicController {
         if (source.getType() != null && source.getType().equals(target.getType())) {
             switch (source.getType()) {
                 case PROGRAM:
-                    Program sourceProgram = ((ProgramCard) source).getCommand();
-                    Program targetProgram = ((ProgramCard) target).getCommand();
+                    Program sourceProgram = ((ProgramCard) source).getProgram();
+                    Program targetProgram = ((ProgramCard) target).getProgram();
                     if (sourceProgram != null && targetProgram == null) {
-                        ((ProgramCard) target).setCommand(sourceProgram);
-                        ((ProgramCard) source).setCommand(null);
+                        ((ProgramCard) target).setProgram(sourceProgram);
+                        ((ProgramCard) source).setProgram(null);
                         return true;
                     }
                     break;

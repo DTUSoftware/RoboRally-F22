@@ -1,6 +1,4 @@
-package dk.dtu.compute.se.pisd.roborally_server.model.cards;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package dk.dtu.compute.se.pisd.roborally.model.cards;
 
 public class ProgramCard extends Card {
     /** The command linked to the card */
@@ -16,7 +14,7 @@ public class ProgramCard extends Card {
         this.program = program;
     }
 
-    public Program getProgram() {
+    public Program getCommand() {
         return program;
     }
 
@@ -25,12 +23,11 @@ public class ProgramCard extends Card {
      *
      * @return the displayName of the Command.
      */
-    @JsonIgnore
     public String getName() {
         return program.displayName;
     }
 
-    public void setProgram(Program program) {
+    public void setCommand(Program program) {
         this.program = program;
     }
 }

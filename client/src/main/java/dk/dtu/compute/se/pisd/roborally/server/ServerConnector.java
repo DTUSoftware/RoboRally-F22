@@ -110,7 +110,8 @@ public class ServerConnector {
         try {
             result = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | TimeoutException | ExecutionException e) {
-            e.printStackTrace();
+            System.out.println("Could not get response from server!");
+            // e.printStackTrace();
         }
 
         if (result != null) {

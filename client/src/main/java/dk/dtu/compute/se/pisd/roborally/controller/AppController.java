@@ -228,7 +228,13 @@ public class AppController implements Observer {
                         if (gameController != null) {
                             System.out.println("----------------------------");
                             System.out.println("Game Controller still exists...\nChecking Game State!");
-                            gameController.updateGameState();
+                            try {
+                                gameController.updateGameState();
+                            }
+                            catch (Exception e) {
+                                System.out.println("Could not update game state!");
+                                e.printStackTrace();
+                            }
                             System.out.println("----------------------------");
                         }
                         else {

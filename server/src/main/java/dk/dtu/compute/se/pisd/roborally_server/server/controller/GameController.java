@@ -45,10 +45,12 @@ public class GameController {
     public ResponseEntity<String> addGame(@RequestParam(defaultValue = "defaultboard") String mapID, @RequestParam(defaultValue = "2") int playerCount) {
         Game game = gameService.newGame(mapID, playerCount);
         JSONObject gameJSON = null;
-        try {
-            gameJSON = new JSONObject(objectMapper.writeValueAsString(game));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        if (game != null) {
+            try {
+                gameJSON = new JSONObject(objectMapper.writeValueAsString(game));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
         return getResponseEntity(gameJSON, "game not added");
     }
@@ -63,10 +65,12 @@ public class GameController {
     public ResponseEntity<String> getGameByID(@PathVariable UUID id) {
         Game game = gameService.getGameByID(id);
         JSONObject gameJSON = null;
-        try {
-            gameJSON = new JSONObject(objectMapper.writeValueAsString(game));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        if (game != null) {
+            try {
+                gameJSON = new JSONObject(objectMapper.writeValueAsString(game));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
         return getResponseEntity(gameJSON, "could not get game");
     }
@@ -87,10 +91,12 @@ public class GameController {
     public ResponseEntity<String> getGameStateByID(@PathVariable UUID id) {
         GameState gameState = gameService.getGameStateByID(id);
         JSONObject gameStateJSON = null;
-        try {
-            gameStateJSON = new JSONObject(objectMapper.writeValueAsString(gameState));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        if (gameState != null) {
+            try {
+                gameStateJSON = new JSONObject(objectMapper.writeValueAsString(gameState));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
         return getResponseEntity(gameStateJSON, "gamestate not found");
     }

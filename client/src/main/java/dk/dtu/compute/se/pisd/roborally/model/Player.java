@@ -23,9 +23,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.model.elements.FieldElement;
-import dk.dtu.compute.se.pisd.roborally.model.elements.RebootToken;
-import dk.dtu.compute.se.pisd.roborally.model.elements.SpawnGear;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -70,9 +67,9 @@ public class Player extends Subject {
 
     private boolean ready;
 
-    private CommandCardField[] program;
-    private CommandCardField[] cards;
-    private ArrayList<CommandCardField> upgrades;
+    private CardField[] program;
+    private CardField[] cards;
+    private ArrayList<CardField> upgrades;
 
 
     /**
@@ -85,14 +82,14 @@ public class Player extends Subject {
         this.board = board;
         this.space = null;
 
-        program = new CommandCardField[NO_REGISTERS];
+        program = new CardField[NO_REGISTERS];
         for (int i = 0; i < program.length; i++) {
-            program[i] = new CommandCardField(this);
+            program[i] = new CardField(this);
         }
 
-        cards = new CommandCardField[NO_CARDS];
+        cards = new CardField[NO_CARDS];
         for (int i = 0; i < cards.length; i++) {
-            cards[i] = new CommandCardField(this);
+            cards[i] = new CardField(this);
         }
 
         upgrades = new ArrayList<>();
@@ -205,35 +202,35 @@ public class Player extends Subject {
     }
 
     /**
-     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} in the player's
+     * Gets the {@link CardField CommandCardField} in the player's
      * program, on the index i.
      *
      * @param i the index in the player's program to get the CommandCardField of.
-     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     * @return the {@link CardField CommandCardField}.
      */
-    public CommandCardField getProgramField(int i) {
+    public CardField getProgramField(int i) {
         return program[i];
     }
 
     /**
-     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} in the player's
+     * Gets the {@link CardField CommandCardField} in the player's
      * cards, on the index i.
      *
      * @param i the index in the player's cards to get the CommandCardField of.
-     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     * @return the {@link CardField CommandCardField}.
      */
-    public CommandCardField getCardField(int i) {
+    public CardField getCardField(int i) {
         return cards[i];
     }
 
     /**
-     * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} in the player's
+     * Gets the {@link CardField CommandCardField} in the player's
      * installed upgrades, on the index i.
      *
      * @param i the index in the player's upgrades to get the CommandCardField of.
-     * @return the {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     * @return the {@link CardField CommandCardField}.
      */
-    public CommandCardField getUpgradeField(int i) {
+    public CardField getUpgradeField(int i) {
         if (i >= upgrades.size()) {
             return null;
         }

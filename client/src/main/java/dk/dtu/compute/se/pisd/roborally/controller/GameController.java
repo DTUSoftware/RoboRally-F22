@@ -24,9 +24,8 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import dk.dtu.compute.se.pisd.roborally.model.cards.*;
 import dk.dtu.compute.se.pisd.roborally.server.GameService;
-import dk.dtu.compute.se.pisd.roborally.view.elements.*;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -118,7 +117,6 @@ public class GameController {
             updatePlayerDeck(player, playerDeck.getInt("energy"), playerDeck.getInt("damage"), playerDeck.getJSONArray("program"), playerDeck.getJSONArray("cards"), playerDeck.getJSONArray("upgrades"));
         }
 
-
         board.setPhase(gameState.getEnum(Phase.class, "phase"));
         board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
     }
@@ -150,161 +148,66 @@ public class GameController {
 
         // Program
         for (int i = 0; i < Player.NO_REGISTERS; i++) {
-            CommandCardField field = player.getProgramField(i);
+            CardField field = player.getProgramField(i);
             field.setCard(null);
         }
         for (int i = 0; i < program.length(); i++) {
-            JSONObject programJSON = program.getJSONObject(i);
-            CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("command")));
-            CommandCardField field = player.getProgramField(i);
-            field.setCard(commandCard);
-            field.setVisible(programJSON.getBoolean("visible"));
+            JSONObject cardJSON = program.getJSONObject(i);
+            Card card;
+            switch (cardJSON.getEnum(CardType.class, "type")) {
+                case PROGRAM:
+                    card = new ProgramCard(Program.valueOf(cardJSON.getString("program")));
+                    break;
+                case DAMAGE:
+                    card = new DamageCard(Damage.valueOf(cardJSON.getString("damage")));
+                    break;
+                default:
+                    continue;
+            }
+            CardField field = player.getProgramField(i);
+            field.setCard(card);
+            field.setVisible(cardJSON.getBoolean("visible"));
         }
 
         // Cards
         for (int i = 0; i < Player.NO_CARDS; i++) {
-            CommandCardField field = player.getCardField(i);
+            CardField field = player.getCardField(i);
             field.setCard(null);
         }
         for (int i = 0; i < cards.length(); i++) {
-            JSONObject card = cards.getJSONObject(i);
-            CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("command")));
-            CommandCardField field = player.getCardField(i);
-            field.setCard(commandCard);
-            field.setVisible(card.getBoolean("visible"));
-        }
-
-        // Upgrades
-    }
-
-    /**
-     * This is just some dummy controller operation to make a simple move to see something
-     * happening on the board. This method should eventually be deleted!
-     * <p>
-     * - the current player should be moved to the given space
-     * (if it is free()
-     * - and the current player should be set to the player
-     * following the current player
-     * - the counter of moves in the game should be increased by one
-     * if the player is moved
-     *
-     * @param space the space to which the current player should move
-     */
-    public void moveCurrentPlayerToSpace(@NotNull Space space) {
-        if (space.free()) {
-            space.setPlayer(board.getCurrentPlayer());
-            board.endCurrentPlayerTurn();
-        }
-
-        if (space != null && space.board == board) {
-            Player currentPlayer = board.getCurrentPlayer();
-            if (currentPlayer != null && space.getPlayer() == null) {
-                currentPlayer.setSpace(space);
-                int playerNumber = (board.getPlayerNumber(currentPlayer) + 1) % board.getPlayersNumber();
-                board.setCurrentPlayer(board.getPlayer(playerNumber));
+            JSONObject cardJSON = cards.getJSONObject(i);
+            Card card;
+            switch (cardJSON.getEnum(CardType.class, "type")) {
+                case PROGRAM:
+                    card = new ProgramCard(Program.valueOf(cardJSON.getString("program")));
+                    break;
+                case DAMAGE:
+                    card = new DamageCard(Damage.valueOf(cardJSON.getString("damage")));
+                    break;
+                default:
+                    continue;
             }
+            CardField field = player.getCardField(i);
+            field.setCard(card);
+            field.setVisible(cardJSON.getBoolean("visible"));
         }
 
-    }
-
-    // XXX: V2
-
-    /**
-     * Starts the programming phase.
-     */
-    public void startProgrammingPhase() {
-        board.setPhase(Phase.PROGRAMMING);
-        board.setCurrentPlayer(board.getPlayer(0));
-        board.setStep(0);
-
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
-            Player player = board.getPlayer(i);
-            if (player != null) {
-                for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                    CommandCardField field = player.getProgramField(j);
-                    field.setCard(null);
-                    field.setVisible(true);
-                }
-                for (int j = 0; j < Player.NO_CARDS; j++) {
-                    CommandCardField field = player.getCardField(j);
-                    field.setCard(generateRandomCommandCard());
-                    field.setVisible(true);
-                }
-            }
-        }
-    }
-
-    // XXX: V2
-
-    /**
-     * Generates a random command card.
-     *
-     * @return the random {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard}.
-     */
-    private CommandCard generateRandomCommandCard() {
-        Command[] commands = Command.values();
-        int random = (int) (Math.random() * commands.length);
-        return new CommandCard(commands[random]);
-    }
-
-    // XXX: V2
-
-    /**
-     * Ends the programming phase.
-     */
-    public void finishProgrammingPhase() {
-        makeProgramFieldsInvisible();
-        makeProgramFieldsVisible(0);
-        board.setPhase(Phase.ACTIVATION);
-        board.setCurrentPlayer(board.getPlayer(0));
-        board.setStep(0);
-    }
-
-    // XXX: V2
-
-    /**
-     * Make the programming field visible.
-     *
-     * @param register the register to show?
-     */
-    private void makeProgramFieldsVisible(int register) {
-        if (register >= 0 && register < Player.NO_REGISTERS) {
-            for (int i = 0; i < board.getPlayersNumber(); i++) {
-                Player player = board.getPlayer(i);
-                CommandCardField field = player.getProgramField(register);
-                field.setVisible(true);
-            }
-        }
-    }
-
-    // XXX: V2
-
-    /**
-     * Hides the program fields.
-     */
-    private void makeProgramFieldsInvisible() {
-        for (int i = 0; i < board.getPlayersNumber(); i++) {
-            Player player = board.getPlayer(i);
-            for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                CommandCardField field = player.getProgramField(j);
-                field.setVisible(false);
-            }
-        }
+        // TODO: Upgrades
     }
 
     /**
-     * Moves a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCard CommandCard} on a source
-     * {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to
-     * another {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
+     * Moves a {@link Card Card} on a source
+     * {@link CardField CommandCardField} to
+     * another {@link CardField CommandCardField}.
      * Only moves the card, if there is a card on the source field, and there is no card on the target field.
      *
-     * @param source The source {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField}.
-     * @param target The {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField CommandCardField} to move the card to.
+     * @param source The source {@link CardField CommandCardField}.
+     * @param target The {@link CardField CommandCardField} to move the card to.
      * @return <code>true</code> if the card is moved, else <code>false</code>.
      */
-    public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
-        CommandCard sourceCard = source.getCard();
-        CommandCard targetCard = target.getCard();
+    public boolean moveCards(@NotNull CardField source, @NotNull CardField target) {
+        Card sourceCard = source.getCard();
+        Card targetCard = target.getCard();
         if (sourceCard != null && targetCard == null) {
             target.setCard(sourceCard);
             source.setCard(null);

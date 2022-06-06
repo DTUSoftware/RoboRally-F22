@@ -3,7 +3,7 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
-import dk.dtu.compute.se.pisd.roborally.model.elements.*;
+import dk.dtu.compute.se.pisd.roborally.model.cards.*;
 import net.harawata.appdirs.AppDirs;
 import net.harawata.appdirs.AppDirsFactory;
 import org.json.JSONArray;
@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -79,19 +78,39 @@ public class LoadGameState {
             JSONArray program = playerJSON.getJSONArray("program");
             for (int j = 0; j < program.length(); j++) {
                 JSONObject programJSON = program.getJSONObject(j);
-                CommandCard commandCard = new CommandCard(Command.valueOf(programJSON.getString("program")));
-                CommandCardField field = player.getProgramField(j);
-                field.setCard(commandCard);
+                Card card;
+                switch (programJSON.getEnum(CardType.class, "type")) {
+                    case PROGRAM:
+                        card = new ProgramCard(Program.valueOf(programJSON.getString("program")));
+                        break;
+                    case DAMAGE:
+                        card = new DamageCard(Damage.valueOf(programJSON.getString("damage")));
+                        break;
+                    default:
+                        continue;
+                }
+                CardField field = player.getProgramField(j);
+                field.setCard(card);
                 field.setVisible(programJSON.getBoolean("visible"));
             }
 
             JSONArray cards = playerJSON.getJSONArray("cards");
             for (int j = 0; j < cards.length(); j++) {
-                JSONObject card = cards.getJSONObject(j);
-                CommandCard commandCard = new CommandCard(Command.valueOf(card.getString("program")));
-                CommandCardField field = player.getCardField(j);
-                field.setCard(commandCard);
-                field.setVisible(card.getBoolean("visible"));
+                JSONObject cardJSON = cards.getJSONObject(j);
+                Card card;
+                switch (cardJSON.getEnum(CardType.class, "type")) {
+                    case PROGRAM:
+                        card = new ProgramCard(Program.valueOf(cardJSON.getString("program")));
+                        break;
+                    case DAMAGE:
+                        card = new DamageCard(Damage.valueOf(cardJSON.getString("damage")));
+                        break;
+                    default:
+                        continue;
+                }
+                CardField field = player.getCardField(j);
+                field.setCard(card);
+                field.setVisible(cardJSON.getBoolean("visible"));
             }
 
             board.addPlayer(player);
@@ -117,10 +136,20 @@ public class LoadGameState {
         JSONArray program = new JSONArray();
         for (int j = 0; j < Player.NO_REGISTERS; j++) {
             JSONObject programCard = new JSONObject();
-            CommandCardField field = player.getProgramField(j);
+            CardField field = player.getProgramField(j);
             if (field != null && field.getCard() != null) {
-                programCard.put("type", "PROGRAM");
-                programCard.put("program", field.getCard().command.name());
+                switch (field.getCard().getType()) {
+                    case PROGRAM:
+                        programCard.put("type", "PROGRAM");
+                        programCard.put("program", ((ProgramCard) field.getCard()).getCommand().name());
+                        break;
+                    case DAMAGE:
+                        programCard.put("type", "DAMAGE");
+                        programCard.put("damage", ((DamageCard) field.getCard()).getDamage().name());
+                        break;
+                    default:
+                        continue;
+                }
                 programCard.put("visible", field.isVisible());
                 program.put(programCard);
             }
@@ -130,10 +159,20 @@ public class LoadGameState {
         JSONArray cards = new JSONArray();
         for (int j = 0; j < Player.NO_CARDS; j++) {
             JSONObject cardsJSON = new JSONObject();
-            CommandCardField field = player.getCardField(j);
+            CardField field = player.getCardField(j);
             if (field != null && field.getCard() != null) {
-                cardsJSON.put("type", "PROGRAM");
-                cardsJSON.put("program", field.getCard().command.name());
+                switch (field.getCard().getType()) {
+                    case PROGRAM:
+                        cardsJSON.put("type", "PROGRAM");
+                        cardsJSON.put("program", ((ProgramCard) field.getCard()).getCommand().name());
+                        break;
+                    case DAMAGE:
+                        cardsJSON.put("type", "DAMAGE");
+                        cardsJSON.put("damage", ((DamageCard) field.getCard()).getDamage().name());
+                        break;
+                    default:
+                        continue;
+                }
                 cardsJSON.put("visible", field.isVisible());
                 cards.put(cardsJSON);
             }

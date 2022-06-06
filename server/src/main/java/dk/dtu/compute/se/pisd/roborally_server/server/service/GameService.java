@@ -117,11 +117,8 @@ public class GameService implements IGameService {
 
         System.out.println(newestFilename);
 
-        Game game;
-        if (games.containsKey(id)) {
-            game = games.get(id);
-        }
-        else {
+        Game game = getGameByID(id);
+        if (game == null) {
             game = new Game(id);
         }
 
@@ -175,7 +172,11 @@ public class GameService implements IGameService {
 
     @Override
     public GameState getGameStateByID(UUID id) {
-        return games.get(id).getGameState();
+        Game game = getGameByID(id);
+        if (game == null) {
+            return null;
+        }
+        return game.getGameState();
     }
 
     @Override
@@ -229,15 +230,22 @@ public class GameService implements IGameService {
     }
 
     public void resetReady(UUID id) {
-        for (Player player : games.get(id).getPlayers()) {
-            player.setReady(false);
+        Game game = getGameByID(id);
+        if (game != null) {
+            for (Player player : game.getPlayers()) {
+                player.setReady(false);
+            }
         }
     }
 
     @Override
     public boolean updatePlayerReady(UUID id, UUID playerID) {
         // todo: update and let the controller handle it
-        Game game = games.get(id);
+        Game game = getGameByID(id);
+        if (game == null) {
+            return false;
+        }
+
         switch (game.getGameState().getPhase()) {
             case PROGRAMMING:
                 getPlayer(id, playerID).setReady(true);
