@@ -4,6 +4,7 @@ import com.google.common.io.Resources;
 import dk.dtu.compute.se.pisd.roborally_server.model.*;
 import dk.dtu.compute.se.pisd.roborally_server.model.board.Board;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.*;
+import dk.dtu.compute.se.pisd.roborally_server.server.service.JSONService;
 import net.harawata.appdirs.AppDirs;
 import net.harawata.appdirs.AppDirsFactory;
 import org.json.JSONArray;
@@ -14,6 +15,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import static dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadBoard.loadBoard;
 
@@ -24,7 +26,7 @@ public class LoadGameState {
 
     /** Where we save the game state */
     public static final String GAMESTATEFOLDER = "gamestates";
-    static final private AppDirs appDirs = AppDirsFactory.getInstance();
+    public static final SimpleDateFormat gameStateTimeFormat = new SimpleDateFormat("(dd-MM-yyyy_HH-mm-ss)");
 
     public static PlayerDeck getPlayerDeckFromJSON(JSONObject playerGameState) {
         PlayerDeck playerDeck = new PlayerDeck();
@@ -100,7 +102,7 @@ public class LoadGameState {
             }
         }
         if (inputStream == null) {
-            String appdataFolder = appDirs.getUserDataDir("RoboRally", "prod", "DTU");
+            String appdataFolder = JSONService.getAppDataFolder();
             appdataFolder = appdataFolder + "/" + GAMESTATEFOLDER + "/" + filename + ".json";
             try {
                 inputStream = new FileInputStream(appdataFolder);
@@ -132,6 +134,8 @@ public class LoadGameState {
             Player player = game.getGameState().getPlayer(i);
             player.setColor(playerJSON.getString("color"));
             player.setName(playerJSON.getString("name"));
+
+            game.changePlayerID(player.getID(), UUID.fromString(playerJSON.getString("id")));
 
             player.setCurrentCheckpoint(playerJSON.getInt("currentCheckpoint"));
 
@@ -171,6 +175,7 @@ public class LoadGameState {
             JSONObject playerJSON = new JSONObject();
 
             playerJSON.put("name", player.getName());
+            playerJSON.put("id", player.getID());
             playerJSON.put("color", player.getColor());
             playerJSON.put("energy", player.getDeck().getEnergy());
             playerJSON.put("damage", player.getDeck().getDamage());
@@ -216,12 +221,25 @@ public class LoadGameState {
             }
             playerJSON.put("cards", cards);
 
+            JSONArray upgrades = new JSONArray();
+            for (int j = 0; j < PlayerDeck.NO_UPGRADES; j++) {
+                JSONObject upgradesJSON = new JSONObject();
+                UpgradeCard field = player.getDeck().getUpgradeField(j);
+                if (field != null && field.getType() != null) {
+                    upgradesJSON.put("type", "UPGRADE");
+                    upgradesJSON.put("upgrade", field.getUpgrade().name());
+                    upgradesJSON.put("visible", field.getVisible());
+                    upgrades.put(upgradesJSON);
+                }
+            }
+            playerJSON.put("upgrades", upgrades);
+
             players.put(playerJSON);
         }
         gameStateJSON.put("players", players);
 
-        String name = game.getMapID() + " (" + new SimpleDateFormat("dd-MM-yyyy HH-mm-ss").format(new Date()) + ")";
-        String appdataFolder = appDirs.getUserDataDir("RoboRally", "prod", "DTU");
+        String name = game.getID() + " " + gameStateTimeFormat.format(new Date());
+        String appdataFolder = JSONService.getAppDataFolder();
         String filePath = appdataFolder + "/" + GAMESTATEFOLDER + "/" + name + ".json";
         File file = new File(filePath);
         file.getParentFile().mkdirs();

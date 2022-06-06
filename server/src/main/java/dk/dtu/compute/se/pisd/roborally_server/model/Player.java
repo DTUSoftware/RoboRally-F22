@@ -80,6 +80,10 @@ public class Player {
         return id;
     }
 
+    /**
+     * Sets the player's ID. ONLY USE FROM GAME.
+     * @param id
+     */
     public void setID(UUID id) {
         this.id = id;
     }

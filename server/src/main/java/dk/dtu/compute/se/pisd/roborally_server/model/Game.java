@@ -25,14 +25,7 @@ public class Game {
 
     private static final List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
-    public Game() {}
-
-    public Game(UUID id, String mapID, int playerCount) {
-        super();
-        this.id = id;
-        this.mapID = mapID;
-        this.playerCount = playerCount;
-
+    public Game() {
         this.created = new Date();
         this.lastPlayed = new Date();
 
@@ -40,6 +33,14 @@ public class Game {
         this.gameState = new GameState();
 
         this.gameLogicController = new GameLogicController(this);
+    }
+
+    public Game(UUID id, String mapID, int playerCount) {
+        this();
+        this.id = id;
+        this.mapID = mapID;
+        this.playerCount = playerCount;
+
         loadBoard(this);
 
         initializePlayers();
@@ -130,8 +131,21 @@ public class Game {
     }
 
     @JsonIgnore
-    public Player getPlayer(UUID uuid) {
-        return players.get(uuid);
+    public Player getPlayer(UUID playerID) {
+        if (players.containsKey(playerID)) {
+            return players.get(playerID);
+        }
+        return null;
+    }
+
+    public boolean changePlayerID(UUID playerID, UUID newID) {
+        Player player = getPlayer(playerID);
+        if (player != null) {
+            players.remove(playerID);
+            player.setID(newID);
+            players.put(player.getID(), player);
+        }
+        return false;
     }
 
     @JsonIgnore

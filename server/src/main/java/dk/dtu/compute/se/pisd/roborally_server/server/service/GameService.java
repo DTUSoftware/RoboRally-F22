@@ -1,16 +1,27 @@
 package dk.dtu.compute.se.pisd.roborally_server.server.service;
 
+import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
+import dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadGameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Game;
 import dk.dtu.compute.se.pisd.roborally_server.model.GameState;
 import dk.dtu.compute.se.pisd.roborally_server.model.Player;
 import dk.dtu.compute.se.pisd.roborally_server.model.PlayerDeck;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadGameState.loadGameState;
+import static dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadGameState.saveGameState;
 
 @Service
 public class GameService implements IGameService {
+    @Autowired
+    private IJSONService jsonService;
+
     private static HashMap<UUID, Game> games = new HashMap<>();
 
     public GameService() {
@@ -27,6 +38,9 @@ public class GameService implements IGameService {
 
     @Override
     public Game getGameByID(UUID id) {
+        if (!games.containsKey(id)) {
+            return null;
+        }
         return games.get(id);
     }
 
@@ -40,6 +54,79 @@ public class GameService implements IGameService {
     @Override
     public boolean addGame(Game game) {
         return false;
+    }
+
+    @Override
+    public Game loadSavedGame(UUID id) {
+        List<String> gameStateNames = jsonService.getFolderJSON(LoadGameState.GAMESTATEFOLDER);
+        ArrayList<String> gameStatesWithID = new ArrayList<>(gameStateNames.size());
+        System.out.println(gameStateNames);
+        for (String gameStateName : gameStateNames) {
+            if (gameStateName.contains(" ")) {
+                UUID gameID = null;
+                try {
+                    gameID = UUID.fromString(gameStateName.split(" ")[0]);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (gameID != null && gameID.equals(id)) {
+                    gameStatesWithID.add(gameStateName);
+                }
+            }
+        }
+        System.out.println(gameStatesWithID);
+
+        if (gameStatesWithID.isEmpty()) {
+            return null;
+        }
+
+        // get newest gamestate
+        String newestFilename = null;
+        Date newestDate = null;
+        for (String gameStateFileName : gameStatesWithID) {
+            boolean newer = false;
+            if (newestFilename == null || newestDate == null) {
+                newer = true;
+            }
+            else {
+                Date newDate = null;
+                try {
+                    newDate = LoadGameState.gameStateTimeFormat.parse(gameStateFileName.split(" ")[1].replace("\\(", "").replace(").json", ""));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (newDate != null && newDate.after(newestDate)) {
+                    newer = true;
+                }
+            }
+
+            if (newer) {
+                newestFilename = gameStateFileName;
+                try {
+                    newestDate = LoadGameState.gameStateTimeFormat.parse(newestFilename.split(" ")[1].replace(".json", ""));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+
+        System.out.println(newestFilename);
+
+        Game game;
+        if (games.containsKey(id)) {
+            game = games.get(id);
+        }
+        else {
+            game = new Game(id);
+        }
+
+        loadGameState(game, newestFilename);
+        games.put(game.getID(), game);
+        return game;
     }
 
     @Override
@@ -58,8 +145,46 @@ public class GameService implements IGameService {
     }
 
     @Override
+    public JSONArray findAllSavedGameStateUnique() {
+        JSONArray gameStates = new JSONArray();
+        List<String> gameStateNames = jsonService.getFolderJSON(LoadGameState.GAMESTATEFOLDER);
+        System.out.println(gameStateNames);
+        ArrayList<UUID> gameIDs = new ArrayList<>(gameStateNames.size());
+        for (String gameStateName : gameStateNames) {
+            if (gameStateName.contains(" ")) {
+                UUID gameID = null;
+                try {
+                    gameID = UUID.fromString(gameStateName.split(" ")[0]);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (gameID != null && !gameIDs.contains(gameID)) {
+                    gameIDs.add(gameID);
+
+                    JSONObject gameState = new JSONObject();
+                    gameState.put("id", gameStateName.split(" ")[0]);
+                    gameStates.put(gameState);
+                }
+            }
+        }
+        return gameStates;
+    }
+
+    @Override
     public GameState getGameStateByID(UUID id) {
         return games.get(id).getGameState();
+    }
+
+    @Override
+    public boolean saveGameStateByID(UUID id) {
+        Game game = getGameByID(id);
+        if (game == null) {
+            return false;
+        }
+        saveGameState(game);
+        return true;
     }
 
     @Override
@@ -69,7 +194,10 @@ public class GameService implements IGameService {
 
     @Override
     public boolean updatePlayerDeck(UUID id, UUID playerID, PlayerDeck playerDeck) {
-        PlayerDeck currentPlayerDeck = games.get(id).getPlayer(playerID).getDeck();
+        PlayerDeck currentPlayerDeck = getPlayerDeck(id, playerID);
+        if (currentPlayerDeck == null) {
+            return false;
+        }
 
         // only check cards
         // TODO: card check to prevent cheating
@@ -82,12 +210,21 @@ public class GameService implements IGameService {
 
     @Override
     public Player getPlayer(UUID id, UUID playerID) {
-        return games.get(id).getPlayer(playerID);
+        Game game = getGameByID(id);
+        if (game == null) {
+            return null;
+        }
+
+        return game.getPlayer(playerID);
     }
 
     @Override
     public PlayerDeck getPlayerDeck(UUID id, UUID playerID) {
-        return getPlayer(id, playerID).getDeck();
+        Player player = getPlayer(id, playerID);
+        if (player == null) {
+            return null;
+        }
+        return player.getDeck();
     }
 
     public void resetReady(UUID id) {

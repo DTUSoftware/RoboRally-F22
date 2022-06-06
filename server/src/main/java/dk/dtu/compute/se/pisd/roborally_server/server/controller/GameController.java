@@ -53,6 +53,12 @@ public class GameController {
         return getResponseEntity(gameJSON, "game not added");
     }
 
+    @GetMapping(value = "/games/savedGames", produces = "application/json")
+    public ResponseEntity<String> getGameStates() {
+        JSONArray gameStatesUnique = gameService.findAllSavedGameStateUnique();
+        return getResponseEntity(gameStatesUnique, "could not find any saved games");
+    }
+
     @GetMapping(value = "/games/{id}", produces = "application/json")
     public ResponseEntity<String> getGameByID(@PathVariable UUID id) {
         Game game = gameService.getGameByID(id);
@@ -87,6 +93,26 @@ public class GameController {
             e.printStackTrace();
         }
         return getResponseEntity(gameStateJSON, "gamestate not found");
+    }
+
+    @PostMapping(value = "/games/{id}/gameState/save", produces = "application/json")
+    public ResponseEntity<String> saveGameState(@PathVariable UUID id) {
+        boolean status = gameService.saveGameStateByID(id);
+        return getResponseEntity(status, "could not save game state!");
+    }
+
+    @PostMapping(value = "/games/{id}/gameState/load", produces = "application/json")
+    public ResponseEntity<String> loadGameState(@PathVariable UUID id) {
+        Game game = gameService.loadSavedGame(id);
+        JSONObject gameJSON = null;
+        if (game != null) {
+            try {
+                gameJSON = new JSONObject(objectMapper.writeValueAsString(game));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        return getResponseEntity(gameJSON, "gamestate not loaded");
     }
 
     @GetMapping(value = "/games/{id}/gameState/{playerID}", produces = "application/json")
