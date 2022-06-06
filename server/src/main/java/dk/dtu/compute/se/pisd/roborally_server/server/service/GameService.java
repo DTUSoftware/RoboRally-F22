@@ -240,7 +240,7 @@ public class GameService implements IGameService {
 
     @Override
     public boolean updatePlayerReady(UUID id, UUID playerID) {
-        // todo: update and let the controller handle it
+        // todo: update and let the controller handle it?
         Game game = getGameByID(id);
         if (game == null) {
             return false;

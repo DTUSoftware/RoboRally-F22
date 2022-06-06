@@ -36,5 +36,7 @@ public enum Phase {
     /** The activation phase */
     ACTIVATION,
     /** The player interaction phase */
-    PLAYER_INTERACTION
+    PLAYER_INTERACTION,
+    /** When the player won */
+    GAME_WON;
 }

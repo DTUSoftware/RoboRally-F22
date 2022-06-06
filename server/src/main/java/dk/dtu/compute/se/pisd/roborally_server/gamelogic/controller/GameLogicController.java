@@ -895,10 +895,8 @@ public class GameLogicController {
      * @author Mads Nielsen
      */
     public void winTheGame(Player player) {
-        // TODO: send won over server before killing
         if (game != null) {
-            GameService gameService = new GameService();
-            gameService.deleteGameByID(game.getID());
+            game.getGameState().setPhase(Phase.GAME_WON);
         }
     }
 
