@@ -349,6 +349,7 @@ public class GameLogicController {
         }
 
         game.getGameState().setPlayers(playerMoveOrderAsList);
+        game.getGameState().setCurrentPlayer(0);
     }
 
     /**
