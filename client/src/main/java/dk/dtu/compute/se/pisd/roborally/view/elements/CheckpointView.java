@@ -15,6 +15,7 @@ import java.io.IOException;
 /**
  * A WallView is the visual representation of a {@link Checkpoint Checkpoint}.
  * @author Oscar Maxwell
+ * @author Nicolai Udbye
  * @author Marcus
  */
 public class CheckpointView extends ElementView {

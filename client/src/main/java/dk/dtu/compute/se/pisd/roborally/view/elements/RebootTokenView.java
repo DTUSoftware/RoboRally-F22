@@ -11,6 +11,7 @@ import java.io.IOException;
 /**
  * A RebootTokenView is the visual representation of a {@link RebootToken RebootToken}
  * @author Oscar Maxwell
+ * @author Nicolai Udbye
  * @author Marcus
  */
 public class RebootTokenView extends ElementView {
