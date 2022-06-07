@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The rotating gear object
+ * @author Mads G. E. Hansen
  */
 public class Gear extends FieldElement {
     private boolean direction;
