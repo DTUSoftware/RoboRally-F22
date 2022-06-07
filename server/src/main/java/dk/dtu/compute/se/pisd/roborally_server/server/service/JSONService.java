@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,6 +99,8 @@ public class JSONService implements IJSONService {
                         if (!e.toString().contains("gamestates")) {
                             e.printStackTrace();
                         }
+                    } catch (ProviderNotFoundException e) {
+                        System.out.println("Could not load files from JAR-file - provider not found (ignore error on server).");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

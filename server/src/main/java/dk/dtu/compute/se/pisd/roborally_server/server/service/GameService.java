@@ -101,7 +101,7 @@ public class GameService implements IGameService {
     public Game loadSavedGame(UUID id) {
         List<String> gameStateNames = jsonService.getFolderJSON(LoadGameState.GAMESTATEFOLDER);
         ArrayList<String> gameStatesWithID = new ArrayList<>(gameStateNames.size());
-        System.out.println(gameStateNames);
+//        System.out.println(gameStateNames);
         for (String gameStateName : gameStateNames) {
             if (gameStateName.contains(" ")) {
                 UUID gameID = null;
@@ -116,7 +116,7 @@ public class GameService implements IGameService {
                 }
             }
         }
-        System.out.println(gameStatesWithID);
+//        System.out.println(gameStatesWithID);
 
         if (gameStatesWithID.isEmpty()) {
             return null;
@@ -153,7 +153,7 @@ public class GameService implements IGameService {
 
         }
 
-        System.out.println(newestFilename);
+//        System.out.println(newestFilename);
 
         Game game = getGameByID(id);
         if (game == null) {
