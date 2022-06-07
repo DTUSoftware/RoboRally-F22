@@ -17,6 +17,7 @@ public class Laser extends FieldElement {
      *
      * @param space     the space to put the lazer
      * @param direction the direction for the laser
+     * @param lazer     the number of the lazer
      * @author Mads G. E. Hansen
      */
     public Laser(Space space, Heading direction, int lazer) {

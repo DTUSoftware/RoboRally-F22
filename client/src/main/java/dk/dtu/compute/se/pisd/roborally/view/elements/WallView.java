@@ -9,12 +9,15 @@ import java.io.IOException;
 
 /**
  * A WallView is the visual representation of a {@link Wall Wall}.
+ *
  * @author Oscar Maxwell
- * @author Marcus Sand
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class WallView extends ElementView {
 
-    /** the Wall that is linked to the view */
+    /**
+     * the Wall that is linked to the view
+     */
     public final Wall wall;
     private static Image image;
 
@@ -30,6 +33,8 @@ public class WallView extends ElementView {
      * Creates a new view for a {@link Wall Wall}.
      *
      * @param wall the {@link Wall Wall}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public WallView(@NotNull Wall wall) {
 
@@ -38,7 +43,7 @@ public class WallView extends ElementView {
         super.getImageView().fitHeightProperty().unbind();
 
         if (wall.getBooleanInvisible()) {
-            setVisible (false);
+            setVisible(false);
         }
 
         switch (wall.getDirection()) {

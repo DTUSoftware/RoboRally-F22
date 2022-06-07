@@ -9,12 +9,15 @@ import java.io.IOException;
 
 /**
  * A PitView is the visual representation of a {@link Pit Pit}.
+ *
  * @author Oscar Maxwell
- * @author Marcus Sand
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class PitView extends ElementView {
 
-    /** the Pit that is linked to the view */
+    /**
+     * the Pit that is linked to the view
+     */
     public final Pit pit;
     private static Image image;
 
@@ -30,6 +33,7 @@ public class PitView extends ElementView {
      * Creates a new view for a {@link Pit Pit}.
      *
      * @param pit the {@link Pit Pit}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public PitView(@NotNull Pit pit) {
         super(image, "center");

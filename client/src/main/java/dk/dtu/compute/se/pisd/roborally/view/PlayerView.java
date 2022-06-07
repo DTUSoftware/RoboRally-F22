@@ -43,6 +43,7 @@ import java.util.List;
  * The view that each separate {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} has.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class PlayerView extends Tab implements ViewObserver {
 
@@ -77,6 +78,8 @@ public class PlayerView extends Tab implements ViewObserver {
      *                       that controls this player view.
      * @param player         the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} that is represented
      *                       on this view.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
         super(player.getName());
@@ -110,7 +113,7 @@ public class PlayerView extends Tab implements ViewObserver {
         //      refactored.
 
         finishButton = new Button("Ready");
-        finishButton.setOnAction( e -> {
+        finishButton.setOnAction(e -> {
             GameService.markPlayerReady(gameController.getGameID(), player.getID());
 //            finishButton.setDisable(true);
         });
@@ -170,6 +173,8 @@ public class PlayerView extends Tab implements ViewObserver {
      * the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} on the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
      *
      * @param subject the board which changed
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void updateView(Subject subject) {
@@ -177,7 +182,7 @@ public class PlayerView extends Tab implements ViewObserver {
             for (int i = 0; i < Player.NO_REGISTERS; i++) {
                 CardFieldView cardFieldView = programCardViews[i];
                 if (cardFieldView != null) {
-                    if (player.board.getPhase() == Phase.PROGRAMMING ) {
+                    if (player.board.getPhase() == Phase.PROGRAMMING) {
                         cardFieldView.setBackground(CardFieldView.BG_DEFAULT);
                     } else {
                         if (i < player.board.getStep()) {
@@ -251,8 +256,8 @@ public class PlayerView extends Tab implements ViewObserver {
 
                         if (
                                 (currentCard instanceof ProgramCard && ((ProgramCard) currentCard).getProgram().isInteractive())
-                                ||
-                                (currentCard instanceof DamageCard && ((DamageCard) currentCard).getDamage().isInteractive())
+                                        ||
+                                        (currentCard instanceof DamageCard && ((DamageCard) currentCard).getDamage().isInteractive())
                         ) {
                             break;
                         }
@@ -268,8 +273,7 @@ public class PlayerView extends Tab implements ViewObserver {
                             optionButton.setDisable(false);
                             playerInteractionPanel.getChildren().add(optionButton);
                         }
-                    }
-                    else if (currentCard instanceof DamageCard) {
+                    } else if (currentCard instanceof DamageCard) {
                         List<Damage> cardOptions = ((DamageCard) currentCard).getDamage().getOptions();
 
                         for (Damage cardOption : cardOptions) {

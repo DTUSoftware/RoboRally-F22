@@ -10,10 +10,14 @@ import java.io.IOException;
 
 /**
  * A RebootTokenView is the visual representation of a {@link SpawnGear SpawnGear}.
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class SpawnGearView extends ElementView {
 
-    /** the SpawnGear that is linked to the view */
+    /**
+     * the SpawnGear that is linked to the view
+     */
     public final SpawnGear spawnGear;
     private static Image image;
 
@@ -29,6 +33,7 @@ public class SpawnGearView extends ElementView {
      * Creates a new view for a {@link SpawnGear spawnGear}.
      *
      * @param spawnGear the {@link SpawnGear spawnGear}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public SpawnGearView(@NotNull SpawnGear spawnGear) {
         super(image, "center");

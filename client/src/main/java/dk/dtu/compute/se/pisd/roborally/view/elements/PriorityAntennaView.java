@@ -9,11 +9,16 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * A WallView is the visual representation of a {@link PriorityAntenna PriorityAntenna}.
+ * A PriorityAntennaView is the visual representation of a {@link PriorityAntenna PriorityAntenna}.
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ * @author Mads Nielsen
  */
 public class PriorityAntennaView extends ElementView {
 
-    /** the Checkpoint that is linked to the view */
+    /**
+     * the Checkpoint that is linked to the view
+     */
     public final PriorityAntenna priorityAntenna;
     private static Image image;
 
@@ -29,6 +34,7 @@ public class PriorityAntennaView extends ElementView {
      * Creates a new view for a {@link PriorityAntenna PriorityAntenna}.
      *
      * @param priorityAntenna the {@link PriorityAntenna PriorityAntenna}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public PriorityAntennaView(@NotNull PriorityAntenna priorityAntenna) {
         super(image, "center");

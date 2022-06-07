@@ -32,6 +32,7 @@ import javafx.scene.control.TabPane;
  * The view representing the players' in the game, and the current player.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class PlayersView extends TabPane implements ViewObserver {
 
@@ -44,6 +45,7 @@ public class PlayersView extends TabPane implements ViewObserver {
      *
      * @param gameController the {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}
      *                       that controls this players' view.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public PlayersView(GameController gameController) {
         board = gameController.board;
@@ -51,7 +53,7 @@ public class PlayersView extends TabPane implements ViewObserver {
         this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 
         playerViews = new PlayerView[board.getPlayersNumber()];
-        for (int i = 0; i < board.getPlayersNumber();  i++) {
+        for (int i = 0; i < board.getPlayersNumber(); i++) {
             playerViews[i] = new PlayerView(gameController, board.getPlayer(i));
             this.getTabs().add(playerViews[i]);
         }
@@ -63,6 +65,7 @@ public class PlayersView extends TabPane implements ViewObserver {
      * Updates the view when changes are made to the board.
      *
      * @param subject the subject which changed
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     @Override
     public void updateView(Subject subject) {

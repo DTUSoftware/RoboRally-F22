@@ -48,6 +48,7 @@ import static dk.dtu.compute.se.pisd.roborally.server.GameService.updatePlayerDe
  * {@link CardField CommandCardField}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class CardFieldView extends GridPane implements ViewObserver {
 
@@ -55,31 +56,51 @@ public class CardFieldView extends GridPane implements ViewObserver {
      * This data format helps avoiding transfers of e.g. Strings from other
      * programs which can copy/paste Strings.
      */
-    final public static  DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
+    final public static DataFormat ROBO_RALLY_CARD = new DataFormat("games/roborally/cards");
 
-    /** The width of a card field */
+    /**
+     * The width of a card field
+     */
     final public static int CARDFIELD_WIDTH = 65;
-    /** The height of a card field */
+    /**
+     * The height of a card field
+     */
     final public static int CARDFIELD_HEIGHT = 100;
 
-    /** The border design of a card field */
+    /**
+     * The border design of a card field
+     */
     final public static Border BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2)));
 
-    /** The background design of a card field */
+    /**
+     * The background design of a card field
+     */
     final public static Background BG_DEFAULT = new Background(new BackgroundFill(Color.WHITE, null, null));
-    /** The background design of a card when dragged */
+    /**
+     * The background design of a card when dragged
+     */
     final public static Background BG_DRAG = new Background(new BackgroundFill(Color.GRAY, null, null));
-    /** The background design of a card when dropped */
+    /**
+     * The background design of a card when dropped
+     */
     final public static Background BG_DROP = new Background(new BackgroundFill(Color.LIGHTGRAY, null, null));
 
-    /** The background design of a card when active */
+    /**
+     * The background design of a card when active
+     */
     final public static Background BG_ACTIVE = new Background(new BackgroundFill(Color.YELLOW, null, null));
-    /** The background design of a card when done */
-    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW,  null, null));
+    /**
+     * The background design of a card when done
+     */
+    final public static Background BG_DONE = new Background(new BackgroundFill(Color.GREENYELLOW, null, null));
 
-    /** imageview object */
+    /**
+     * imageview object
+     */
     private ImageView imageView;
-    /** the color adjusting of image */
+    /**
+     * the color adjusting of image
+     */
     private ColorAdjust imageColor = new ColorAdjust();
 
     private CardField field;
@@ -95,6 +116,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
      *                       that controls this card field view.
      * @param field          the {@link CardField CommandCardField} that
      *                       is represented in the view.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public CardFieldView(@NotNull GameController gameController, @NotNull CardField field) {
         this.gameController = gameController;
@@ -138,9 +161,11 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     /**
      * Gets the representation of the provided cardfield.
+     *
      * @param cardField the {@link CardField CommandCardField} to get the
      *                  representation of.
      * @return the representation, based on current field player, and such.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     private String cardFieldRepresentation(CardField cardField) {
         if (cardField.player != null) {
@@ -165,8 +190,10 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     /**
      * Gets a CommandCardField based on the provided representation.
+     *
      * @param rep the representation.
      * @return the {@link CardField CommandCardField}, based on the representation.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     private CardField cardFieldFromRepresentation(String rep) {
         if (rep != null && field.player != null) {
@@ -191,6 +218,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
      * Updates the card field, when changes are made to the {@link CardField CommandCardField}.
      *
      * @param subject the subject which changed
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void updateView(Subject subject) {
@@ -199,9 +228,8 @@ public class CardFieldView extends GridPane implements ViewObserver {
             if (card != null && field.isVisible()) {
                 label.setText(card.getName());
                 try {
-                    imageView.setImage(new Image(Resources.getResource("objects/cards/"+card.getName()+".jpg").openStream()));
-                }
-                catch (Exception e) {
+                    imageView.setImage(new Image(Resources.getResource("objects/cards/" + card.getName() + ".jpg").openStream()));
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
@@ -213,6 +241,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     /**
      * Detects mouse drag events of cards.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private class OnDragDetectedHandler implements EventHandler<MouseEvent> {
 
@@ -246,6 +277,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     /**
      * Handles mouse drag events of cards.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private class OnDragOverHandler implements EventHandler<DragEvent> {
 
@@ -271,6 +305,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     /**
      * Handles mouse drag events of cards.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private class OnDragEnteredHandler implements EventHandler<DragEvent> {
 
@@ -297,6 +334,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     /**
      * Handles mouse drag events of cards.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private class OnDragExitedHandler implements EventHandler<DragEvent> {
 
@@ -324,6 +364,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     /**
      * Handles mouse drag events of cards.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private class OnDragDroppedHandler implements EventHandler<DragEvent> {
 
@@ -353,8 +396,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
                                     // cardField.setCard(card);
                                     success = true;
                                     // }
-                                }
-                                else {
+                                } else {
                                     gameController.moveCards(cardField, source);
                                 }
                             }
@@ -371,6 +413,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     /**
      * Handles mouse drag events of cards.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private class OnDragDoneHandler implements EventHandler<DragEvent> {
 

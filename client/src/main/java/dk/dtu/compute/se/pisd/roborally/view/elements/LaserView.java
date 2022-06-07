@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * A WallView is the visual representation of a {@link Laser Laser}.
  * @author Oscar Maxwell
- * @author Marcus
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class LaserView extends ElementView {
 
@@ -24,6 +24,8 @@ public class LaserView extends ElementView {
      * Creates a new view for a {@link Laser Laser}.
      *
      * @param laser the {@link Laser Laser}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public LaserView(@NotNull Laser laser) {
         super(null, "top");

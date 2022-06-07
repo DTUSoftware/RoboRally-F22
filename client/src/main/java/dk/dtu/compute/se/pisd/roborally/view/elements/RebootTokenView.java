@@ -10,12 +10,15 @@ import java.io.IOException;
 
 /**
  * A RebootTokenView is the visual representation of a {@link RebootToken RebootToken}
+ *
  * @author Oscar Maxwell
- * @author Marcus
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class RebootTokenView extends ElementView {
 
-    /** the Checkpoint that is linked to the view */
+    /**
+     * the Checkpoint that is linked to the view
+     */
     public final RebootToken rebootToken;
     private static Image image;
 
@@ -31,6 +34,8 @@ public class RebootTokenView extends ElementView {
      * Creates a new view for a {@link RebootToken RebootToken}.
      *
      * @param rebootToken the {@link RebootToken RebootToken}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public RebootTokenView(@NotNull RebootToken rebootToken) {
         super(image, "center");

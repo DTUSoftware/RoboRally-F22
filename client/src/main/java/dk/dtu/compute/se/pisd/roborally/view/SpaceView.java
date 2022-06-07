@@ -43,15 +43,22 @@ import java.util.ArrayList;
  * A SpaceView is the visual representation of a {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    /** the height of the space view */
+    /**
+     * the height of the space view
+     */
     final public static int SPACE_HEIGHT = 60; // 75;
-    /** the width of the space view */
+    /**
+     * the width of the space view
+     */
     final public static int SPACE_WIDTH = 60;  // 75;
 
-    /** the Space that is linked to the view */
+    /**
+     * the Space that is linked to the view
+     */
     public final Space space;
 
     private static Image image;
@@ -69,6 +76,8 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Creates a new view for a {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
      *
      * @param space the {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public SpaceView(@NotNull Space space) {
         this.space = space;
@@ -78,11 +87,11 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         // XXX the following styling should better be done with styles
         this.setPrefWidth(SPACE_WIDTH);
-        this.setMinWidth((double) SPACE_WIDTH/2);
+        this.setMinWidth((double) SPACE_WIDTH / 2);
         this.setMaxWidth(SPACE_WIDTH);
 
         this.setPrefHeight(SPACE_HEIGHT);
-        this.setMinHeight((double) SPACE_HEIGHT/2);
+        this.setMinHeight((double) SPACE_HEIGHT / 2);
         this.setMaxHeight(SPACE_HEIGHT);
 
 
@@ -101,6 +110,9 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     /**
      * Updates the view with the objects.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private void updateObjects() {
         this.getChildren().add(imageView);
@@ -122,35 +134,25 @@ public class SpaceView extends StackPane implements ViewObserver {
         for (FieldElement fieldElement : space.getFieldObjects()) {
             if (fieldElement instanceof Checkpoint) {
                 checkpoints.add(new CheckpointView((Checkpoint) fieldElement));
-            }
-            else if (fieldElement instanceof ConveyorBelt) {
+            } else if (fieldElement instanceof ConveyorBelt) {
                 conveyorBelts.add(new ConveyorBeltView((ConveyorBelt) fieldElement));
-            }
-            else if (fieldElement instanceof EnergySpace) {
+            } else if (fieldElement instanceof EnergySpace) {
                 energySpaces.add(new EnergySpaceView((EnergySpace) fieldElement));
-            }
-            else if (fieldElement instanceof Gear) {
+            } else if (fieldElement instanceof Gear) {
                 gears.add(new GearView((Gear) fieldElement));
-            }
-            else if (fieldElement instanceof Laser) {
+            } else if (fieldElement instanceof Laser) {
                 lasers.add(new LaserView((Laser) fieldElement));
-            }
-            else if (fieldElement instanceof Pit) {
+            } else if (fieldElement instanceof Pit) {
                 pits.add(new PitView((Pit) fieldElement));
-            }
-            else if (fieldElement instanceof PriorityAntenna) {
+            } else if (fieldElement instanceof PriorityAntenna) {
                 priorityAntennas.add(new PriorityAntennaView((PriorityAntenna) fieldElement));
-            }
-            else if (fieldElement instanceof PushPanel) {
+            } else if (fieldElement instanceof PushPanel) {
                 pushPanels.add(new PushPanelView((PushPanel) fieldElement));
-            }
-            else if (fieldElement instanceof RebootToken) {
+            } else if (fieldElement instanceof RebootToken) {
                 rebootTokens.add(new RebootTokenView((RebootToken) fieldElement));
-            }
-            else if (fieldElement instanceof SpawnGear) {
+            } else if (fieldElement instanceof SpawnGear) {
                 spawnGears.add(new SpawnGearView((SpawnGear) fieldElement));
-            }
-            else if (fieldElement instanceof Wall) {
+            } else if (fieldElement instanceof Wall) {
                 walls.add(new WallView((Wall) fieldElement));
             }
         }
@@ -193,20 +195,22 @@ public class SpaceView extends StackPane implements ViewObserver {
     /**
      * Updates the view with headings and other effects on the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}
      * when the player interacts with the {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     private void updatePlayer() {
         Player player = space.getPlayer();
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
                     10.0, 20.0,
-                    20.0, 0.0 );
+                    20.0, 0.0);
             try {
                 arrow.setFill(Color.valueOf(player.getColor()));
             } catch (Exception e) {
                 arrow.setFill(Color.MEDIUMPURPLE);
             }
 
-            arrow.setRotate((90*player.getHeading().ordinal())%360);
+            arrow.setRotate((90 * player.getHeading().ordinal()) % 360);
             this.getChildren().add(arrow);
         }
     }
@@ -215,6 +219,8 @@ public class SpaceView extends StackPane implements ViewObserver {
      * Updates when the {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} gets changed.
      *
      * @param subject the subject which changed
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void updateView(Subject subject) {

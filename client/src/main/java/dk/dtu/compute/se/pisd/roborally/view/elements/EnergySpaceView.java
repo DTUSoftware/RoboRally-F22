@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * A WallView is the visual representation of a {@link EnergySpace EnergySpace}.
+ * A EnergySpaceView is the visual representation of a {@link EnergySpace EnergySpace}.
+ * @author Mads Nielsen
  */
 public class EnergySpaceView extends ElementView {
 
@@ -28,6 +29,7 @@ public class EnergySpaceView extends ElementView {
      * Creates a new view for a {@link EnergySpace EnergySpace}.
      *
      * @param energySpace the {@link EnergySpace EnergySpace}.
+     * @author Mads Nielsen
      */
     public EnergySpaceView(@NotNull EnergySpace energySpace) {
         super(image, "center");

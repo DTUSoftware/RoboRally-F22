@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
  * The BoardView is the visual representation of a {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class BoardView extends VBox implements ViewObserver {
 
@@ -62,6 +63,8 @@ public class BoardView extends VBox implements ViewObserver {
      *
      * @param gameController the {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}
      *                       that controls this board.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
@@ -124,6 +127,8 @@ public class BoardView extends VBox implements ViewObserver {
      * Updates the board view, when changes are made to the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
      *
      * @param subject the subject which changed (usually the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}).
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void updateView(Subject subject) {
@@ -136,6 +141,9 @@ public class BoardView extends VBox implements ViewObserver {
     /**
      * XXX this handler and its uses should eventually be deleted! This is just to help test the
      * behaviour of the game by being able to explicitly move the players on the board!
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private class SpaceEventHandler implements EventHandler<MouseEvent> {
 

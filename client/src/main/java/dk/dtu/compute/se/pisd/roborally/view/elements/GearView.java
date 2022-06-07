@@ -8,11 +8,15 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * A WallView is the visual representation of a {@link Gear Gear}.
+ * A GearView is the visual representation of a {@link Gear Gear}.
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class GearView extends ElementView {
 
-    /** the Checkpoint that is linked to the view */
+    /**
+     * the Checkpoint that is linked to the view
+     */
     public final Gear gear;
     private Image image;
 
@@ -20,6 +24,7 @@ public class GearView extends ElementView {
      * Creates a new view for a {@link Gear Gear}.
      *
      * @param gear the {@link Gear Gear}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public GearView(@NotNull Gear gear) {
         super(null, "center");

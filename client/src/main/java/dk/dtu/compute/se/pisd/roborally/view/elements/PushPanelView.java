@@ -14,12 +14,14 @@ import java.io.IOException;
 
 /**
  * A PushPanelView is the visual representation of a {@link PushPanel PushPanel}.
+ *
  * @author Oscar Maxwell
- * @author Marcus
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class PushPanelView extends ElementView {
-
-    /** the Wall that is linked to the view */
+    /**
+     * the Wall that is linked to the view
+     */
     public final PushPanel pushPanel;
     private static Image image;
     private Text text;
@@ -36,12 +38,14 @@ public class PushPanelView extends ElementView {
      * Creates a new view for a {@link PushPanel pushPanel}.
      *
      * @param pushPanel the {@link PushPanel pushPanel}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public PushPanelView(@NotNull PushPanel pushPanel) {
         super(image, "top");
         this.pushPanel = pushPanel;
 
-        if (this.pushPanel.getRegister1() < 6 && this.pushPanel.getRegister1() > 0 ) {
+        if (this.pushPanel.getRegister1() < 6 && this.pushPanel.getRegister1() > 0) {
             text = new Text(Integer.toString(this.pushPanel.getRegister1()));
             text.setLayoutY(34.7);
             text.setLayoutX(18);

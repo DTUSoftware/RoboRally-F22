@@ -81,7 +81,8 @@ public class Player extends Subject {
     /**
      * Initializes a Player.
      *
-     * @param id The player ID.
+     * @param id    The player ID.
+     * @param board The board
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */

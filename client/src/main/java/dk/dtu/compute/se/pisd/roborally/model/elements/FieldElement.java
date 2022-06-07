@@ -29,7 +29,8 @@ public abstract class FieldElement {
     /**
      * cunstructer
      *
-     * @param space give the space to where the field should be
+     * @param space     give the space to where the field should be
+     * @param direction the direction of the fieldElement
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Mads Legard Nielsen
      */

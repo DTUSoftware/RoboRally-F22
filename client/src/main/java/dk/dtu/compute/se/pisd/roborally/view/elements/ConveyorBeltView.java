@@ -8,11 +8,15 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * A WallView is the visual representation of a {@link ConveyorBelt ConveyorBelt}.
+ * A ConveyorBeltView is the visual representation of a {@link ConveyorBelt ConveyorBelt}.
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class ConveyorBeltView extends ElementView {
 
-    /** the Checkpoint that is linked to the view */
+    /**
+     * the Checkpoint that is linked to the view
+     */
     public final ConveyorBelt conveyorBelt;
     private Image image;
 
@@ -20,6 +24,7 @@ public class ConveyorBeltView extends ElementView {
      * Creates a new view for a {@link ConveyorBelt ConveyorBelt}.
      *
      * @param conveyorBelt the {@link ConveyorBelt ConveyorBelt}.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public ConveyorBeltView(@NotNull ConveyorBelt conveyorBelt) {
         super(null, "center");
@@ -32,8 +37,7 @@ public class ConveyorBeltView extends ElementView {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             try {
                 this.image = new Image(Resources.getResource("objects/green_conveyor_belt.png").openStream());
             } catch (IOException e) {
