@@ -53,6 +53,9 @@ public class GameLogicController {
     /** I don't care about this little shitty part of memory used to store this */
     private String cardOption = null;
 
+    /** Queue of players for step */
+    ArrayDeque<Integer> playerQueue = new ArrayDeque<>();
+
     /**
      * The GameController constructor.
      *
@@ -343,13 +346,10 @@ public class GameLogicController {
             playerDistances[playerSmallestdistance] = Double.MAX_VALUE;
             playerMoveOrder[i] = playerSmallestdistance;
         }
-        List<Player> playerMoveOrderAsList = new ArrayList<>();
+        // Fill up the queue from the beginning (playerMoveOrder is made that way)
         for (int i = 0; i < playerAmount; i++) {
-            playerMoveOrderAsList.add(game.getGameState().getPlayer(playerMoveOrder[i]));
+            playerQueue.add(playerMoveOrder[i]);
         }
-
-        game.getGameState().setPlayers(playerMoveOrderAsList);
-        game.getGameState().setCurrentPlayer(0);
     }
 
     /**
@@ -361,9 +361,12 @@ public class GameLogicController {
      */
     private void executeNextStep() {
         // ======== Priority Antenna choosing ======
-        if (game.getGameState().getCurrentPlayer() == 0) {
+        if (playerQueue.isEmpty()) {
             priorityAntennaMath();
         }
+        game.getGameState().setCurrentPlayer(playerQueue.remove());
+//        System.out.println("Step: " + game.getGameState().getStep());
+//        System.out.println("Current player: " + game.getGameState().getCurrentPlayer());
         Player currentPlayer = game.getGameState().getPlayer(game.getGameState().getCurrentPlayer());
 
         // Do the activation
@@ -434,10 +437,7 @@ public class GameLogicController {
                     this.cardOption = null;
                 }
 
-                int nextPlayerNumber = game.getGameState().getPlayerNumber(currentPlayer) + 1;
-                if (nextPlayerNumber < game.getPlayerCount()) {
-                    game.getGameState().setCurrentPlayer(nextPlayerNumber);
-                } else {
+                if (playerQueue.isEmpty()) {
                     // Activate all elements on the board
                     activateElements();
 

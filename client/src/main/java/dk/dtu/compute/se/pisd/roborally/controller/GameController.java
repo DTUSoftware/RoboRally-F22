@@ -93,18 +93,9 @@ public class GameController {
                 board.addPlayer(new Player(UUID.fromString(playerJSON.getString("id")), board));
             }
 
-            Player player = null;
-            for (int j = 0; j < players.length(); j++) {
-                player = board.getPlayer(j);
-                if (UUID.fromString(playerJSON.getString("id")).equals(player.getID())) {
-                    break;
-                }
-                else {
-                    player = null;
-                }
-            }
+            Player player = board.getPlayer(i);
 
-            if (player == null) {
+            if (player == null || !UUID.fromString(playerJSON.getString("id")).equals(player.getID())) {
                 System.out.println("PLAYER UUID MISMATCH WITH SERVER! - CANCELING SYNC!");
                 return;
             }
