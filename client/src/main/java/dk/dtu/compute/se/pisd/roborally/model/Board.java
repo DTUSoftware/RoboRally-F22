@@ -434,6 +434,7 @@ public class Board extends Subject {
                 ", Player: " + getCurrentPlayer().getName() +
                 ", Step: " + getStep() +
                 ", Player checkpoint: " + getCurrentPlayer().getCurrentCheckpoint() +
-                ", Player energy: " + getCurrentPlayer().getEnergy();
+                ", Player energy: " + getCurrentPlayer().getEnergy() +
+                ", Player damage: " + getCurrentPlayer().getDamage();
     }
 }

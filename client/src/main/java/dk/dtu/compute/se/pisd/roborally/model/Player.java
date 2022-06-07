@@ -76,6 +76,7 @@ public class Player extends Subject {
     private CardField[] program;
     private CardField[] cards;
     private ArrayList<CardField> upgrades;
+    private int damage;
 
 
     /**
@@ -344,7 +345,7 @@ public class Player extends Subject {
      * @author Oscar Maxwell
      */
     public void setDamage(int damage) {
-
+        this.damage = damage;
     }
 
     /**
@@ -355,6 +356,16 @@ public class Player extends Subject {
      */
     public int getEnergy() {
         return this.energy;
+    }
+
+    /**
+     * gives the current damage of the player
+     *
+     * @return the current damage of the player
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    public int getDamage() {
+        return this.damage;
     }
 
     /**

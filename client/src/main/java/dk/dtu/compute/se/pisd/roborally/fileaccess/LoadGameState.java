@@ -72,6 +72,7 @@ public class LoadGameState {
             Player player = new Player(null, board);
 
             player.setEnergy(playerJSON.getInt("energy"));
+            player.setDamage(playerJSON.getInt("damage"));
             player.setCurrentCheckpoint(playerJSON.getInt("currentCheckpoint"));
 
             JSONObject positionJSON = playerJSON.getJSONObject("position");
