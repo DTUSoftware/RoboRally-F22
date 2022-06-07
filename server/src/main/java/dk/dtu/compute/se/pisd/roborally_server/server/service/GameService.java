@@ -306,8 +306,6 @@ public class GameService implements IGameService {
             return false;
         }
 
-        game.getGameLogicController().setCommandCardOptionAndContinue(optionName);
-
-        return true;
+        return game.getGameLogicController().setCommandCardOptionAndContinue(optionName);
     }
 }

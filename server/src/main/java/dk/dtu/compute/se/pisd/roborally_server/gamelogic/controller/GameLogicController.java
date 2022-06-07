@@ -840,6 +840,8 @@ public class GameLogicController {
                 case PROGRAM:
                     Program program = ((ProgramCard) card).getProgram();
 
+//                    System.out.println("Repeating a " + program.name() + " card!");
+
                     if (program == Program.AGAIN || program == Program.REPEAT_ROUTINE) {
                         again(player, step - 1);
                     }
@@ -931,11 +933,14 @@ public class GameLogicController {
      * @author Oscar Maxwell
      * @author Marcus Sand
      */
-    public void setCommandCardOptionAndContinue(String cardOption) {
+    public boolean setCommandCardOptionAndContinue(String cardOption) {
         if (!cardOption.isEmpty()) {
+            // TODO: Verify cardOption - right now a player can execute any card they want through the API
             this.cardOption = cardOption;
             game.getGameState().setPhase(Phase.ACTIVATION);
+            return true;
         }
+        return false;
     }
 
     /**

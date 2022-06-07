@@ -238,7 +238,26 @@ public class PlayerView extends Tab implements ViewObserver {
 
                 if (player.board.getCurrentPlayer() == player) {
 
-                    Card currentCard = player.board.getCurrentPlayer().getProgramField(player.board.getStep()).getCard();
+                    int step = player.board.getStep();
+                    Card currentCard = null;
+
+                    while (true) {
+                        if (step < 0) {
+                            System.out.println("This should not happen! No interactive cards on deck?!?");
+                            return;
+                        }
+
+                        currentCard = player.board.getCurrentPlayer().getProgramField(step).getCard();
+
+                        if (
+                                (currentCard instanceof ProgramCard && ((ProgramCard) currentCard).getCommand().isInteractive())
+                                ||
+                                (currentCard instanceof DamageCard && ((DamageCard) currentCard).getDamage().isInteractive())
+                        ) {
+                            break;
+                        }
+                        step--;
+                    }
 
                     if (currentCard instanceof ProgramCard) {
                         List<Program> cardOptions = ((ProgramCard) currentCard).getCommand().getOptions();
