@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * converyorbelt object
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class ConveyorBelt extends FieldElement {
     private boolean color;
@@ -16,9 +18,10 @@ public class ConveyorBelt extends FieldElement {
     /**
      * Creates a new conveyor belt.
      *
-     * @param space the space to put the conveyorbelt
-     * @param color the color of the belt blue/green is true/false
+     * @param space     the space to put the conveyorbelt
+     * @param color     the color of the belt blue/green is true/false
      * @param direction the direction for the conveyorbelt
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public ConveyorBelt(Space space, boolean color, Heading direction) {
         super(space);
@@ -28,7 +31,9 @@ public class ConveyorBelt extends FieldElement {
 
     /**
      * gets the color
+     *
      * @return color
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public boolean getColor() {
         return color;
@@ -36,7 +41,9 @@ public class ConveyorBelt extends FieldElement {
 
     /**
      * gets the heading
+     *
      * @return direction
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Heading getDirection() {
         return direction;

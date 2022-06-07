@@ -15,33 +15,21 @@ import java.util.List;
  * @author Nicolai Udbye
  */
 public enum Damage {
-    /**
-     * Play top card of deck this register
-     */
+    /** Play top card of deck this register */
     SPAM("spam"),
-    /**
-     * Play 2 top cards of deck this register
-     */
+    /** Play 2 top cards of deck this register */
     TROJAN_HORSE("trojan_horse"),
-    /**
-     * Immediately reboot robot
-     */
+    /** Immediately reboot robot  */
     WORM("worm"),
-    /**
-     * Robots within a certain radius are immediately rebooted,
-     * and the top card of deck is played this register
-     */
+    /** Robots within a certain radius are immediately rebooted,
+     *  and the top card of deck is played this register  */
     VIRUS("virus");
 
-    /**
-     * The displayName of a command
-     */
+    /** The displayName of a command */
     final public String displayName;
 
     // XXX Assignment P3
-    /**
-     * list of options
-     */
+    /** list of options */
     final private List<Damage> options;
 
     /**

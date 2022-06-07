@@ -34,12 +34,18 @@ import java.util.ArrayList;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Space extends Subject {
-    /** The Board the Space is on */
+    /**
+     * The Board the Space is on
+     */
     public final Board board;
 
-    /** The x-coordinate of the Space */
+    /**
+     * The x-coordinate of the Space
+     */
     public final int x;
-    /** The y-coordinate of the Space */
+    /**
+     * The y-coordinate of the Space
+     */
     public final int y;
 
     private Player player;
@@ -49,8 +55,9 @@ public class Space extends Subject {
      * Initializes a Space on a {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}.
      *
      * @param board the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board} the Space belongs to.
-     * @param x the x-coordinate of the Space.
-     * @param y the y-coordinate of the Space.
+     * @param x     the x-coordinate of the Space.
+     * @param y     the y-coordinate of the Space.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Space(Board board, int x, int y) {
         this.board = board;
@@ -63,6 +70,7 @@ public class Space extends Subject {
      * Gets the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} currently on the Space.
      *
      * @return the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Player getPlayer() {
         return player;
@@ -72,6 +80,8 @@ public class Space extends Subject {
      * Sets the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to be on the space.
      *
      * @param player the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
@@ -89,6 +99,12 @@ public class Space extends Subject {
         }
     }
 
+    /**
+     * When the player has changed
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     void playerChanged() {
         if (getPlayer() != null) {
             for (FieldElement fieldElement : objects) {
@@ -104,7 +120,9 @@ public class Space extends Subject {
 
     /**
      * Add a field object to the space.
+     *
      * @param fieldElement the field object.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void addFieldObject(FieldElement fieldElement) {
         objects.add(fieldElement);
@@ -113,7 +131,9 @@ public class Space extends Subject {
 
     /**
      * Gets all the field objects on the field.
+     *
      * @return the field objects.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public FieldElement[] getFieldObjects() {
         return objects.toArray(new FieldElement[0]);
@@ -123,6 +143,7 @@ public class Space extends Subject {
      * Checks whether a space is occupied by another player.
      *
      * @return <code>true</code> if not occupied, else <code>false</code>.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public boolean free() {
         return getPlayer() == null;

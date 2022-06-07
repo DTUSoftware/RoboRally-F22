@@ -41,14 +41,22 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public class Board extends Subject {
-    /** The width of the board */
+    /**
+     * The width of the board
+     */
     public final int width;
-    /** The height of the board */
+    /**
+     * The height of the board
+     */
     public final int height;
 
-    /** The name of the board */
+    /**
+     * The name of the board
+     */
     public final String boardName;
-    /** The ID of the board */
+    /**
+     * The ID of the board
+     */
     private Integer gameId;
 
     private final Space[][] spaces;
@@ -67,9 +75,11 @@ public class Board extends Subject {
     /**
      * Creates a new board.
      *
-     * @param width the width of the board.
-     * @param height the height of the board.
+     * @param width     the width of the board.
+     * @param height    the height of the board.
      * @param boardName the name of the board.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Board(int width, int height, String boardName) {
         this.boardName = boardName;
@@ -77,7 +87,7 @@ public class Board extends Subject {
         this.height = height;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
@@ -88,8 +98,10 @@ public class Board extends Subject {
     /**
      * Creates a new board.
      *
-     * @param width the width of the board.
+     * @param width  the width of the board.
      * @param height the height of the board.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Board(int width, int height) {
         this(width, height, null);
@@ -99,6 +111,7 @@ public class Board extends Subject {
      * Gets the ID of the game running on the board.
      *
      * @return the game ID.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Integer getGameId() {
         return gameId;
@@ -108,6 +121,7 @@ public class Board extends Subject {
      * Sets the ID of the game to run on the board.
      *
      * @param gameId the game ID.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setGameId(int gameId) {
         if (this.gameId == null) {
@@ -121,8 +135,9 @@ public class Board extends Subject {
 
     /**
      * Gets array of rebootTokens
-     * 
+     *
      * @return rebootTokens
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public RebootToken[] getRebootTokens() {
         return rebootTokens != null ? rebootTokens : new RebootToken[0];
@@ -130,8 +145,9 @@ public class Board extends Subject {
 
     /**
      * Sets rebootTokens
-     * 
+     *
      * @param rebootTokens resets rebootTokens
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setRebootTokens(RebootToken[] rebootTokens) {
         this.rebootTokens = rebootTokens;
@@ -141,6 +157,7 @@ public class Board extends Subject {
      * Gets array of spawnGears
      *
      * @return spawnGears
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public SpawnGear[] getSpawnGears() {
         return spawnGears != null ? spawnGears : new SpawnGear[0];
@@ -150,6 +167,7 @@ public class Board extends Subject {
      * Sets spawnGears
      *
      * @param spawnGears resets spawnGears
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setSpawnGears(SpawnGear[] spawnGears) {
         this.spawnGears = spawnGears;
@@ -162,6 +180,7 @@ public class Board extends Subject {
      * @param x The x-coordinate of the Space.
      * @param y The y-coordinate of the Space.
      * @return The {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}, if found, else null.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
@@ -176,6 +195,7 @@ public class Board extends Subject {
      * Gets the number of players.
      *
      * @return the number of players.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public int getPlayersNumber() {
         return players.size();
@@ -183,7 +203,9 @@ public class Board extends Subject {
 
     /**
      * Adds a player to the game.
+     *
      * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to add to the game.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void addPlayer(@NotNull Player player) {
         if (!players.contains(player)) {
@@ -197,6 +219,7 @@ public class Board extends Subject {
      *
      * @param i The player number of the Player.
      * @return The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} if found, else null.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Player getPlayer(int i) {
         if (i >= 0 && i < players.size()) {
@@ -209,9 +232,9 @@ public class Board extends Subject {
     /**
      * get player from uuid
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param playerID uuid
      * @return the player
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Player getPlayerFromID(UUID playerID) {
         for (Player player : players) {
@@ -226,6 +249,7 @@ public class Board extends Subject {
      * Gets the current player.
      *
      * @return The current {@link dk.dtu.compute.se.pisd.roborally.model.Player Player}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Player getCurrentPlayer() {
         return current;
@@ -235,6 +259,7 @@ public class Board extends Subject {
      * Sets the current player.
      *
      * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to become the new current player.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setCurrentPlayer(Player player) {
         if (player != this.current && players.contains(player)) {
@@ -245,6 +270,8 @@ public class Board extends Subject {
 
     /**
      * Changes the current player to the next player - ends the turn of the current player.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void endCurrentPlayerTurn() {
         setCurrentPlayer(getPlayer((getPlayerNumber(getCurrentPlayer()) + 1) % getPlayersNumber()));
@@ -255,6 +282,7 @@ public class Board extends Subject {
      * Gets the current {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
      *
      * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Phase getPhase() {
         return phase;
@@ -264,6 +292,7 @@ public class Board extends Subject {
      * Change the {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
      *
      * @param phase the new {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setPhase(Phase phase) {
         if (phase != this.phase) {
@@ -276,6 +305,7 @@ public class Board extends Subject {
      * Gets the current step.
      *
      * @return the current step.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public int getStep() {
         return step;
@@ -285,6 +315,7 @@ public class Board extends Subject {
      * Sets the step.
      *
      * @param step the new step.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setStep(int step) {
         if (step != this.step) {
@@ -297,6 +328,7 @@ public class Board extends Subject {
      * Whether the game currently is running in step mode.
      *
      * @return <code>true</code> if stepMode, else <code>false</code>.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public boolean isStepMode() {
         return stepMode;
@@ -306,6 +338,7 @@ public class Board extends Subject {
      * Enable/disable step mode.
      *
      * @param stepMode whether to enable or disable step mode.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setStepMode(boolean stepMode) {
         if (stepMode != this.stepMode) {
@@ -319,6 +352,7 @@ public class Board extends Subject {
      *
      * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to get the number of.
      * @return the Player's player number.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public int getPlayerNumber(@NotNull Player player) {
         return players.indexOf(player);
@@ -330,9 +364,11 @@ public class Board extends Subject {
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
-     * @param space the space for which the neighbour should be computed
+     * @param space   the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
         // TODO needs to be implemented based on the actual spaces
@@ -347,16 +383,16 @@ public class Board extends Subject {
         int y = space.y;
         switch (heading) {
             case SOUTH:
-                y = y+1;
+                y = y + 1;
                 break;
             case WEST:
-                x = x-1;
+                x = x - 1;
                 break;
             case NORTH:
-                y = y-1;
+                y = y - 1;
                 break;
             case EAST:
-                x = x+1;
+                x = x + 1;
                 break;
         }
 //        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
@@ -371,7 +407,10 @@ public class Board extends Subject {
 
     /**
      * Gets the name of the board.
+     *
      * @return the name of the board.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public String getBoardName() {
         return this.boardName;
@@ -381,6 +420,8 @@ public class Board extends Subject {
      * Gets a string representation of the current status of the game.
      *
      * @return The current status of the game.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for

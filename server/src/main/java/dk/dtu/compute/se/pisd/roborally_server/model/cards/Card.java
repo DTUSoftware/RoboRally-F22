@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * A card (abstract class).
  * @author Marcus Sand, mwasa@dtu.dk (s215827)
@@ -54,4 +56,11 @@ public abstract class Card {
     public CardType getType() {
         return type;
     }
+
+    /**
+     * Gets the displayName of the enum that's on the card.
+     * @return displayName
+     */
+    @JsonIgnore
+    public abstract String getName();
 }

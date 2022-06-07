@@ -37,24 +37,4 @@ public enum Heading {
     NORTH,
     /** East */
     EAST;
-
-    /**
-     * Gets the next {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
-     * Example: if NORTH, returns EAST.
-     *
-     * @return the next {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
-     */
-    public Heading next() {
-        return values()[(this.ordinal() + 1) % values().length];
-    }
-
-    /**
-     * Gets the previous {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
-     * Example: if NORTH, returns WEST.
-     *
-     * @return the previous {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
-     */
-    public Heading prev() {
-        return values()[(this.ordinal() + values().length - 1) % values().length];
-    }
 }

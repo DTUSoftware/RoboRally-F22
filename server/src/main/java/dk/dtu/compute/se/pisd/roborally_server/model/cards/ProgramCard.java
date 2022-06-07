@@ -41,6 +41,7 @@ public class ProgramCard extends Card {
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @JsonIgnore
+    @Override
     public String getName() {
         return program.displayName;
     }

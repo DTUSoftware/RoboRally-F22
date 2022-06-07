@@ -34,6 +34,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * A Player in the game.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class Player extends Subject {
     /**
@@ -45,6 +46,9 @@ public class Player extends Subject {
      */
     final public static int NO_CARDS = 8;
 
+    /**
+     * The board the player is on
+     */
     public Board board;
 
     /**
@@ -58,7 +62,9 @@ public class Player extends Subject {
 
     private UUID id;
 
-    /** keep track of the energy */
+    /**
+     * keep track of the energy
+     */
     private int energy = 5;
 
     private Space space;
@@ -76,6 +82,8 @@ public class Player extends Subject {
      * Initializes a Player.
      *
      * @param id The player ID.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Player(UUID id, Board board) {
         this.id = id;
@@ -95,10 +103,22 @@ public class Player extends Subject {
         upgrades = new ArrayList<>();
     }
 
+    /**
+     * gets ID of player
+     *
+     * @return the player ID
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public UUID getID() {
         return id;
     }
 
+    /**
+     * Sets ID of player
+     *
+     * @param id the ID
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public void setID(UUID id) {
         this.id = id;
     }
@@ -107,6 +127,7 @@ public class Player extends Subject {
      * Gets the name of the player.
      *
      * @return the name of the player.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public String getName() {
         return name;
@@ -116,6 +137,7 @@ public class Player extends Subject {
      * Sets the name of the player.
      *
      * @param name the name of the player.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
@@ -131,6 +153,7 @@ public class Player extends Subject {
      * Gets the color of the player.
      *
      * @return the color of the player.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public String getColor() {
         return color;
@@ -140,6 +163,7 @@ public class Player extends Subject {
      * Sets the color of the player.
      *
      * @param color the color of the player.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setColor(String color) {
         this.color = color;
@@ -153,6 +177,7 @@ public class Player extends Subject {
      * Gets which {@link dk.dtu.compute.se.pisd.roborally.model.Space Space} the player is currently on.
      *
      * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Space getSpace() {
         return space;
@@ -162,6 +187,8 @@ public class Player extends Subject {
      * Moves the player to another {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
      *
      * @param space the new {@link dk.dtu.compute.se.pisd.roborally.model.Space Space}.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
@@ -181,6 +208,7 @@ public class Player extends Subject {
      * Gets the current {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading} of the player.
      *
      * @return the current {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Heading getHeading() {
         return heading;
@@ -190,6 +218,7 @@ public class Player extends Subject {
      * Changes the {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading} of the player.
      *
      * @param heading the new {@link dk.dtu.compute.se.pisd.roborally.model.Heading Heading}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setHeading(@NotNull Heading heading) {
         if (heading != this.heading) {
@@ -207,6 +236,7 @@ public class Player extends Subject {
      *
      * @param i the index in the player's program to get the CommandCardField of.
      * @return the {@link CardField CommandCardField}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public CardField getProgramField(int i) {
         return program[i];
@@ -218,6 +248,7 @@ public class Player extends Subject {
      *
      * @param i the index in the player's cards to get the CommandCardField of.
      * @return the {@link CardField CommandCardField}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public CardField getCardField(int i) {
         return cards[i];
@@ -229,6 +260,7 @@ public class Player extends Subject {
      *
      * @param i the index in the player's upgrades to get the CommandCardField of.
      * @return the {@link CardField CommandCardField}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public CardField getUpgradeField(int i) {
         if (i >= upgrades.size()) {
@@ -239,8 +271,9 @@ public class Player extends Subject {
 
     /**
      * Gets amount of a players current upgrades
-     * 
+     *
      * @return 8 if amount is under 8 and the spicific amount if equal or above.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public int getUpgradesNum() {
         int size = upgrades.size();
@@ -252,7 +285,9 @@ public class Player extends Subject {
 
     /**
      * gets current checkpoint
+     *
      * @return gets the current checkpoint
+     * @author Mads Nielsen
      */
     public int getCurrentCheckpoint() {
         return currentCheckpoint;
@@ -260,7 +295,9 @@ public class Player extends Subject {
 
     /**
      * sets the checkpoint
+     *
      * @param checkpoint sets the checkpoints :)
+     * @author Mads Nielsen
      */
     public void setCurrentCheckpoint(int checkpoint) {
         if (this.currentCheckpoint != checkpoint) {
@@ -273,6 +310,7 @@ public class Player extends Subject {
      * add x amount of energy to the player
      *
      * @param toAdd how much you want to add to the player
+     * @author Oscar Maxwell
      */
     public void addEnergy(int toAdd) {
         this.energy += toAdd;
@@ -282,6 +320,7 @@ public class Player extends Subject {
      * subtracts x amount of energy, when for example paying to get other cards
      *
      * @param toSubtract the energy you wish to subtract
+     * @author Oscar Maxwell
      */
     public void subtractEnergy(int toSubtract) {
         this.energy -= toSubtract;
@@ -291,11 +330,18 @@ public class Player extends Subject {
      * set the players energy
      *
      * @param energy the energy you want to set the players energy to
+     * @author Oscar Maxwell
      */
     public void setEnergy(int energy) {
         this.energy = energy;
     }
 
+    /**
+     * Sets the damage
+     *
+     * @param damage damage
+     * @author Oscar Maxwell
+     */
     public void setDamage(int damage) {
 
     }
@@ -304,15 +350,28 @@ public class Player extends Subject {
      * gives the current energy of the player
      *
      * @return the current energy of the player
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public int getEnergy() {
         return this.energy;
     }
 
+    /**
+     * Returns whether the player is ready or not
+     *
+     * @return bool ready
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public boolean isReady() {
         return ready;
     }
 
+    /**
+     * Sets the player's ready status
+     *
+     * @param ready ready
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public void setReady(boolean ready) {
         if (this.ready != ready) {
             this.ready = ready;

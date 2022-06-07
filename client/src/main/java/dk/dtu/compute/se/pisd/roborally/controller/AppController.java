@@ -72,11 +72,19 @@ public class AppController implements Observer {
      * The AppController constructor.
      *
      * @param roboRally the application instance.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
+    /**
+     * Gets JSON-files from foldername
+     *
+     * @param foldername the foldername
+     * @return JSON-files
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     private List<String> getFolderJSON(String foldername) {
         List<String> folderFiles = new ArrayList<>();
 
@@ -117,7 +125,7 @@ public class AppController implements Observer {
 
                 // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. fix it or smthn idk
                 // file walks JAR
-                URI uri = URI.create("jar:file:" + jarPath.replace(" ","%20"));
+                URI uri = URI.create("jar:file:" + jarPath.replace(" ", "%20"));
                 try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                     resourceFolderFiles = Files.walk(fs.getPath(foldername))
                             .filter(Files::isRegularFile)
@@ -154,6 +162,12 @@ public class AppController implements Observer {
         return folderFiles;
     }
 
+    /**
+     * Gets map options.
+     *
+     * @return map options
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     private List<String> getMapOptions() {
         List<String> mapOptions = null;
 
@@ -185,6 +199,9 @@ public class AppController implements Observer {
 
     /**
      * Starts a new game.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
@@ -230,14 +247,12 @@ public class AppController implements Observer {
                             System.out.println("Game Controller still exists...\nChecking Game State!");
                             try {
                                 gameController.updateGameState();
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 System.out.println("Could not update game state!");
                                 e.printStackTrace();
                             }
                             System.out.println("----------------------------");
-                        }
-                        else {
+                        } else {
                             this.cancel();
                         }
                     }
@@ -250,6 +265,9 @@ public class AppController implements Observer {
 
     /**
      * Saves the game.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void saveGame() {
         if (gameController != null) {
@@ -259,6 +277,9 @@ public class AppController implements Observer {
 
     /**
      * Loads a saved game.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void loadGame() {
         List<String> gameStateOptions = getGameStateOptions();
@@ -291,6 +312,8 @@ public class AppController implements Observer {
      * there is no current game, false is returned.
      *
      * @return true if the current game was stopped, false otherwise
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public boolean stopGame() {
         if (gameController != null) {
@@ -307,6 +330,8 @@ public class AppController implements Observer {
     /**
      * Exits the application.
      * Note: not the game, the application itself.
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void exit() {
         System.exit(0);
@@ -316,6 +341,7 @@ public class AppController implements Observer {
      * Checks whether a game is currently running.
      *
      * @return <code>true</code> if a game is running, else <code>false</code>.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public boolean isGameRunning() {
         return gameController != null;
@@ -326,6 +352,7 @@ public class AppController implements Observer {
      * The controller's update method, which is called when a subject changes.
      *
      * @param subject the subject which changed
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     @Override
     public void update(Subject subject) {

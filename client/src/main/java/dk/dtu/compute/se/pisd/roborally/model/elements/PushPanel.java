@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * the pushpanel object that pushes player on certain registers
+ *
+ * @author Mads Legard Nielsen
  */
 public class PushPanel extends FieldElement {
     private int register1;
     private int register2;
-
-// TODO change push panels so it takes in the register
 
 //Function that pulls the current step from Board. Should be the register.
     /**
@@ -26,10 +26,11 @@ public class PushPanel extends FieldElement {
     /**
      * Constructer for action element
      *
-     * @param space          the space
+     * @param space     the space
      * @param direction the direction
      * @param register1 register 1
      * @param register2 register 2
+     * @author Mads Legard Nielsen
      */
     public PushPanel(Space space, Heading direction, int register1, int register2) {
         super(space, direction);
@@ -39,7 +40,9 @@ public class PushPanel extends FieldElement {
 
     /**
      * the first register where the pushpanel reacts
+     *
      * @return register1
+     * @author Mads Legard Nielsen
      */
     public int getRegister1() {
         return register1;
@@ -47,7 +50,9 @@ public class PushPanel extends FieldElement {
 
     /**
      * the scond register where pushpanel reacts
+     *
      * @return register2
+     * @author Mads Legard Nielsen
      */
     public int getRegister2() {
         return register2;

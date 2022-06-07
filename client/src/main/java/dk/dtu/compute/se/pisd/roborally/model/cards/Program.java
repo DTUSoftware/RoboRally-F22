@@ -30,6 +30,9 @@ import java.util.List;
  * The different commands that can be used to programmed with.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ * @author Oscar Maxwell
+ * @author Nicolai Udbye
  */
 public enum Program {
 
@@ -53,7 +56,7 @@ public enum Program {
     POWER_UP("power_up"),
     /** Plays the last card in register */
     AGAIN("again"),
-    /** Give 1 energy  */
+    /** Give 1 energy  */ //TODO Why do we still have upgradeCards cards in program cards?
     ENERGY_ROUTINE("energy_routine"),
     /** Move 1, 2, 3, Back Up, Left, Right or U-Turn  */
     SANDBOX_ROUTINE("sandbox_routine",MOVE_1,MOVE_2,MOVE_3,MOVE_BACKWARDS,LEFT,RIGHT,U_TURN),
@@ -71,19 +74,17 @@ public enum Program {
 
     // XXX Assignment P3
     /**
-     * The Command constructor.
-     *
-     * @param displayName the displayName of the Command.
-     */
-    // Command(String displayName) {
-    //     this.displayName = displayName;
-    // }
-    // replaced by the code below:
-    /**
      * list of options
      */
     final private List<Program> options;
 
+    /**
+     * The Command constructor.
+     *
+     * @param displayName the displayName of the Command.
+     * @param options the options
+     * @author Ekkart Kindler, ekki@dtu.dk
+     */
     Program(String displayName, Program... options) {
         this.displayName = displayName;
         this.options = Collections.unmodifiableList(Arrays.asList(options));
@@ -92,6 +93,7 @@ public enum Program {
     /**
      * checks if it's interactive
      * @return if its empty
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public boolean isInteractive() {
         return !options.isEmpty();
@@ -100,9 +102,9 @@ public enum Program {
     /**
      * gets the options
      * @return options
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public List<Program> getOptions() {
         return options;
     }
-
 }

@@ -18,25 +18,29 @@ import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
 
 /**
  * Loads the state of the game
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class LoadGameState {
 
-    /** Where we save the game state */
+    /**
+     * Where we save the game state
+     */
     public static final String GAMESTATEFOLDER = "gamestates";
     static final private AppDirs appDirs = AppDirsFactory.getInstance();
 
     /**
-     * Loads a map, players and board from a saved gamestate.
+     * Loads a map, players and board from a saved gamestate, locally.
      *
      * @param gameController the game controller.
-     * @param filename the filename of the saved gamestate (without .json).
+     * @param filename       the filename of the saved gamestate (without .json).
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static void loadGameState(GameController gameController, String filename) {
         InputStream inputStream = null;
         try {
             inputStream = Resources.getResource(GAMESTATEFOLDER + "/" + filename + ".json").openStream();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (!e.toString().contains("not found")) {
                 e.printStackTrace();
             }
@@ -46,8 +50,7 @@ public class LoadGameState {
             appdataFolder = appdataFolder + "/" + GAMESTATEFOLDER + "/" + filename + ".json";
             try {
                 inputStream = new FileInputStream(appdataFolder);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             if (inputStream == null) {
@@ -119,6 +122,13 @@ public class LoadGameState {
         board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
     }
 
+    /**
+     * Gets a player's gamestate as a JSONObject
+     *
+     * @param player the player
+     * @return JSON object
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public static JSONObject getPlayerGameState(Player player) {
         JSONObject playerJSON = new JSONObject();
 
@@ -141,7 +151,7 @@ public class LoadGameState {
                 switch (field.getCard().getType()) {
                     case PROGRAM:
                         programCard.put("type", "PROGRAM");
-                        programCard.put("program", ((ProgramCard) field.getCard()).getCommand().name());
+                        programCard.put("program", ((ProgramCard) field.getCard()).getProgram().name());
                         break;
                     case DAMAGE:
                         programCard.put("type", "DAMAGE");
@@ -164,7 +174,7 @@ public class LoadGameState {
                 switch (field.getCard().getType()) {
                     case PROGRAM:
                         cardsJSON.put("type", "PROGRAM");
-                        cardsJSON.put("program", ((ProgramCard) field.getCard()).getCommand().name());
+                        cardsJSON.put("program", ((ProgramCard) field.getCard()).getProgram().name());
                         break;
                     case DAMAGE:
                         cardsJSON.put("type", "DAMAGE");
@@ -186,6 +196,7 @@ public class LoadGameState {
      * Saves the current gamestate to a file.
      *
      * @param board the board.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static void saveGameState(Board board) {
         JSONObject gameState = new JSONObject();

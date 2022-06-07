@@ -26,9 +26,9 @@ package dk.dtu.compute.se.pisd.roborally;
  * This is a class for starting up the RoboRally application. This is a
  * workaround for a strange quirk in the Open JavaFX project launcher,
  * which prevents starting a JavaFX application in IntelliJ directly:
- *
- *   https://stackoverflow.com/questions/52569724/javafx-11-create-a-jar-file-with-gradle/52571719#52571719
- *
+ * <p>
+ * https://stackoverflow.com/questions/52569724/javafx-11-create-a-jar-file-with-gradle/52571719#52571719
+ * <p>
  * Makes the game able to compile and run through Maven,
  * without having to add JavaFX to the module-path.
  *
@@ -39,6 +39,7 @@ public class StartRoboRally {
      * The main function - runs the main function in {@link dk.dtu.compute.se.pisd.roborally.RoboRally RoboRally}.
      *
      * @param args the arguments to pass to {@link dk.dtu.compute.se.pisd.roborally.RoboRally RoboRally}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public static void main(String[] args) {
         RoboRally.main(args);
