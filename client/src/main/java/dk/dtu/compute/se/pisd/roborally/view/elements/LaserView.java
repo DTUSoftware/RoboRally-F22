@@ -10,12 +10,16 @@ import java.io.IOException;
 
 /**
  * A WallView is the visual representation of a {@link Laser Laser}.
+ *
  * @author Oscar Maxwell
  * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ * @author Nicolai Udbye
  */
 public class LaserView extends ElementView {
 
-    /** the Wall that is linked to the view */
+    /**
+     * the Wall that is linked to the view
+     */
     public final Laser laser;
     private static Image image;
     private int lazerNumber;

@@ -14,12 +14,16 @@ import java.io.IOException;
 
 /**
  * A CheckpointView is the visual representation of a {@link Checkpoint Checkpoint}.
+ *
  * @author Oscar Maxwell
  * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ * @author Nicolai Udbye
  */
 public class CheckpointView extends ElementView {
 
-    /** the Checkpoint that is linked to the view */
+    /**
+     * the Checkpoint that is linked to the view
+     */
     public final Checkpoint checkpoint;
     private static Image image;
 
@@ -50,7 +54,7 @@ public class CheckpointView extends ElementView {
         text.setFill(Color.YELLOW);
         super.getChildren().add(text);
 
-        super.ELEMENT_HEIGHT = super.ELEMENT_HEIGHT /5 * 4;
+        super.ELEMENT_HEIGHT = super.ELEMENT_HEIGHT / 5 * 4;
         super.ELEMENT_WIDTH = super.ELEMENT_WIDTH / 5 * 4;
         super.updateSize();
     }

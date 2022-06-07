@@ -17,6 +17,7 @@ import java.io.IOException;
  *
  * @author Oscar Maxwell
  * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ * @author Nicolai Udbye
  */
 public class PushPanelView extends ElementView {
     /**
