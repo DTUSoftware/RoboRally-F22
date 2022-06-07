@@ -360,6 +360,7 @@ public class GameService implements IGameService {
         switch (game.getGameState().getPhase()) {
             case PROGRAMMING:
                 player.setReady(true);
+                game.getGameLogicController().debug(player.getName() + " is ready! " + game.getGameState().getReadyPlayers() + "/" + game.getPlayerCount());
                 if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
                     game.getGameLogicController().finishProgrammingPhase();
 
@@ -381,6 +382,7 @@ public class GameService implements IGameService {
                 return true;
             case WAITING:
                 player.setReady(true);
+                game.getGameLogicController().debug(player.getName() + " is ready! " + game.getGameState().getReadyPlayers() + "/" + game.getPlayerCount());
                 if (game.getGameState().getReadyPlayers() == game.getPlayerCount()) {
                     game.getGameLogicController().startProgrammingPhase();
                     resetReady(id);

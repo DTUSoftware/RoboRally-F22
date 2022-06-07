@@ -29,8 +29,9 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.FieldElement
 import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.PriorityAntenna;
 import dk.dtu.compute.se.pisd.roborally_server.model.board.elements.Wall;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.*;
-import dk.dtu.compute.se.pisd.roborally_server.server.service.GameService;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -46,6 +47,9 @@ public class GameLogicController {
      */
     private Game game;
 
+    /** The logger used to log game-related stuff */
+    private final Logger logger = LoggerFactory.getLogger(GameLogicController.class);
+
     /**
      * The elements on the boards with actions
      **/
@@ -55,6 +59,9 @@ public class GameLogicController {
      * I don't care about this little shitty part of memory used to store this
      */
     private String cardOption = null;
+
+    /** Whether to stop movement of current player, for example on reboot */
+    private boolean stopMovement = false;
 
     /**
      * Queue of players for step
@@ -436,6 +443,8 @@ public class GameLogicController {
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
+            debug("Executing " + program.name() + " on player: " + player.getName());
+
             if (program.isInteractive()) {
                 game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
                 this.cardOption = null;
@@ -449,10 +458,12 @@ public class GameLogicController {
                 // get card from option
                 try {
                     program = Program.valueOf(cardOption);
+                    debug("Changing execution to " + program.name() + " on player: " + player.getName());
                     this.cardOption = null;
                 } catch (IllegalArgumentException e) {
                     try {
                         Damage damage_check = Damage.valueOf(cardOption);
+                        debug("Card chosen is damage, changing... On player: " + player.getName());
                         executeDamage(player, damage_check);
                     } catch (IllegalArgumentException e2) {
                         e.printStackTrace();
@@ -531,6 +542,8 @@ public class GameLogicController {
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
+            debug("Executing " + damage.name() + " on player: " + player.getName());
+
             if (damage.isInteractive()) {
                 game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
                 this.cardOption = null;
@@ -545,10 +558,12 @@ public class GameLogicController {
                 // get card from option
                 try {
                     damage = Damage.valueOf(cardOption);
+                    debug("Changing execution to " + damage.name() + " on player: " + player.getName());
                     this.cardOption = null;
                 } catch (IllegalArgumentException e) {
                     try {
                         Program program_check = Program.valueOf(cardOption);
+                        debug("Card chosen is program, changing... On player: " + player.getName());
                         executeProgram(player, program_check);
                     } catch (IllegalArgumentException e2) {
                         e.printStackTrace();
@@ -658,7 +673,6 @@ public class GameLogicController {
                     // check that we aren't trying to move the other player through a wall
                     Player otherPlayer = target.getPlayer();
                     if (canMove(otherPlayer, direction)) {
-                        // TODO: infinite loop?
                         moveDirection(target.getPlayer(), direction);
                         target.setPlayer(player);
                     }
@@ -693,10 +707,7 @@ public class GameLogicController {
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void moveForward(@NotNull Player player) {
-        if (player != null && game.hasPlayer(player)) {
-            Heading heading = player.getHeading();
-            moveDirection(player, heading);
-        }
+        forwardX(player, 1);
     }
 
     /**
@@ -707,8 +718,8 @@ public class GameLogicController {
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void forwardX(@NotNull Player player, int times) {
-        for (int i = times; i > 0; i--) {
-            moveForward(player);
+        if (player != null && game.hasPlayer(player)) {
+            moveDirectionX(player, player.getHeading(), times);
         }
     }
 
@@ -721,7 +732,11 @@ public class GameLogicController {
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void moveDirectionX(@NotNull Player player, Heading direction, int times) {
+        stopMovement = false;
         for (int i = times; i > 0; i--) {
+            if (stopMovement) {
+                break;
+            }
             moveDirection(player, direction);
         }
     }
@@ -846,6 +861,9 @@ public class GameLogicController {
             switch (card.getType()) {
                 case PROGRAM:
                     Program program = ((ProgramCard) card).getProgram();
+
+                    debug("Repeating " + program.name());
+
                     if (program == Program.AGAIN || program == Program.REPEAT_ROUTINE) {
                         again(player, step - 1);
                     } else {
@@ -974,5 +992,24 @@ public class GameLogicController {
      */
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    /**
+     * Stops current player's movement.
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    public void stopMovement() {
+        debug("Stopping player movement for current player!");
+        this.stopMovement = true;
+    }
+
+    /**
+     * Debug log function.
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    public void debug(String message) {
+        logger.info(game.getID()+" - " + message);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.Card;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.ProgramCard;
 import dk.dtu.compute.se.pisd.roborally_server.model.cards.UpgradeCard;
+import dk.dtu.compute.se.pisd.roborally_server.server.service.GameService;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -154,6 +154,7 @@ public class LoadGameState {
             Player player = game.getGameState().getPlayer(i);
             player.setColor(playerJSON.getString("color"));
             player.setName(playerJSON.getString("name"));
+            player.setReady(playerJSON.getBoolean("ready"));
 
             game.changePlayerID(player.getID(), UUID.fromString(playerJSON.getString("id")));
 
@@ -200,6 +201,7 @@ public class LoadGameState {
             playerJSON.put("energy", player.getDeck().getEnergy());
             playerJSON.put("damage", player.getDeck().getDamage());
             playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
+            playerJSON.put("ready", player.getReady());
 
             JSONObject position = new JSONObject();
             position.put("x", player.getSpace().x);

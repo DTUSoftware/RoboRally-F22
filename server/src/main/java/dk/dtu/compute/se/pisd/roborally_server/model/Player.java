@@ -442,6 +442,9 @@ public class Player {
      * @author Oscar Maxwell
      */
     public void reboot() {
+        getGame().getGameLogicController().debug("Respawning " + getName());
+        getDeck().clearProgram();
+        getGame().getGameLogicController().stopMovement();
 
         for (int i = 0; i < 2; i++) {
             this.getDeck().takeDamage();
