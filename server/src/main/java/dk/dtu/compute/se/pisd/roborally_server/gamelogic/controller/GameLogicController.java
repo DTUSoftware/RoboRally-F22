@@ -318,6 +318,7 @@ public class GameLogicController {
      * Choose the order of the players, depending on priority antenna location and player locations.
      *
      * @author Mads Nielsen
+     * @author Marcus Sand
      */
     private void priorityAntennaMath() {
         int playerAmount = game.getPlayerCount();
@@ -378,59 +379,10 @@ public class GameLogicController {
                     switch (card.getType()) {
                         case PROGRAM:
                             Program program = ((ProgramCard) card).getProgram();
-                            if (program.isInteractive()) {
-                                game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
-                                this.cardOption = null;
-                                while (game.getGameState().getPhase() == Phase.PLAYER_INTERACTION || this.cardOption == null) {
-                                    try {
-                                        Thread.sleep(100);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                // get card from option
-                                try {
-                                    program = Program.valueOf(cardOption);
-                                }
-                                catch (IllegalArgumentException e) {
-                                    try {
-                                        Damage damage_check = Damage.valueOf(cardOption);
-                                        executeDamage(currentPlayer, damage_check);
-                                    }
-                                    catch (IllegalArgumentException e2) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
                             executeProgram(currentPlayer, program);
                             break;
                         case DAMAGE:
                             Damage damage = ((DamageCard) card).getDamage();
-                            if (damage.isInteractive()) {
-                                game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
-                                this.cardOption = null;
-                                while (game.getGameState().getPhase() == Phase.PLAYER_INTERACTION || this.cardOption == null) {
-                                    try {
-                                        Thread.sleep(100);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                // get card from option
-                                try {
-                                    damage = Damage.valueOf(cardOption);
-                                }
-                                catch (IllegalArgumentException e) {
-                                    try {
-                                        Program program_check = Program.valueOf(cardOption);
-                                        executeProgram(currentPlayer, program_check);
-                                    }
-                                    catch (IllegalArgumentException e2) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
                             executeDamage(currentPlayer, damage);
                             break;
                     }
@@ -478,6 +430,34 @@ public class GameLogicController {
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
 
+            if (program.isInteractive()) {
+                game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
+                this.cardOption = null;
+                while (game.getGameState().getPhase() == Phase.PLAYER_INTERACTION || this.cardOption == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // get card from option
+                try {
+                    program = Program.valueOf(cardOption);
+                    this.cardOption = null;
+                }
+                catch (IllegalArgumentException e) {
+                    try {
+                        Damage damage_check = Damage.valueOf(cardOption);
+                        executeDamage(player, damage_check);
+                    }
+                    catch (IllegalArgumentException e2) {
+                        e.printStackTrace();
+                    }
+                    this.cardOption = null;
+                    return;
+                }
+            }
+
             switch (program) {
                 case MOVE_1:
                     this.moveForward(player);
@@ -517,10 +497,10 @@ public class GameLogicController {
                     this.powerUp(player);
                     break;
                 case AGAIN:
-                    this.again(player);
+                    this.again(player, game.getGameState().getStep());
                     break;
                 case REPEAT_ROUTINE:
-                    this.again(player);
+                    this.again(player, game.getGameState().getStep());
                     break;
                 case SPAM_FOLDER:
                     player.getDeck().removeDamage();
@@ -546,6 +526,35 @@ public class GameLogicController {
             // XXX This is a very simplistic way of dealing with some basic cards and
             //     their execution. This should eventually be done in a more elegant way
             //     (this concerns the way cards are modelled as well as the way they are executed).
+
+            if (damage.isInteractive()) {
+                game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
+                this.cardOption = null;
+                while (game.getGameState().getPhase() == Phase.PLAYER_INTERACTION || this.cardOption == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // get card from option
+                try {
+                    damage = Damage.valueOf(cardOption);
+                    this.cardOption = null;
+                }
+                catch (IllegalArgumentException e) {
+                    try {
+                        Program program_check = Program.valueOf(cardOption);
+                        executeProgram(player, program_check);
+                    }
+                    catch (IllegalArgumentException e2) {
+                        e.printStackTrace();
+                    }
+                    this.cardOption = null;
+                    return;
+                }
+            }
 
             switch (damage) {
                 case SPAM:
@@ -815,8 +824,13 @@ public class GameLogicController {
         player.getDeck().addEnergy(1);
     }
 
-    public void again(@NotNull Player player) {
-        int step = game.getGameState().getStep();
+    /**
+     * @author Oscar Maxwell
+     * @author Marcus Sand
+     * @param player
+     * @param step
+     */
+    public void again(@NotNull Player player, int step) {
         if (step <= 0) {
             return;
         }
@@ -825,18 +839,16 @@ public class GameLogicController {
             switch (card.getType()) {
                 case PROGRAM:
                     Program program = ((ProgramCard) card).getProgram();
-                    if (program.isInteractive()) {
-                        game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
-                        return;
+
+                    if (program == Program.AGAIN || program == Program.REPEAT_ROUTINE) {
+                        again(player, step - 1);
                     }
-                    executeProgram(player, program);
+                    else {
+                        executeProgram(player, program);
+                    }
                     break;
                 case DAMAGE:
                     Damage damage = ((DamageCard) card).getDamage();
-                    if (damage.isInteractive()) {
-                        game.getGameState().setPhase(Phase.PLAYER_INTERACTION);
-                        return;
-                    }
                     executeDamage(player, damage);
                     break;
             }
