@@ -776,6 +776,7 @@ public class GameLogicController {
      * @param player  the player to turn
      * @param program to go left or right
      * @author Oscar Maxwell
+     * @author Nicolai Udbye
      */
     public void optionLeftRight(@NotNull Player player, Program program) {
         if (program.equals(Program.LEFT)) {
@@ -822,6 +823,7 @@ public class GameLogicController {
      * Power up card command
      * @param player the player to power up
      * @author Oscar Maxwell
+     * @author Nicolai Udbye
      */
     public void powerUp(@NotNull Player player) {
         player.getDeck().addEnergy(1);
@@ -832,6 +834,7 @@ public class GameLogicController {
      * @param player the player
      * @param step which step the again card is on (is used if multiple again cards have been placed next to each other)
      * @author Oscar Maxwell
+     * @author Nicolai Udbye
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void again(@NotNull Player player, int step) {
