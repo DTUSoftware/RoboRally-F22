@@ -272,7 +272,16 @@ public class GameService implements IGameService {
      */
     @Override
     public boolean updatePlayerDeck(UUID id, UUID playerID, PlayerDeck playerDeck) {
-        PlayerDeck currentPlayerDeck = getPlayerDeck(id, playerID);
+        if (playerDeck == null) {
+            return false;
+        }
+
+        Player player = getPlayer(id, playerID);
+        if (player == null || player.getReady() == true) {
+            return false;
+        }
+
+        PlayerDeck currentPlayerDeck = player.getDeck();
         if (currentPlayerDeck == null) {
             return false;
         }

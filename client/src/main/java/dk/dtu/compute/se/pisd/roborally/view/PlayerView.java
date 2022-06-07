@@ -230,9 +230,9 @@ public class PlayerView extends Tab implements ViewObserver {
                         finishButton.setDisable(true);
                 }
 
-//                if (player.isReady()) {
-//                    finishButton.setDisable(true);
-//                }
+                if (player.isReady()) {
+                    finishButton.setDisable(true);
+                }
 
 
             } else {
