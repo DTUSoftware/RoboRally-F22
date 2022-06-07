@@ -28,6 +28,7 @@ package dk.dtu.compute.se.pisd.roborally_server.model;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public enum Phase {
+    /** The waiting phase */
     WAITING,
     /** The initialization phase */
     INITIALISATION,
