@@ -1,9 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.model.elements;
 
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * The energyspace object that gives the player energy

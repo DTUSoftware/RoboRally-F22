@@ -10,6 +10,7 @@ import java.io.IOException;
 /**
  * A EnergySpaceView is the visual representation of a {@link EnergySpace EnergySpace}.
  * @author Mads Nielsen
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class EnergySpaceView extends ElementView {
 
@@ -30,6 +31,7 @@ public class EnergySpaceView extends ElementView {
      *
      * @param energySpace the {@link EnergySpace EnergySpace}.
      * @author Mads Nielsen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public EnergySpaceView(@NotNull EnergySpace energySpace) {
         super(image, "center");

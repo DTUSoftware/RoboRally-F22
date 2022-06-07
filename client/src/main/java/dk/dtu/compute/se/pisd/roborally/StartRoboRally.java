@@ -33,6 +33,7 @@ package dk.dtu.compute.se.pisd.roborally;
  * without having to add JavaFX to the module-path.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class StartRoboRally {
     /**
@@ -40,6 +41,7 @@ public class StartRoboRally {
      *
      * @param args the arguments to pass to {@link dk.dtu.compute.se.pisd.roborally.RoboRally RoboRally}.
      * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static void main(String[] args) {
         RoboRally.main(args);

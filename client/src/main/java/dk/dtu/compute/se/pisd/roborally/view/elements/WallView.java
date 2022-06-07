@@ -38,7 +38,6 @@ public class WallView extends ElementView {
      * @author Oscar Maxwell
      */
     public WallView(@NotNull Wall wall) {
-
         super(image, "top");
         this.wall = wall;
         super.getImageView().fitHeightProperty().unbind();

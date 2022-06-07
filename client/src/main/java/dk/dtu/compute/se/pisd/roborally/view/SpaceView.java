@@ -113,6 +113,7 @@ public class SpaceView extends StackPane implements ViewObserver {
      *
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     private void updateObjects() {
         this.getChildren().add(imageView);

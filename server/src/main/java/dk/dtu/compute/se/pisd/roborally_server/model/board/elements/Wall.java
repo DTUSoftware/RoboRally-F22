@@ -8,6 +8,7 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
  *
  * @author Mads Legard Nielsen
  * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ * @author Oscar Maxwell
  */
 public class Wall extends FieldElement {
     Heading direction;
@@ -21,6 +22,7 @@ public class Wall extends FieldElement {
      * @param invisible whether a wall is visible or not
      * @author Mads Legard Nielsen
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public Wall(Space space, Heading direction, boolean invisible) {
         super(space);

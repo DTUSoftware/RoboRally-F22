@@ -128,7 +128,6 @@ public class BoardView extends VBox implements ViewObserver {
      *
      * @param subject the subject which changed (usually the {@link dk.dtu.compute.se.pisd.roborally.model.Board Board}).
      * @author Ekkart Kindler, ekki@dtu.dk
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void updateView(Subject subject) {
@@ -157,6 +156,8 @@ public class BoardView extends VBox implements ViewObserver {
          * Handles mouse events, like moving the current player to a space that is clicked.
          *
          * @param event the {@link javafx.scene.input.MouseEvent MouseEvent}.
+         * @author Ekkart Kindler, ekki@dtu.dk
+         * @author Marcus Sand, mwasa@dtu.dk (s215827)
          */
         @Override
         public void handle(MouseEvent event) {

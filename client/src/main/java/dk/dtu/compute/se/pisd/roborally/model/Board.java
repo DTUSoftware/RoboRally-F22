@@ -111,7 +111,7 @@ public class Board extends Subject {
      * Gets the ID of the game running on the board.
      *
      * @return the game ID.
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Integer getGameId() {
         return gameId;
@@ -121,7 +121,7 @@ public class Board extends Subject {
      * Sets the ID of the game to run on the board.
      *
      * @param gameId the game ID.
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setGameId(int gameId) {
         if (this.gameId == null) {
@@ -206,6 +206,7 @@ public class Board extends Subject {
      *
      * @param player The {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} to add to the game.
      * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void addPlayer(@NotNull Player player) {
         if (!players.contains(player)) {
@@ -271,7 +272,7 @@ public class Board extends Subject {
     /**
      * Changes the current player to the next player - ends the turn of the current player.
      *
-     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void endCurrentPlayerTurn() {
         setCurrentPlayer(getPlayer((getPlayerNumber(getCurrentPlayer()) + 1) % getPlayersNumber()));

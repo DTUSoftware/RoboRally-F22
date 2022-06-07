@@ -166,6 +166,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
      *                  representation of.
      * @return the representation, based on current field player, and such.
      * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private String cardFieldRepresentation(CardField cardField) {
         if (cardField.player != null) {

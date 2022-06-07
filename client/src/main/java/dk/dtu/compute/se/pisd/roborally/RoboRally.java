@@ -175,6 +175,7 @@ public class RoboRally extends Application {
      * @param gameController gamecontroller
      * @param appController  appcontroller
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Mads Nielsen
      */
     public void gameWon(GameController gameController, AppController appController) {
 

@@ -6,7 +6,10 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 /**
  * The laser object
  *
+ * @author Oscar Maxwell
+ * @author Nicolai Udbye
  * @author Mads G. E. Hansen
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class Laser extends FieldElement {
     private Heading direction;
@@ -19,6 +22,8 @@ public class Laser extends FieldElement {
      * @param direction the direction for the laser
      * @param lazer     the number of the lazer
      * @author Mads G. E. Hansen
+     * @author Oscar Maxwell
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Laser(Space space, Heading direction, int lazer) {
         super(space);
@@ -31,6 +36,7 @@ public class Laser extends FieldElement {
      *
      * @return direction
      * @author Mads G. E. Hansen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Heading getDirection() {
         return direction;
@@ -41,6 +47,7 @@ public class Laser extends FieldElement {
      *
      * @return lazer number
      * @author Mads G. E. Hansen
+     * @author Oscar Maxwell
      */
     public int getLazer() {
         return lazer;

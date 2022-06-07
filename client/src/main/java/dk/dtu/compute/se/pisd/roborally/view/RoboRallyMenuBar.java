@@ -51,7 +51,6 @@ public class RoboRallyMenuBar extends MenuBar {
      * @param appController the {@link dk.dtu.compute.se.pisd.roborally.controller.AppController AppController}
      *                      that controls this menu.
      * @author Ekkart Kindler, ekki@dtu.dk
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public RoboRallyMenuBar(AppController appController) {
         this.appController = appController;
@@ -89,7 +88,6 @@ public class RoboRallyMenuBar extends MenuBar {
      * the game is running or not.
      *
      * @author Ekkart Kindler, ekki@dtu.dk
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void update() {
         if (appController.isGameRunning()) {

@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * the pushpanel object that pushes player on certain registers
  *
  * @author Mads Legard Nielsen
+ * @author Oscar Maxwell
  */
 public class PushPanel extends FieldElement {
     private int register1;
@@ -31,6 +32,7 @@ public class PushPanel extends FieldElement {
      * @param register1 register 1
      * @param register2 register 2
      * @author Mads Legard Nielsen
+     * @author Oscar Maxwell
      */
     public PushPanel(Space space, Heading direction, int register1, int register2) {
         super(space, direction);
@@ -43,6 +45,7 @@ public class PushPanel extends FieldElement {
      *
      * @return register1
      * @author Mads Legard Nielsen
+     * @author Oscar Maxwell
      */
     public int getRegister1() {
         return register1;
@@ -53,6 +56,7 @@ public class PushPanel extends FieldElement {
      *
      * @return register2
      * @author Mads Legard Nielsen
+     * @author Oscar Maxwell
      */
     public int getRegister2() {
         return register2;

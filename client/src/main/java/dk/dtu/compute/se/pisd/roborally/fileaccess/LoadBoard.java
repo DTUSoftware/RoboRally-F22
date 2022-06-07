@@ -49,8 +49,6 @@ public class LoadBoard {
      */
     public static final String BOARDSFOLDER = "maps";
     private static final String DEFAULTBOARD = "defaultboard";
-    private static final int defaultBoardHeight = 8;
-    private static final int defaultBoardWidth = 8;
 
     /**
      * Loads the board from server.
@@ -59,6 +57,7 @@ public class LoadBoard {
      * @param boardname      the name of the board to load
      * @return the board.
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public static Board loadBoard(GameController gameController, String boardname) {
         if (boardname == null) {

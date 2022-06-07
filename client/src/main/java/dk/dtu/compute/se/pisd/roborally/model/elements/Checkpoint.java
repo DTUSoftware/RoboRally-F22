@@ -36,6 +36,7 @@ public class Checkpoint extends FieldElement {
      *
      * @param checkpoints the amount of checkpoints
      * @author Mads Legard Nielsen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static void setNumberOfCheckpointsCreated(int checkpoints) {
         numberOfCheckpointsCreated = checkpoints;
@@ -46,6 +47,7 @@ public class Checkpoint extends FieldElement {
      *
      * @param number the number the checkpoint is
      * @author Mads Legard Nielsen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setNumber(int number) {
         this.number = number;
@@ -56,6 +58,7 @@ public class Checkpoint extends FieldElement {
      *
      * @return checkpoint number
      * @author Mads Legard Nielsen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public int getNumber() {
         return number;
@@ -67,6 +70,7 @@ public class Checkpoint extends FieldElement {
      * @param checkpointReached what checkpoint has been reached
      * @return True if it is, False if not
      * @author Mads Legard Nielsen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public boolean checkCheckpoint(int checkpointReached) {
         return checkpointReached == getNumber() - 1;

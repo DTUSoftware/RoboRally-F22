@@ -53,6 +53,7 @@ public class GameController {
      * @param roboRally the roborally class
      * @param board     the board to control.
      * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Mads Hansen
      */
     public GameController(RoboRally roboRally, Board board) {
         this.board = board;
@@ -268,7 +269,6 @@ public class GameController {
      * wins the game
      *
      * @param player the player that wins the game
-     * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void winTheGame(Player player) {

@@ -19,6 +19,7 @@ public class Gear extends FieldElement {
      * @param space     where to put the gear
      * @param direction the direction of the gear
      * @author Mads G. E. Hansen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Gear(Space space, boolean direction) {
         super(space);
@@ -30,6 +31,7 @@ public class Gear extends FieldElement {
      *
      * @return direction
      * @author Mads G. E. Hansen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public boolean getGearDirection() {
         return direction;

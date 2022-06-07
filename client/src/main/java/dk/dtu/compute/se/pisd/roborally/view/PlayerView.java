@@ -175,6 +175,7 @@ public class PlayerView extends Tab implements ViewObserver {
      * @param subject the board which changed
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     @Override
     public void updateView(Subject subject) {

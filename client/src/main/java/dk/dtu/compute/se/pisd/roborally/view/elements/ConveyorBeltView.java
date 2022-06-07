@@ -25,6 +25,7 @@ public class ConveyorBeltView extends ElementView {
      *
      * @param conveyorBelt the {@link ConveyorBelt ConveyorBelt}.
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public ConveyorBeltView(@NotNull ConveyorBelt conveyorBelt) {
         super(null, "center");

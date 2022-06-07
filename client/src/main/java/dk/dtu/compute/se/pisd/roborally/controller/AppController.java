@@ -57,6 +57,7 @@ import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.saveGame
  * Controls stuff that happens on the Application.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class AppController implements Observer {
 
