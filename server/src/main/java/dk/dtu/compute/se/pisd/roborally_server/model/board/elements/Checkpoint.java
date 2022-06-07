@@ -8,13 +8,17 @@ import org.jetbrains.annotations.NotNull;
  * checkpoint class, inherits from FieldElement
  *
  * @author Mads Legard Nielsen
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class Checkpoint extends ActionElement {
     /**
      * the number of the checkpoint
      */
     int number;
-    //count every time a checkpoint is created
+
+    /**
+     * count every time a checkpoint is created
+     */
     static int numberOfCheckpointsCreated = 0;
 
     /**
@@ -43,6 +47,7 @@ public class Checkpoint extends ActionElement {
 
     /**
      * sets the number which the checkpoint is
+     *
      * @param number the number the checkpoint is
      * @author Mads Legard Nielsen
      */
@@ -52,8 +57,9 @@ public class Checkpoint extends ActionElement {
 
     /**
      * gets the number which the checkpoint is
-     * @author Mads Legard Nielsen
+     *
      * @return checkpoint number
+     * @author Mads Legard Nielsen
      */
     public int getNumber() {
         return number;
@@ -61,9 +67,10 @@ public class Checkpoint extends ActionElement {
 
     /**
      * checks if the checkpoint is reached in the correct order
-     * @author Mads Legard Nielsen
+     *
      * @param checkpointReached what checkpoint has been reached
      * @return True if it is, False if not
+     * @author Mads Legard Nielsen
      */
     public boolean checkCheckpoint(int checkpointReached) {
         return checkpointReached == getNumber() - 1;
@@ -71,9 +78,10 @@ public class Checkpoint extends ActionElement {
 
     /**
      * checks if all the checkpoints are reached
-     * @author Mads Legard Nielsen
+     *
      * @param checkpointsReached the number of checkpoints reached
      * @return true if yes false if no
+     * @author Mads Legard Nielsen
      */
     public boolean allCheckpointsReached(int checkpointsReached) {
         return checkpointsReached == numberOfCheckpointsCreated;
@@ -82,6 +90,7 @@ public class Checkpoint extends ActionElement {
     /**
      * does the landing action for the checkpoint card, makes sure that the player that landed on the checkpoint
      * has the previous checkpoint, and checks if all checkpoints are reached for that player, where in that case the player wins.
+     *
      * @author Mads Legard Nielsen
      */
     @Override
@@ -108,9 +117,10 @@ public class Checkpoint extends ActionElement {
 
     /**
      * for the activation order
-     * @author Marcus Sand
+     *
      * @param o object to compare to.
      * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public int compareTo(@NotNull Object o) {

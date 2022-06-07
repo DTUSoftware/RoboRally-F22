@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * converyorbelt object
- * @author Marcus Sand
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class ConveyorBelt extends ActionElement {
     private boolean color;
@@ -16,11 +17,12 @@ public class ConveyorBelt extends ActionElement {
 
     /**
      * Creates a new conveyor belt.
-     * @author Marcus Sand
+     *
      * @param gameLogicController the gamecontroller
-     * @param space the space to put the conveyorbelt
-     * @param color the color of the belt blue/green is true/false
-     * @param direction the direction for the conveyorbelt
+     * @param space               the space to put the conveyorbelt
+     * @param color               the color of the belt blue/green is true/false
+     * @param direction           the direction for the conveyorbelt
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public ConveyorBelt(GameLogicController gameLogicController, Space space, boolean color, Heading direction) {
         super(gameLogicController, space);
@@ -30,8 +32,9 @@ public class ConveyorBelt extends ActionElement {
 
     /**
      * gets the color
-     * @author Marcus Sand
+     *
      * @return color
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public boolean getColor() {
         return color;
@@ -39,8 +42,9 @@ public class ConveyorBelt extends ActionElement {
 
     /**
      * gets the heading
-     * @author Marcus Sand
+     *
      * @return direction
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Heading getDirection() {
         return direction;
@@ -55,8 +59,9 @@ public class ConveyorBelt extends ActionElement {
     }
 
     /**
-     * activates onveryorbelt
-     * @author Marcus Sand
+     * activates converyorbelt
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void activate() {
@@ -73,11 +78,13 @@ public class ConveyorBelt extends ActionElement {
             player.setMovedByAction(true);
         }
     }
+
     /**
      * for the activation order
-     * @author Marcus Sand
+     *
      * @param o object to compare to.
      * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public int compareTo(@NotNull Object o) {
@@ -88,8 +95,7 @@ public class ConveyorBelt extends ActionElement {
         if (o instanceof ConveyorBelt) {
             if (this.color) {
                 return -1;
-            }
-            else {
+            } else {
                 return 1;
             }
         }

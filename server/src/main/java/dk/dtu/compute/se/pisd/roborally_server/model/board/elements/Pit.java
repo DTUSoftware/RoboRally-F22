@@ -8,23 +8,27 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * the pit object that forces a reboot
+ *
  * @author Mads Legard Nielsen
- * @author Marcus Sand
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
-public class Pit extends ActionElement{
+public class Pit extends ActionElement {
     /**
      * Constructer for the Pit object
+     *
      * @param gameLogicController gamecontroller
-     * @param space spacce
+     * @param space               spacce
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
-    public Pit(GameLogicController gameLogicController, Space space){
-        super(gameLogicController,space);
+    public Pit(GameLogicController gameLogicController, Space space) {
+        super(gameLogicController, space);
 
     }
 
     /**
      * does takeDamage to the player and reboots the player
-     * @author Marcus Sand
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void doLandingAction() {
@@ -48,9 +52,10 @@ public class Pit extends ActionElement{
 
     /**
      * for the activation order
-     * @author Marcus Sand
+     *
      * @param o object to compare to.
      * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public int compareTo(@NotNull Object o) {

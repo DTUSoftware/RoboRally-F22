@@ -9,6 +9,7 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 /**
  * the pushpanel object that pushes player on certain registers
+ *
  * @author Mads Legard Nielsen
  */
 public class PushPanel extends ActionElement {
@@ -27,12 +28,13 @@ public class PushPanel extends ActionElement {
 
     /**
      * Constructer for action element
-     * @author Mads Legard Nielsen
+     *
      * @param gameLogicController the game controller
-     * @param space          the space
-     * @param direction the direction
-     * @param register1 register 1
-     * @param register2 register 2
+     * @param space               the space
+     * @param direction           the direction
+     * @param register1           register 1
+     * @param register2           register 2
+     * @author Mads Legard Nielsen
      */
     public PushPanel(GameLogicController gameLogicController, Space space, Heading direction, int register1, int register2) {
 
@@ -47,8 +49,9 @@ public class PushPanel extends ActionElement {
 
     /**
      * gets the heading
-     * @author Mads Legard Nielsen
+     *
      * @return direction
+     * @author Mads Legard Nielsen
      */
     public Heading getDirection() {
         return direction;
@@ -56,8 +59,9 @@ public class PushPanel extends ActionElement {
 
     /**
      * the first register where the pushpanel reacts
-     * @author Mads Legard Nielsen
+     *
      * @return register1
+     * @author Mads Legard Nielsen
      */
     public int getRegister1() {
         return register1;
@@ -65,8 +69,9 @@ public class PushPanel extends ActionElement {
 
     /**
      * the second register where pushpanel reacts
-     * @author Mads Legard Nielsen
+     *
      * @return register2
+     * @author Mads Legard Nielsen
      */
     public int getRegister2() {
         return register2;
@@ -75,13 +80,14 @@ public class PushPanel extends ActionElement {
     /**
      * Activates the pushpanel and makes sure the rules are followed, with the register to use and
      * and whether a player was moved by and action
+     *
      * @author Mads Legard Nielsen
      */
     @Override
     public void activate() {
         Player player = super.getSpace().getPlayer();
-        if (player != null && !player.isMovedByAction()){
-            if (getRegister1() == super.getGameController().getGame().getGameState().getStep()|| getRegister2() == super.getGameController().getGame().getGameState().getStep()) {
+        if (player != null && !player.isMovedByAction()) {
+            if (getRegister1() == super.getGameController().getGame().getGameState().getStep() || getRegister2() == super.getGameController().getGame().getGameState().getStep()) {
                 super.getGameController().moveDirectionX(player, direction.next().next(), 1);
                 player.setMovedByAction(true);
             }
@@ -96,11 +102,13 @@ public class PushPanel extends ActionElement {
     public void doLandingAction() {
 
     }
+
     /**
      * for the activation order
-     * @author Marcus Sand
+     *
      * @param o object to compare to.
      * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public int compareTo(Object o) {
@@ -110,8 +118,7 @@ public class PushPanel extends ActionElement {
 
         if (o instanceof ConveyorBelt) {
             return 1;
-        }
-        else if (o instanceof Gear || o instanceof Laser || o instanceof EnergySpace || o instanceof Checkpoint) {
+        } else if (o instanceof Gear || o instanceof Laser || o instanceof EnergySpace || o instanceof Checkpoint) {
             return -1;
         }
         return -1;

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The energyspace object that gives the player energy
+ *
  * @author Mads Legard Nielsen
  */
 public class EnergySpace extends ActionElement {
@@ -14,9 +15,10 @@ public class EnergySpace extends ActionElement {
 
     /**
      * The constructer for the energyspace
-     * @author Mads Legard Nielsen
+     *
      * @param gameLogicController the gamecontroller
-     * @param space the place t put the energyspace
+     * @param space               the place t put the energyspace
+     * @author Mads Legard Nielsen
      */
     public EnergySpace(GameLogicController gameLogicController, Space space) {
         super(gameLogicController, space);
@@ -34,6 +36,7 @@ public class EnergySpace extends ActionElement {
     /**
      * gives the player energy if the is the first one to land on the unused energy field, and does the register 5
      * rule where it adds energy to the player if it's landed on during the 5th register
+     *
      * @author Mads Legard Nielsen
      */
     @Override
@@ -43,8 +46,7 @@ public class EnergySpace extends ActionElement {
             if (hasEnergy) {
                 player.getDeck().addEnergy(1);
                 hasEnergy = false;
-            }
-            else if(super.getGameController().getGame().getGameState().getStep() == 5) {
+            } else if (super.getGameController().getGame().getGameState().getStep() == 5) {
                 player.getDeck().addEnergy(1);
             }
         }
@@ -52,9 +54,10 @@ public class EnergySpace extends ActionElement {
 
     /**
      * for the activation order
-     * @author Marcus Sand
+     *
      * @param o object to compare to.
      * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public int compareTo(@NotNull Object o) {
@@ -64,8 +67,7 @@ public class EnergySpace extends ActionElement {
 
         if (o instanceof ConveyorBelt || o instanceof PushPanel || o instanceof Gear || o instanceof Laser) {
             return 1;
-        }
-        else if (o instanceof Checkpoint) {
+        } else if (o instanceof Checkpoint) {
             return -1;
         }
         return -1;

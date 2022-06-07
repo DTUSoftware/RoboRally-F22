@@ -4,7 +4,8 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 /**
  * abstract clase field element for making the field obejcts
- * @author Marcus Sand
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  * @author mads nielsen
  */
 public abstract class FieldElement {
@@ -12,9 +13,10 @@ public abstract class FieldElement {
 
     /**
      * cunstructer
-     * @author Marcus Sand
-     * @author Mads Legard Nielsen
+     *
      * @param space give the space to where the field should be
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Mads Legard Nielsen
      */
     public FieldElement(Space space) {
         this.space = space;
@@ -23,16 +25,18 @@ public abstract class FieldElement {
 
     /**
      * landing action method
-     * @author Marcus sand
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Mads Legard Nielsen
      */
     public abstract void doLandingAction();
 
     /**
      * gets the space the field is on
-     * @author Mads Nielsen
-     * @author Marcus Sand
+     *
      * @return space where the field is on
+     * @author Mads Nielsen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Space getSpace() {
         return space;

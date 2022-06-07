@@ -14,6 +14,11 @@ import org.springframework.stereotype.Service;
 import static dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadGameState.loadGameState;
 import static dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadGameState.saveGameState;
 
+/**
+ * Game Service.
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ */
 @Service
 public class GameService implements IGameService {
     @Autowired
@@ -21,6 +26,9 @@ public class GameService implements IGameService {
 
     private static HashMap<UUID, Game> games = new HashMap<>();
 
+    /**
+     * Creates a new gameService.
+     */
     public GameService() {
 //        games.put(10, new Game(10));
 //        games.put(11, new Game(11));
@@ -28,11 +36,24 @@ public class GameService implements IGameService {
 //        games.put(13, new Game(13));
     }
 
+    /**
+     * Finds all games.
+     *
+     * @return all games.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public List<Game> findAll() {
         return games.values().stream().toList();
     }
 
+    /**
+     * Gets game with ID.
+     *
+     * @param id the ID.
+     * @return the game
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public Game getGameByID(UUID id) {
         if (!games.containsKey(id)) {
@@ -41,6 +62,14 @@ public class GameService implements IGameService {
         return games.get(id);
     }
 
+    /**
+     * Creates a new game with mapID and playerCount.
+     *
+     * @param mapID       mapID
+     * @param playerCount player count
+     * @return created game
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public Game newGame(String mapID, int playerCount) {
         Game game = new Game(mapID, playerCount);
@@ -48,12 +77,26 @@ public class GameService implements IGameService {
         return game;
     }
 
+    /**
+     * Adds a game to the service.
+     *
+     * @param game the game to add
+     * @return whether the game was added or not
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public boolean addGame(Game game) {
         games.put(game.getID(), game);
         return true;
     }
 
+    /**
+     * Loads a saved game
+     *
+     * @param id the game ID of game to load
+     * @return the loaded game
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public Game loadSavedGame(UUID id) {
         List<String> gameStateNames = jsonService.getFolderJSON(LoadGameState.GAMESTATEFOLDER);
@@ -64,8 +107,7 @@ public class GameService implements IGameService {
                 UUID gameID = null;
                 try {
                     gameID = UUID.fromString(gameStateName.split(" ")[0]);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -87,8 +129,7 @@ public class GameService implements IGameService {
             boolean newer = false;
             if (newestFilename == null || newestDate == null) {
                 newer = true;
-            }
-            else {
+            } else {
                 Date newDate = null;
                 try {
                     newDate = LoadGameState.gameStateTimeFormat.parse(gameStateFileName.split(" ")[1].replace("\\(", "").replace(").json", ""));
@@ -124,6 +165,14 @@ public class GameService implements IGameService {
         return game;
     }
 
+    /**
+     * Updates a game with id.
+     *
+     * @param id   gameid
+     * @param game game to update with
+     * @return whether it was updated
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public boolean updateGame(UUID id, Game game) {
         Game gameFound = getGameByID(id);
@@ -134,11 +183,24 @@ public class GameService implements IGameService {
         return false;
     }
 
+    /**
+     * Deletes a game from the service (not updated).
+     *
+     * @param id the ID of the game to delete
+     * @return whether it was deleted
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public boolean deleteGameByID(UUID id) {
         return false;
     }
 
+    /**
+     * Finds all saved gamestates with unique game ID's.
+     *
+     * @return the unique game ID's.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public JSONArray findAllSavedGameStateUnique() {
         JSONArray gameStates = new JSONArray();
@@ -150,8 +212,7 @@ public class GameService implements IGameService {
                 UUID gameID = null;
                 try {
                     gameID = UUID.fromString(gameStateName.split(" ")[0]);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -167,6 +228,13 @@ public class GameService implements IGameService {
         return gameStates;
     }
 
+    /**
+     * Get gamestate from gameID.
+     *
+     * @param id gameID
+     * @return gamestate
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public GameState getGameStateByID(UUID id) {
         Game game = getGameByID(id);
@@ -176,6 +244,13 @@ public class GameService implements IGameService {
         return game.getGameState();
     }
 
+    /**
+     * Save gamestate from game.
+     *
+     * @param id gameID of game
+     * @return whether saved or not
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public boolean saveGameStateByID(UUID id) {
         Game game = getGameByID(id);
@@ -186,11 +261,15 @@ public class GameService implements IGameService {
         return true;
     }
 
-    @Override
-    public String updatePlayerState(UUID id, UUID playerID) {
-        return null;
-    }
-
+    /**
+     * Updates a player's deck to new deck.
+     *
+     * @param id         gameID
+     * @param playerID   playerID
+     * @param playerDeck new deck
+     * @return whether updated or not
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public boolean updatePlayerDeck(UUID id, UUID playerID, PlayerDeck playerDeck) {
         PlayerDeck currentPlayerDeck = getPlayerDeck(id, playerID);
@@ -207,6 +286,14 @@ public class GameService implements IGameService {
         return true;
     }
 
+    /**
+     * Gets player.
+     *
+     * @param id       gameID
+     * @param playerID playerID
+     * @return the player, if in game.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public Player getPlayer(UUID id, UUID playerID) {
         Game game = getGameByID(id);
@@ -217,6 +304,14 @@ public class GameService implements IGameService {
         return game.getPlayer(playerID);
     }
 
+    /**
+     * Gets Player's Deck.
+     *
+     * @param id       gameID
+     * @param playerID playerID
+     * @return the deck of player
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public PlayerDeck getPlayerDeck(UUID id, UUID playerID) {
         Player player = getPlayer(id, playerID);
@@ -226,6 +321,12 @@ public class GameService implements IGameService {
         return player.getDeck();
     }
 
+    /**
+     * Reset's every Player's ready status.
+     *
+     * @param id gameID
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public void resetReady(UUID id) {
         Game game = getGameByID(id);
         if (game != null) {
@@ -235,6 +336,14 @@ public class GameService implements IGameService {
         }
     }
 
+    /**
+     * Updates Player's ready status to Ready
+     *
+     * @param id       gameID
+     * @param playerID playerID
+     * @return if possible/valid change, return true.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public boolean updatePlayerReady(UUID id, UUID playerID) {
         // todo: update and let the controller handle it?
@@ -282,6 +391,15 @@ public class GameService implements IGameService {
         }
     }
 
+    /**
+     * Choose option of interaction.
+     *
+     * @param id         gameID
+     * @param playerID   playerID
+     * @param optionName card name of option
+     * @return whether option was chosen successfully
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public boolean chooseInteractionOption(UUID id, UUID playerID, String optionName) {
         if (optionName == null || optionName.isEmpty() || optionName.equals("none")) {

@@ -7,16 +7,18 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * SpawnGear class where players spawn
- * @author Marcus Sand
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class SpawnGear extends SpawnableElement {
 
     /**
      * Creates a new spawn gear.
-     * @author Marcus Sand
+     *
      * @param gameLogicController the gamecontroller
-     * @param space the space
-     * @param spawnDirection the direction that the robot should face
+     * @param space               the space
+     * @param spawnDirection      the direction that the robot should face
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public SpawnGear(GameLogicController gameLogicController, Space space, Heading spawnDirection) {
         super(gameLogicController, space, spawnDirection);
@@ -37,11 +39,13 @@ public class SpawnGear extends SpawnableElement {
     public void activate() {
 
     }
+
     /**
      * for the activation order
-     * @author Marcus Sand
+     *
      * @param o object to compare to.
      * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public int compareTo(@NotNull Object o) {

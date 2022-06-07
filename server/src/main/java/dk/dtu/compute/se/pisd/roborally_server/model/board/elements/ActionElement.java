@@ -6,8 +6,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * action element class
+ *
  * @author Mads Nielsen
- * @author Marcus Sand
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public abstract class ActionElement extends FieldElement implements Comparable {
 
@@ -15,10 +16,11 @@ public abstract class ActionElement extends FieldElement implements Comparable {
 
     /**
      * Constructer for action element
-     * @author Mads Nielsen
-     * @author Marcus Sand
+     *
      * @param gameLogicController the game controller
-     * @param space the space
+     * @param space               the space
+     * @author Mads Nielsen
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public ActionElement(GameLogicController gameLogicController, Space space) {
         super(space);
@@ -28,25 +30,29 @@ public abstract class ActionElement extends FieldElement implements Comparable {
 
     /**
      * activate method
+     *
      * @author Mads Nielsen
-     * @author Marcus Sand
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public abstract void activate();
 
     /**
      * game controller getterclass
-     * @author Marcus Sand
-     * @author Mads Nielsen
+     *
      * @return gamecontroller
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Mads Nielsen
      */
     public GameLogicController getGameController() {
         return gameLogicController;
     }
+
     /**
      * for the activation order
-     * @author Marcus Sand
+     *
      * @param o object to compare to.
      * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public int compareTo(@NotNull Object o) {

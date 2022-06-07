@@ -15,7 +15,8 @@ public class PriorityAntenna extends ActionElement {
      * Constructer, that saves the priority antenna location on the game. board. The logic is inplemented at the
      * execute next step
      *
-     * @param space give the space to where the field should be
+     * @param gameLogicController the game controller
+     * @param space               give the space to where the field should be
      * @author Mads Legard Nielsen
      */
     public PriorityAntenna(GameLogicController gameLogicController, Space space) {
@@ -23,11 +24,17 @@ public class PriorityAntenna extends ActionElement {
         super.getGameController().getGame().getBoard().setPriorityAntenna(space);
     }
 
+    /**
+     * Not used
+     */
     @Override
     public void activate() {
 
     }
 
+    /**
+     * Not used
+     */
     @Override
     public void doLandingAction() {
 

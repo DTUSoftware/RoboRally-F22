@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * the reboottoken object for rebooting the robots
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class RebootToken extends SpawnableElement {
     private int x1;
@@ -18,12 +20,13 @@ public class RebootToken extends SpawnableElement {
      * Creates a new reboot token.
      *
      * @param gameLogicController the gamecontroller
-     * @param space the space
-     * @param direction the direction to put other players, and for players to face
-     * @param x1 The x-coordinate for the first corner of the bounds
-     * @param y1 The y-coordinate for the first corner of the bounds
-     * @param x2 The x-coordinate for the second corner of the bounds
-     * @param y2 The y-coordinate for the second corner of the bounds
+     * @param space               the space
+     * @param direction           the direction to put other players, and for players to face
+     * @param x1                  The x-coordinate for the first corner of the bounds
+     * @param y1                  The y-coordinate for the first corner of the bounds
+     * @param x2                  The x-coordinate for the second corner of the bounds
+     * @param y2                  The y-coordinate for the second corner of the bounds
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public RebootToken(GameLogicController gameLogicController, Space space, Heading direction, int x1, int y1, int x2, int y2) {
         super(gameLogicController, space, direction);
@@ -43,7 +46,9 @@ public class RebootToken extends SpawnableElement {
 
     /**
      * retruns x coordinate 1
+     *
      * @return x1
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public int getx1() {
         return x1;
@@ -51,7 +56,9 @@ public class RebootToken extends SpawnableElement {
 
     /**
      * returns y coordinate 1
+     *
      * @return y1
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public int gety1() {
         return y1;
@@ -59,7 +66,9 @@ public class RebootToken extends SpawnableElement {
 
     /**
      * returns x coordinate 2
+     *
      * @return x2
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public int getx2() {
         return x2;
@@ -67,7 +76,9 @@ public class RebootToken extends SpawnableElement {
 
     /**
      * returns y coordinate 2
+     *
      * @return y2
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public int gety2() {
         return y2;
@@ -78,21 +89,22 @@ public class RebootToken extends SpawnableElement {
      *
      * @param space the space to check whether it's in the bounds or not.
      * @return whether or not the space is in the bounds.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public boolean isWithinBounds(Space space) {
         return (
-                        (
-                                ((this.x1 <= this.x2) && (space.x >= this.x1 && space.x <= this.x2))
+                (
+                        ((this.x1 <= this.x2) && (space.x >= this.x1 && space.x <= this.x2))
                                 ||
                                 ((this.x1 > this.x2) && (space.x < this.x1 && space.x >= this.x2))
-                        )
+                )
                         &&
                         (
                                 ((this.y1 <= this.y2) && (space.y >= this.y1 && space.y <= this.y2))
-                                ||
-                                ((this.y1 > this.y2) && (space.y < this.y1 && space.y >= this.y2))
+                                        ||
+                                        ((this.y1 > this.y2) && (space.y < this.y1 && space.y >= this.y2))
                         )
-                );
+        );
     }
 
     /**
@@ -103,6 +115,13 @@ public class RebootToken extends SpawnableElement {
 
     }
 
+    /**
+     * for the activation order
+     *
+     * @param o object to compare to.
+     * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public int compareTo(@NotNull Object o) {
         if (!(o instanceof ActionElement)) {

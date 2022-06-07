@@ -39,24 +39,27 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * ...
+ * To load a board from files.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class LoadBoard {
 
-    /** The folder where the maps are saved */
+    /**
+     * The folder where the maps are saved
+     */
     public static final String BOARDSFOLDER = "maps";
     private static final String DEFAULTBOARD = "defaultboard";
     private static final int defaultBoardHeight = 8;
     private static final int defaultBoardWidth = 8;
 
     /**
-     *  Loads the board
+     * Loads the board
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param game the game
      * @return the board.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static Board loadBoard(Game game) {
         // Ready the board
@@ -74,8 +77,7 @@ public class LoadBoard {
         InputStream inputStream = null;
         try {
             inputStream = Resources.getResource(BOARDSFOLDER + "/" + mapID + ".json").openStream();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (inputStream == null) {
@@ -87,8 +89,8 @@ public class LoadBoard {
         JSONTokener tokener = new JSONTokener(inputStream);
         JSONObject boardJSON = new JSONObject(tokener);
 
-		Board board = null;
-		try {
+        Board board = null;
+        try {
             JSONObject size = boardJSON.getJSONObject("size");
             board = new Board(size.getInt("width"), size.getInt("height"), mapID);
 
@@ -111,7 +113,7 @@ public class LoadBoard {
                     JSONObject elementJSON = elementsJSON.getJSONObject(j);
                     switch (elementJSON.getString("type")) {
                         case "checkpoint":
-                            new Checkpoint(gameController,space, elementJSON.getInt("number"));
+                            new Checkpoint(gameController, space, elementJSON.getInt("number"));
                             break;
                         case "conveyor_belt":
                             new ConveyorBelt(
@@ -135,7 +137,7 @@ public class LoadBoard {
                             new Pit(gameController, space);
                             break;
                         case "priority_antenna":
-                            new PriorityAntenna(gameController,space);
+                            new PriorityAntenna(gameController, space);
                             break;
                         case "reboot_token":
                             JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
@@ -160,8 +162,7 @@ public class LoadBoard {
             board.setRebootTokens(rebootTokens.toArray(new RebootToken[0]));
             // add spawn gears
             board.setSpawnGears(spawnGears.toArray(new SpawnGear[0]));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return board;
@@ -170,9 +171,9 @@ public class LoadBoard {
     /**
      * saves the current board
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param board the board to save
-     * @param name the nake to give
+     * @param name  the nake to give
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static void saveBoard(Board board, String name) {
         JSONObject boardJSON = new JSONObject();
@@ -183,10 +184,10 @@ public class LoadBoard {
         boardJSON.put("size", size);
 
         JSONArray boardObjects = new JSONArray();
-        for (int x=0; x<board.width; x++) {
-            for (int y=0; y<board.height; y++) {
+        for (int x = 0; x < board.width; x++) {
+            for (int y = 0; y < board.height; y++) {
                 JSONObject spaceJSON = new JSONObject();
-                Space space = board.getSpace(x,y);
+                Space space = board.getSpace(x, y);
 
                 JSONObject positionJSON = new JSONObject();
                 positionJSON.put("x", space.x);
@@ -199,34 +200,26 @@ public class LoadBoard {
                     if (element instanceof Checkpoint) {
                         elementJSON.put("type", "checkpoint");
                         elementJSON.put("number", ((Checkpoint) element).getNumber());
-                    }
-                    else if (element instanceof ConveyorBelt) {
+                    } else if (element instanceof ConveyorBelt) {
                         elementJSON.put("type", "conveyor_belt");
                         elementJSON.put("color", ((ConveyorBelt) element).getColor());
                         elementJSON.put("direction", ((ConveyorBelt) element).getDirection().name());
-                    }
-                    else if (element instanceof EnergySpace) {
+                    } else if (element instanceof EnergySpace) {
                         elementJSON.put("type", "energy_space");
-                    }
-                    else if (element instanceof Gear) {
+                    } else if (element instanceof Gear) {
                         elementJSON.put("type", "gear");
                         elementJSON.put("direction", ((Gear) element).getDirection());
-                    }
-                    else if (element instanceof Laser) {
+                    } else if (element instanceof Laser) {
                         elementJSON.put("type", "laser");
                         elementJSON.put("direction", ((Laser) element).getDirection().name());
-                    }
-                    else if (element instanceof Pit) {
+                    } else if (element instanceof Pit) {
                         elementJSON.put("type", "pit");
-                    }
-                    else if (element instanceof PriorityAntenna) {
+                    } else if (element instanceof PriorityAntenna) {
                         elementJSON.put("type", "priority_antenna");
-                    }
-                    else if (element instanceof PushPanel) {
+                    } else if (element instanceof PushPanel) {
                         elementJSON.put("type", "push_panel");
                         elementJSON.put("direction", ((PushPanel) element).getDirection().name());
-                    }
-                    else if (element instanceof RebootToken) {
+                    } else if (element instanceof RebootToken) {
                         elementJSON.put("type", "reboot_token");
                         JSONObject rebootBounds = new JSONObject();
                         rebootBounds.put("x1", ((RebootToken) element).getx1());
@@ -234,16 +227,13 @@ public class LoadBoard {
                         rebootBounds.put("x2", ((RebootToken) element).getx2());
                         rebootBounds.put("y2", ((RebootToken) element).gety2());
                         elementJSON.put("bounds", rebootBounds);
-                    }
-                    else if (element instanceof SpawnGear) {
+                    } else if (element instanceof SpawnGear) {
                         elementJSON.put("type", "spawn_gear");
                         elementJSON.put("direction", ((SpawnGear) element).getDirection().name());
-                    }
-                    else if (element instanceof Wall) {
+                    } else if (element instanceof Wall) {
                         elementJSON.put("type", "wall");
                         elementJSON.put("direction", ((Wall) element).getDirection().name());
-                    }
-                    else {
+                    } else {
                         elementJSON.put("type", "undefined");
                     }
                     elementsJSON.put(elementJSON);

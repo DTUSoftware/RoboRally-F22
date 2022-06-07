@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The laser object
+ * @author Oscar Maxwell
+ * @author Nicolai Udbye
+ * @author Mads Hansen
  */
 public class Laser extends ActionElement {
     private Heading direction;
@@ -19,8 +22,12 @@ public class Laser extends ActionElement {
      * constructor for the laser
      *
      * @param gameLogicController the gamecontroller
-     * @param space          the space to put the lazer
-     * @param direction      the direction for the laser
+     * @param space               the space to put the lazer
+     * @param direction           the direction for the laser
+     * @param lazer               the number of the lazer type
+     * @author Oscar Maxwell
+     * @author Nicolai Udbye
+     * @author Mads Hansen
      */
     public Laser(GameLogicController gameLogicController, Space space, Heading direction, int lazer) {
         super(gameLogicController, space);
@@ -32,6 +39,9 @@ public class Laser extends ActionElement {
      * gets the heading
      *
      * @return direction
+     * @author Oscar Maxwell
+     * @author Nicolai Udbye
+     * @author Mads Hansen
      */
     public Heading getDirection() {
         return direction;
@@ -41,15 +51,20 @@ public class Laser extends ActionElement {
      * gets the lazer number
      *
      * @return lazer number
+     * @author Oscar Maxwell
+     * @author Nicolai Udbye
+     * @author Mads Hansen
      */
     public int getLazer() {
         return lazer;
     }
 
     /**
-     * not used
+     * activates the laser
+     * @author Oscar Maxwell
+     * @author Nicolai Udbye
+     * @author Mads Hansen
      */
-
     @Override
     public void activate() {
         Player player = super.getSpace().getPlayer();
@@ -77,6 +92,13 @@ public class Laser extends ActionElement {
 
     }
 
+    /**
+     * for the activation order
+     *
+     * @param o object to compare to.
+     * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public int compareTo(@NotNull Object o) {
         if (!(o instanceof ActionElement)) {

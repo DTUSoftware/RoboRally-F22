@@ -28,6 +28,7 @@ package dk.dtu.compute.se.pisd.roborally_server.model;
  * @author Ekkart Kindler, ekki@dtu.dk
  */
 public enum Phase {
+    /** The waiting phase, waiting for all players to be ready before starting the game */
     WAITING,
     /** The initialization phase */
     INITIALISATION,

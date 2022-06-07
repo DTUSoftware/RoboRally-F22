@@ -7,17 +7,19 @@ import dk.dtu.compute.se.pisd.roborally_server.model.board.Space;
 
 /**
  * Spawnablelement abstract class that extends actionelement and helps spawning the elements.
- * @author Marcus Sand
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public abstract class SpawnableElement extends ActionElement {
     private Heading spawnDirection;
 
     /**
      * Constructer for spawnableelement
-     * @author Marcus Sand
+     *
      * @param gameLogicController the game controller
-     * @param space          the space
-     * @param spawnDirection the direction
+     * @param space               the space
+     * @param spawnDirection      the direction
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public SpawnableElement(GameLogicController gameLogicController, Space space, Heading spawnDirection) {
         super(gameLogicController, space);
@@ -26,8 +28,9 @@ public abstract class SpawnableElement extends ActionElement {
 
     /**
      * getter for direction
-     * @author Marcus Sand
+     *
      * @return spawnDirection which is the direction a wall or pushpanel should spawn
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Heading getDirection() {
         return spawnDirection;
@@ -35,19 +38,18 @@ public abstract class SpawnableElement extends ActionElement {
 
     /**
      * Spawns a player at a certain space.
-     * @author Marcus Sand
+     *
      * @param player takes the player
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void spawnPlayer(Player player) {
         player.setHeading(getDirection());
         if (getSpace().free() || getSpace().getPlayer() == player) {
             player.setSpace(getSpace());
-        }
-        else {
+        } else {
             try {
                 super.getGameController().moveDirection(player, getDirection());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

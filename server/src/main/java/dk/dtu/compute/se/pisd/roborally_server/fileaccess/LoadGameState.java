@@ -19,13 +19,27 @@ import static dk.dtu.compute.se.pisd.roborally_server.fileaccess.LoadBoard.loadB
 
 /**
  * Loads the state of the game
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class LoadGameState {
 
-    /** Where we save the game state */
+    /**
+     * Where we save the game state
+     */
     public static final String GAMESTATEFOLDER = "gamestates";
+    /**
+     * Date Time format that's used to save gamestates
+     */
     public static final SimpleDateFormat gameStateTimeFormat = new SimpleDateFormat("(dd-MM-yyyy_HH-mm-ss)");
 
+    /**
+     * Gets a player deck from a given JSONObject
+     *
+     * @param playerGameState the JSONObject
+     * @return the parsed PlayerDeck
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public static PlayerDeck getPlayerDeckFromJSON(JSONObject playerGameState) {
         PlayerDeck playerDeck = new PlayerDeck();
 
@@ -95,16 +109,15 @@ public class LoadGameState {
     /**
      * Loads a map, players and board from a saved gamestate.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
-     * @param game the game.
+     * @param game     the game.
      * @param filename the filename of the saved gamestate (without .json).
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static void loadGameState(Game game, String filename) {
         InputStream inputStream = null;
         try {
             inputStream = Resources.getResource(GAMESTATEFOLDER + "/" + filename + ".json").openStream();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (!e.toString().contains("not found")) {
                 e.printStackTrace();
             }
@@ -114,8 +127,7 @@ public class LoadGameState {
             appdataFolder = appdataFolder + "/" + GAMESTATEFOLDER + "/" + filename + ".json";
             try {
                 inputStream = new FileInputStream(appdataFolder);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             if (inputStream == null) {
@@ -166,8 +178,8 @@ public class LoadGameState {
     /**
      * Saves the current gamestate to a file.
      *
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @param game the game.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static void saveGameState(Game game) {
         JSONObject gameStateJSON = new JSONObject();

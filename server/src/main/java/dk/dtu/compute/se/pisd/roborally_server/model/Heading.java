@@ -43,6 +43,7 @@ public enum Heading {
      * Example: if NORTH, returns EAST.
      *
      * @return the next {@link Heading Heading}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Heading next() {
         return values()[(this.ordinal() + 1) % values().length];
@@ -53,6 +54,7 @@ public enum Heading {
      * Example: if NORTH, returns WEST.
      *
      * @return the previous {@link Heading Heading}.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Heading prev() {
         return values()[(this.ordinal() + values().length - 1) % values().length];

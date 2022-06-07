@@ -205,6 +205,9 @@ public class GameController {
      * @param source The source {@link CardField CommandCardField}.
      * @param target The {@link CardField CommandCardField} to move the card to.
      * @return <code>true</code> if the card is moved, else <code>false</code>.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
      */
     public boolean moveCards(@NotNull CardField source, @NotNull CardField target) {
         Card sourceCard = source.getCard();

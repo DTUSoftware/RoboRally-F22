@@ -18,10 +18,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * JSON Service.
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ */
 @Service
 public class JSONService implements IJSONService {
     final private static AppDirs appDirs = AppDirsFactory.getInstance();
 
+    /**
+     * Function to get the AppData folder.
+     *
+     * @return the path to the appdata folder.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public static String getAppDataFolder() {
         return appDirs.getUserDataDir("RoboRally-Server", "prod", "DTU");
     }
@@ -29,10 +40,12 @@ public class JSONService implements IJSONService {
     // From RoboRally-Client (AppController)
 
     /**
+     * Gets filenames of JSON-files in folder.
+     * (folder can be in resources, appdata or jar)
      *
-     * @author Marcus S. (s215827)
-     * @param foldername the name of the folder
-     * @return the JSON-files' names
+     * @param foldername name of folder
+     * @return the filenames, if any
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public List<String> getFolderJSON(String foldername) {
         List<String> folderFiles = new ArrayList<>();
@@ -48,8 +61,7 @@ public class JSONService implements IJSONService {
             if (!e.toString().contains("folder files not found")) {
                 if (e.toString().contains("gamestates not found")) {
                     System.out.println("Gamestate folder not found in resources");
-                }
-                else {
+                } else {
                     e.printStackTrace();
                 }
             }
@@ -80,7 +92,7 @@ public class JSONService implements IJSONService {
                 if (jarPath != null) {
                     // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. fix it or smthn idk
                     // file walks JAR
-                    URI uri = URI.create("jar:file:" + jarPath.replace(" ","%20"));
+                    URI uri = URI.create("jar:file:" + jarPath.replace(" ", "%20"));
                     try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                         resourceFolderFiles = Files.walk(fs.getPath(foldername))
                                 .filter(Files::isRegularFile)

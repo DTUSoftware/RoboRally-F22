@@ -38,6 +38,7 @@ import java.util.*;
  * Controls stuff that happens on the {@link Game Game}.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class GameLogicController {
     /**
@@ -50,10 +51,14 @@ public class GameLogicController {
      **/
     private SortedSet<ActionElement> actionElements = new TreeSet<>();
 
-    /** I don't care about this little shitty part of memory used to store this */
+    /**
+     * I don't care about this little shitty part of memory used to store this
+     */
     private String cardOption = null;
 
-    /** Queue of players for step */
+    /**
+     * Queue of players for step
+     */
     ArrayDeque<Integer> playerQueue = new ArrayDeque<>();
 
     /**
@@ -184,6 +189,7 @@ public class GameLogicController {
      *
      * @return the random {@link ProgramCard CommandCard}.
      * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private ProgramCard generateRandomCommandCard() {
         Program[] programs = Program.values();
@@ -284,7 +290,7 @@ public class GameLogicController {
     // XXX: V2
 
     /**
-     * Continue programs.
+     * Continue programs, and sleep after each step to allow the clients to watch the steps.
      *
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
@@ -318,7 +324,7 @@ public class GameLogicController {
      * Choose the order of the players, depending on priority antenna location and player locations.
      *
      * @author Mads Nielsen
-     * @author Marcus Sand
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private void priorityAntennaMath() {
         int playerAmount = game.getPlayerCount();
@@ -354,7 +360,7 @@ public class GameLogicController {
     }
 
     /**
-     * Executes the next step.
+     * Executes the next step in accordance with priority antenna order.
      *
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      * @author Mads Nielsen
@@ -444,13 +450,11 @@ public class GameLogicController {
                 try {
                     program = Program.valueOf(cardOption);
                     this.cardOption = null;
-                }
-                catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     try {
                         Damage damage_check = Damage.valueOf(cardOption);
                         executeDamage(player, damage_check);
-                    }
-                    catch (IllegalArgumentException e2) {
+                    } catch (IllegalArgumentException e2) {
                         e.printStackTrace();
                     }
                     this.cardOption = null;
@@ -514,7 +518,7 @@ public class GameLogicController {
     /**
      * Executes damage.
      *
-     * @param player  the player to execute the command on
+     * @param player the player to execute the command on
      * @param damage the damage to execute
      * @author Ekkart Kindler, ekki@dtu.dk
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
@@ -542,13 +546,11 @@ public class GameLogicController {
                 try {
                     damage = Damage.valueOf(cardOption);
                     this.cardOption = null;
-                }
-                catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     try {
                         Program program_check = Program.valueOf(cardOption);
                         executeProgram(player, program_check);
-                    }
-                    catch (IllegalArgumentException e2) {
+                    } catch (IllegalArgumentException e2) {
                         e.printStackTrace();
                     }
                     this.cardOption = null;
@@ -776,20 +778,20 @@ public class GameLogicController {
      * @author Oscar Maxwell
      */
     public void optionLeftRight(@NotNull Player player, Program program) {
-        if (program.equals("LEFT")) {
+        if (program.equals(Program.LEFT)) {
             turnLeft(player);
-        } else if (program.equals("RIGHT")) {
+        } else if (program.equals(Program.RIGHT)) {
             turnRight(player);
         }
     }
 
     /**
-     * @param player
-     * @param program
+     * Does the sandbox routine
+     * @param player the player to affect
+     * @param program the routine that was chosen
      * @author Nicolai Udbye
      */
     public void sandboxRoutine(@NotNull Player player, Program program) {
-
         switch (program) {
             case MOVE_1:
                 this.moveForward(player);
@@ -817,7 +819,8 @@ public class GameLogicController {
     }
 
     /**
-     * @param player
+     * Power up card command
+     * @param player the player to power up
      * @author Oscar Maxwell
      */
     public void powerUp(@NotNull Player player) {
@@ -825,10 +828,11 @@ public class GameLogicController {
     }
 
     /**
+     * executes the last command again
+     * @param player the player
+     * @param step which step the again card is on (is used if multiple again cards have been placed next to each other)
      * @author Oscar Maxwell
-     * @author Marcus Sand
-     * @param player
-     * @param step
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void again(@NotNull Player player, int step) {
         if (step <= 0) {
@@ -839,13 +843,9 @@ public class GameLogicController {
             switch (card.getType()) {
                 case PROGRAM:
                     Program program = ((ProgramCard) card).getProgram();
-
-//                    System.out.println("Repeating a " + program.name() + " card!");
-
                     if (program == Program.AGAIN || program == Program.REPEAT_ROUTINE) {
                         again(player, step - 1);
-                    }
-                    else {
+                    } else {
                         executeProgram(player, program);
                     }
                     break;
@@ -858,7 +858,8 @@ public class GameLogicController {
     }
 
     /**
-     * @param player
+     * Executes a SPAM card
+     * @param player the player to take SPAM
      * @author Oscar Maxwell
      * @author Nicolai Udbye
      */
@@ -868,15 +869,33 @@ public class GameLogicController {
         executeProgram(player, programs[random]);
     }
 
+    /**
+     * Executes a trojan horse
+     * @param player the player
+     * @author Oscar Maxwell
+     * @author Nicolai Udbye
+     */
     public void TROJAN_HORSE(@NotNull Player player) {
         for (int i = 0; i < 2; i++)
             SPAM(player);
     }
 
+    /**
+     * Does a worm on player
+     * @param player the player
+     * @author Oscar Maxwell
+     * @author Nicolai Udbye
+     */
     public void WORM(@NotNull Player player) {
         player.reboot();
     }
 
+    /**
+     * Gives the player a virus
+     * @param player the player
+     * @author Oscar Maxwell
+     * @author Nicolai Udbye
+     */
     public void VIRUS(@NotNull Player player) {
         Program[] programs = Program.values();
         Space playerSpace = player.getSpace();
@@ -894,44 +913,14 @@ public class GameLogicController {
         executeProgram(player, programs[random]);
     }
 
-
-    /**
-     * Moves a {@link Program Command} on a source {@link Card Card} to another {@link Card Card}.
-     * Only moves the card, if there is a card on the source field, and there is no card on the target field.
-     *
-     * @param source The source {@link Card card}.
-     * @param target The {@link Card Card} to move the card to.
-     * @return <code>true</code> if the card is moved, else <code>false</code>.
-     * @author Ekkart Kindler, ekki@dtu.dk
-     * @author Marcus Sand, mwasa@dtu.dk (s215827)
-     * @author Oscar Maxwell
-     */
-    public boolean moveCards(@NotNull Card source, @NotNull Card target) {
-        if (source.getType() != null && source.getType().equals(target.getType())) {
-            switch (source.getType()) {
-                case PROGRAM:
-                    Program sourceProgram = ((ProgramCard) source).getProgram();
-                    Program targetProgram = ((ProgramCard) target).getProgram();
-                    if (sourceProgram != null && targetProgram == null) {
-                        ((ProgramCard) target).setProgram(sourceProgram);
-                        ((ProgramCard) source).setProgram(null);
-                        return true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        return false;
-    }
-
     /**
      * A method called when no corresponding controller operation is implemented yet. This
      * should eventually be removed.
      *
      * @param cardOption the card used
+     * @return whether the option was set successfully
      * @author Oscar Maxwell
-     * @author Marcus Sand
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public boolean setCommandCardOptionAndContinue(String cardOption) {
         if (!cardOption.isEmpty()) {
@@ -966,10 +955,20 @@ public class GameLogicController {
         // TODO: reset the game with same map and same players
     }
 
+    /**
+     * Gets the game
+     * @return the game
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Sets the game
+     * @param game the game to set
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public void setGame(Game game) {
         this.game = game;
     }

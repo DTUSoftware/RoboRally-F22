@@ -34,18 +34,27 @@ import org.jetbrains.annotations.NotNull;
  * The Map holds all the spaces.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class Board extends Subject {
-    /** The width of the board */
+    /**
+     * The width of the board
+     */
     public final int width;
-    /** The height of the board */
+    /**
+     * The height of the board
+     */
     public final int height;
 
-    /** The name of the board */
+    /**
+     * The name of the board
+     */
     public final String mapName;
     private final Space[][] spaces;
 
-    /** The game */
+    /**
+     * The game
+     */
     private Game game;
 
     private Checkpoint[] checkpoints;
@@ -56,9 +65,11 @@ public class Board extends Subject {
     /**
      * Creates a new board.
      *
-     * @param width the width of the board.
-     * @param height the height of the board.
+     * @param width   the width of the board.
+     * @param height  the height of the board.
      * @param mapName the name of the board.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Board(int width, int height, String mapName) {
         this.mapName = mapName;
@@ -66,7 +77,7 @@ public class Board extends Subject {
         this.height = height;
         spaces = new Space[width][height];
         for (int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++) {
                 Space space = new Space(this, x, y);
                 spaces[x][y] = space;
             }
@@ -76,8 +87,10 @@ public class Board extends Subject {
     /**
      * Creates a new board.
      *
-     * @param width the width of the board.
+     * @param width  the width of the board.
      * @param height the height of the board.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Board(int width, int height) {
         this(width, height, null);
@@ -87,6 +100,7 @@ public class Board extends Subject {
      * Gets the game running on the board.
      *
      * @return the game.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Game getGame() {
         return game;
@@ -96,6 +110,7 @@ public class Board extends Subject {
      * Sets the game to run on the board.
      *
      * @param game the game.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setGame(Game game) {
         this.game = game;
@@ -103,8 +118,9 @@ public class Board extends Subject {
 
     /**
      * Gets array of rebootTokens
-     * 
+     *
      * @return rebootTokens
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public RebootToken[] getRebootTokens() {
         return rebootTokens != null ? rebootTokens : new RebootToken[0];
@@ -112,8 +128,9 @@ public class Board extends Subject {
 
     /**
      * Sets rebootTokens
-     * 
+     *
      * @param rebootTokens resets rebootTokens
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setRebootTokens(RebootToken[] rebootTokens) {
         this.rebootTokens = rebootTokens;
@@ -123,6 +140,7 @@ public class Board extends Subject {
      * Gets array of spawnGears
      *
      * @return spawnGears
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public SpawnGear[] getSpawnGears() {
         return spawnGears != null ? spawnGears : new SpawnGear[0];
@@ -132,6 +150,7 @@ public class Board extends Subject {
      * Sets spawnGears
      *
      * @param spawnGears resets spawnGears
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setSpawnGears(SpawnGear[] spawnGears) {
         this.spawnGears = spawnGears;
@@ -144,6 +163,7 @@ public class Board extends Subject {
      * @param x The x-coordinate of the Space.
      * @param y The y-coordinate of the Space.
      * @return The {@link dk.dtu.compute.se.pisd.roborally_server.model.board.Space Space}, if found, else null.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Space getSpace(int x, int y) {
         if (x >= 0 && x < width &&
@@ -156,30 +176,34 @@ public class Board extends Subject {
 
     /**
      * sets the position of the priority antenna
+     *
+     * @param position the space to set the priority antenna to
      * @author Mads Legard Nielsen
-     * @param position
      */
-    public void setPriorityAntenna(Space position){
+    public void setPriorityAntenna(Space position) {
         this.priorityAntenna = position;
     }
 
     /**
      * gets the position of the priority antenna
-     * @author Mads Legard Nielsen
+     *
      * @return the Space / position for the priority antenna
+     * @author Mads Legard Nielsen
      */
-    public Space getPriorityAntennaPosition(){
+    public Space getPriorityAntennaPosition() {
         return this.priorityAntenna;
     }
+
     /**
      * Returns the neighbour of the given space of the board in the given heading.
      * The neighbour is returned only, if it can be reached from the given space
      * (no walls or obstacles in either of the involved spaces); otherwise,
      * null will be returned.
      *
-     * @param space the space for which the neighbour should be computed
+     * @param space   the space for which the neighbour should be computed
      * @param heading the heading of the neighbour
      * @return the space in the given direction; null if there is no (reachable) neighbour
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public Space getNeighbour(@NotNull Space space, @NotNull Heading heading) {
         // TODO needs to be implemented based on the actual spaces
@@ -194,16 +218,16 @@ public class Board extends Subject {
         int y = space.y;
         switch (heading) {
             case SOUTH:
-                y = y+1;
+                y = y + 1;
                 break;
             case WEST:
-                x = x-1;
+                x = x - 1;
                 break;
             case NORTH:
-                y = y-1;
+                y = y - 1;
                 break;
             case EAST:
-                x = x+1;
+                x = x + 1;
                 break;
         }
 //        Heading reverse = Heading.values()[(heading.ordinal() + 2)% Heading.values().length];
@@ -218,7 +242,9 @@ public class Board extends Subject {
 
     /**
      * Gets the name of the board.
+     *
      * @return the name of the board.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public String getMapName() {
         return this.mapName;

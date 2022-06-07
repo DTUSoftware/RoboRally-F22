@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The rotating gear object
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class Gear extends ActionElement {
     private boolean direction;
@@ -15,8 +17,9 @@ public class Gear extends ActionElement {
      * Creates a new conveyor belt.
      *
      * @param gameLogicController the gamecontroller
-     * @param space where to put the gear
-     * @param direction the direction of the gear
+     * @param space               where to put the gear
+     * @param direction           the direction of the gear
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Gear(GameLogicController gameLogicController, Space space, boolean direction) {
         super(gameLogicController, space);
@@ -25,7 +28,9 @@ public class Gear extends ActionElement {
 
     /**
      * getter for the direction of the gear
+     *
      * @return direction
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public boolean getDirection() {
         return direction;
@@ -41,6 +46,8 @@ public class Gear extends ActionElement {
 
     /**
      * activates the gear and rotates the player.
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void activate() {
@@ -59,6 +66,13 @@ public class Gear extends ActionElement {
 
     }
 
+    /**
+     * for the activation order
+     *
+     * @param o object to compare to.
+     * @return integer that says the relation to the object -1 0 or 1, which is the order.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public int compareTo(@NotNull Object o) {
         if (!(o instanceof ActionElement)) {
@@ -67,8 +81,7 @@ public class Gear extends ActionElement {
 
         if (o instanceof ConveyorBelt || o instanceof PushPanel) {
             return 1;
-        }
-        else if (o instanceof Laser || o instanceof EnergySpace) {
+        } else if (o instanceof Laser || o instanceof EnergySpace) {
             return -1;
         }
         return -1;

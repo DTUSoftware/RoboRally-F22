@@ -10,11 +10,22 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * Map Service Interface.
+ *
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ */
 @Service
 public class MapService implements IMapService {
     @Autowired
     private IJSONService jsonService;
 
+    /**
+     * Finds all MapID's available on the server.
+     *
+     * @return the mapID's.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public JSONArray findAll() {
         JSONArray maps = new JSONArray();
@@ -27,6 +38,13 @@ public class MapService implements IMapService {
         return maps;
     }
 
+    /**
+     * Gets the map layout of map with given mapID.
+     *
+     * @param id the mapID
+     * @return the map layout
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     @Override
     public JSONObject getMapByID(String id) {
         if (id == null) {
@@ -36,8 +54,7 @@ public class MapService implements IMapService {
         InputStream inputStream = null;
         try {
             inputStream = Resources.getResource("maps/" + id + ".json").openStream();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (inputStream == null) {
