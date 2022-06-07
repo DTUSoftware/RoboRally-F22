@@ -61,6 +61,47 @@ public class GameService {
     }
 
     /**
+     * Gets all saved games
+     *
+     * @return the games
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    public static JSONArray getSavedGames() {
+        JSONObject responseJSON = ServerConnector.sendRequest("/games/savedGames", ServerConnector.RequestType.GET);
+        if (responseJSON != null && responseJSON.has("result")) {
+            return responseJSON.getJSONArray("result");
+        }
+        return null;
+    }
+
+    /**
+     * Loads a saved game
+     *
+     * @param gameID       gameID
+     * @return the new game
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    public static JSONObject loadSavedGame(UUID gameID) {
+        JSONObject responseJSON = ServerConnector.sendRequest("/games/"+gameID+"/gameState/load", ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(""));
+        if (responseJSON != null && responseJSON.has("result")) {
+            return responseJSON.getJSONObject("result");
+        }
+        return null;
+    }
+
+    /**
+     * Saves the given game
+     *
+     * @param gameID       gameID
+     * @return whether or not it saved
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    public static boolean saveGame(UUID gameID) {
+        JSONObject responseJSON = ServerConnector.sendRequest("/games/"+gameID+"/gameState/save", ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(""));
+        return responseJSON != null && responseJSON.has("result");
+    }
+
+    /**
      * Get gamestate of game
      *
      * @param gameID gameID

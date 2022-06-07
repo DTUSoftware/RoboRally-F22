@@ -194,8 +194,46 @@ public class AppController implements Observer {
         return mapOptions;
     }
 
+    /**
+     * Gets list of saved game states to choose from.
+     * @return the list
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     private List<String> getGameStateOptions() {
-        return getFolderJSON(LoadGameState.GAMESTATEFOLDER);
+        JSONArray savedGames = GameService.getSavedGames();
+        List<String> savedGamesStrings = new ArrayList<>();
+        if (savedGames != null && !savedGames.isEmpty()) {
+            for (int i = 0; i < savedGames.length(); i++) {
+                savedGamesStrings.add(savedGames.getJSONObject(i).getString("id"));
+            }
+        }
+        return savedGamesStrings;
+    }
+
+    /**
+     * Starts the gamestate update task
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    private void startGameStateUpdateTask() {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (gameController != null) {
+                    System.out.println("----------------------------");
+                    System.out.println("Game Controller still exists...\nChecking Game State!");
+                    try {
+                        gameController.updateGameState();
+                    } catch (Exception e) {
+                        System.out.println("Could not update game state!");
+                        e.printStackTrace();
+                    }
+                    System.out.println("----------------------------");
+                } else {
+                    this.cancel();
+                }
+            }
+        }, 0, 100);
     }
 
     /**
@@ -230,36 +268,22 @@ public class AppController implements Observer {
             Optional<String> mapResult = dialogMap.showAndWait();
 
             if (mapResult.isPresent()) {
-                Checkpoint.setNumberOfCheckpointsCreated(0);
-                gameController = new GameController(this.roboRally, null);
-
-                loadBoard(gameController, mapResult.get());
-
                 JSONObject gameJSON = GameService.newGame(mapResult.get(), playerNumberResult.get());
-                gameController.setGameID(UUID.fromString(gameJSON.getString("id")));
 
-                gameController.updateGameState();
+                if (gameJSON != null) {
+                    Checkpoint.setNumberOfCheckpointsCreated(0);
+                    gameController = new GameController(this.roboRally, null);
 
-                new Timer().scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        if (gameController != null) {
-                            System.out.println("----------------------------");
-                            System.out.println("Game Controller still exists...\nChecking Game State!");
-                            try {
-                                gameController.updateGameState();
-                            } catch (Exception e) {
-                                System.out.println("Could not update game state!");
-                                e.printStackTrace();
-                            }
-                            System.out.println("----------------------------");
-                        } else {
-                            this.cancel();
-                        }
-                    }
-                }, 0, 100);
+                    loadBoard(gameController, mapResult.get());
 
-                roboRally.createBoardView(gameController, null);
+                    gameController.setGameID(UUID.fromString(gameJSON.getString("id")));
+
+                    gameController.updateGameState();
+
+                    startGameStateUpdateTask();
+
+                    roboRally.createBoardView(gameController, null);
+                }
             }
         }
     }
@@ -272,7 +296,7 @@ public class AppController implements Observer {
      */
     public void saveGame() {
         if (gameController != null) {
-            saveGameState(gameController.board);
+            GameService.saveGame(gameController.getGameID());
         }
     }
 
@@ -284,6 +308,10 @@ public class AppController implements Observer {
      */
     public void loadGame() {
         List<String> gameStateOptions = getGameStateOptions();
+        if (gameStateOptions.isEmpty()) {
+            return;
+        }
+
         ChoiceDialog<String> dialog = new ChoiceDialog<>(gameStateOptions.get(0), gameStateOptions);
         dialog.setTitle("Game Load");
         dialog.setHeaderText("Select a saved game to continue");
@@ -298,10 +326,21 @@ public class AppController implements Observer {
                 }
             }
 
-            gameController = new GameController(this.roboRally, null);
-            loadGameState(gameController, gameStateResult.get());
+            JSONObject gameJSON = GameService.loadSavedGame(UUID.fromString(gameStateResult.get()));
+            if (gameJSON != null) {
+                Checkpoint.setNumberOfCheckpointsCreated(0);
+                gameController = new GameController(this.roboRally, null);
 
-            roboRally.createBoardView(gameController, null);
+                loadBoard(gameController, gameJSON.getString("mapID"));
+
+                gameController.setGameID(UUID.fromString(gameJSON.getString("id")));
+
+                gameController.updateGameState();
+
+                startGameStateUpdateTask();
+
+                roboRally.createBoardView(gameController, null);
+            }
         }
     }
 
