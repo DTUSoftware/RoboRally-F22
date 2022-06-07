@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * The rotating gear object
  *
  * @author Marcus Sand, mwasa@dtu.dk (s215827)
+ * @author Mads G. E. Hansen
  */
 public class Gear extends ActionElement {
     private boolean direction;

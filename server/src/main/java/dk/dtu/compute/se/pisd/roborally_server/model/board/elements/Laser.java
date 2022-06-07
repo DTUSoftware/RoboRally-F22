@@ -10,9 +10,10 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The laser object
+ *
  * @author Oscar Maxwell
  * @author Nicolai Udbye
- * @author Mads Hansen
+ * @author Mads G. E. Hansen
  */
 public class Laser extends ActionElement {
     private Heading direction;
@@ -61,6 +62,7 @@ public class Laser extends ActionElement {
 
     /**
      * activates the laser
+     *
      * @author Oscar Maxwell
      * @author Nicolai Udbye
      * @author Mads Hansen
