@@ -62,7 +62,7 @@ public enum Program {
     /** Move 3  */
     SPEED_ROUTINE("speed_routine"),
     /** Discard 1 spam card from discard pile  */
-    SPAM_FOLDER("spam_routine"),
+    SPAM_FOLDER("spam_folder"),
     /** Repeat previous register  */
     REPEAT_ROUTINE("repeat_routine");
 

@@ -9,6 +9,8 @@ import java.io.IOException;
 
 /**
  * A WallView is the visual representation of a {@link Wall Wall}.
+ * @Author Oscar Maxwell
+ * @Author Marcus
  */
 public class WallView extends ElementView {
 

@@ -4,6 +4,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Oscar Maxwell
+ * @author Marcus
+ * @author Nicolai
+ */
 public enum Damage {
     /** Play top card of deck this register */
     SPAM("spam"),

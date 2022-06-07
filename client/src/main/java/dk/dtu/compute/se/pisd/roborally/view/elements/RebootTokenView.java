@@ -9,7 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * A RebootTokenView is the visual representation of a {@link RebootToken RebootToken}.
+ * A RebootTokenView is the visual representation of a {@link RebootToken RebootToken}
+ * @author Oscar Maxwell
+ * @author Marcus
  */
 public class RebootTokenView extends ElementView {
 
