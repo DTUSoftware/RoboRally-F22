@@ -49,8 +49,10 @@ public class GameController {
 
     /**
      * The GameController constructor.
+     *
      * @param roboRally the roborally class
-     * @param board the board to control.
+     * @param board     the board to control.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public GameController(RoboRally roboRally, Board board) {
         this.board = board;
@@ -62,20 +64,37 @@ public class GameController {
      * Used for initialization that needs the gamecontroller.
      *
      * @param board the board.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setBoard(Board board) {
         this.board = board;
     }
 
+    /**
+     * Sets the gameID
+     *
+     * @param gameID gameID
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public void setGameID(UUID gameID) {
         this.gameID = gameID;
     }
 
+    /**
+     * gets gameID
+     *
+     * @return gameID
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public UUID getGameID() {
         return gameID;
     }
 
-
+    /**
+     * Update the gameState with new gamestate from the server.
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     public void updateGameState() {
         JSONObject gameState = GameService.getGameState(gameID);
         if (gameState == null) {
@@ -122,6 +141,19 @@ public class GameController {
         board.setCurrentPlayer(board.getPlayer(gameState.getInt("currentPlayer")));
     }
 
+    /**
+     * Updates a player.
+     *
+     * @param player            the player to update
+     * @param color             color
+     * @param name              name
+     * @param currentCheckpoint current checkpoint
+     * @param ready             ready status
+     * @param x                 x-coordinate
+     * @param y                 y-coordinate
+     * @param heading           heading
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     private void updatePlayer(Player player, String color, String name, int currentCheckpoint, boolean ready, int x, int y, Heading heading) {
         if (player.getColor() == null || !player.getColor().equals(color)) {
             player.setColor(color);
@@ -143,6 +175,17 @@ public class GameController {
         }
     }
 
+    /**
+     * Updates a player's deck
+     *
+     * @param player   the player whoose deck to update
+     * @param energy   energy
+     * @param damage   damage
+     * @param program  program JSON array
+     * @param cards    cards JSON array
+     * @param upgrades upgrades JSON array
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
     private void updatePlayerDeck(Player player, int energy, int damage, JSONArray program, JSONArray cards, JSONArray upgrades) {
         player.setEnergy(energy);
         player.setDamage(damage);
@@ -223,9 +266,12 @@ public class GameController {
 
     /**
      * wins the game
+     *
      * @param player the player that wins the game
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
-    public void winTheGame(Player player){
+    public void winTheGame(Player player) {
         // show popup
         if (roboRally != null) {
             List<String> yesno = new ArrayList<>();
@@ -262,6 +308,8 @@ public class GameController {
 
     /**
      * resets the game
+     *
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private void resetGame() {
         // TODO: reset the game with same map and same players

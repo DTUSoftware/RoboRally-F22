@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * The rotating gear object
+ *
  * @author Mads G. E. Hansen
  */
 public class Gear extends FieldElement {
@@ -15,8 +16,9 @@ public class Gear extends FieldElement {
     /**
      * Creates a new conveyor belt.
      *
-     * @param space where to put the gear
+     * @param space     where to put the gear
      * @param direction the direction of the gear
+     * @author Mads G. E. Hansen
      */
     public Gear(Space space, boolean direction) {
         super(space);
@@ -25,7 +27,9 @@ public class Gear extends FieldElement {
 
     /**
      * getter for the direction of the gear
+     *
      * @return direction
+     * @author Mads G. E. Hansen
      */
     public boolean getGearDirection() {
         return direction;

@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * An upgradecard.
  *
@@ -27,5 +29,17 @@ public class UpgradeCard extends Card {
      */
     public Upgrade getUpgrade() {
         return upgrade;
+    }
+
+    /**
+     * Gets the displayName of the {@link Upgrade Upgrade} that's on the card.
+     *
+     * @return the displayName of the Command.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    @JsonIgnore
+    @Override
+    public String getName() {
+        return upgrade.displayName;
     }
 }

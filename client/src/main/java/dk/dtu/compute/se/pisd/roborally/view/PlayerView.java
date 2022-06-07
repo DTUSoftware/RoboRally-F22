@@ -250,7 +250,7 @@ public class PlayerView extends Tab implements ViewObserver {
                         currentCard = player.board.getCurrentPlayer().getProgramField(step).getCard();
 
                         if (
-                                (currentCard instanceof ProgramCard && ((ProgramCard) currentCard).getCommand().isInteractive())
+                                (currentCard instanceof ProgramCard && ((ProgramCard) currentCard).getProgram().isInteractive())
                                 ||
                                 (currentCard instanceof DamageCard && ((DamageCard) currentCard).getDamage().isInteractive())
                         ) {
@@ -260,7 +260,7 @@ public class PlayerView extends Tab implements ViewObserver {
                     }
 
                     if (currentCard instanceof ProgramCard) {
-                        List<Program> cardOptions = ((ProgramCard) currentCard).getCommand().getOptions();
+                        List<Program> cardOptions = ((ProgramCard) currentCard).getProgram().getOptions();
 
                         for (Program cardOption : cardOptions) {
                             Button optionButton = new Button(cardOption.displayName);

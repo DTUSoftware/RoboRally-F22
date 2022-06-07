@@ -29,9 +29,12 @@ import dk.dtu.compute.se.pisd.roborally.model.cards.Card;
  * A field to put {@link Card Card}s on.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class CardField extends Subject {
-    /** The player that has the card field */
+    /**
+     * The player that has the card field
+     */
     final public Player player;
 
     private Card card;
@@ -42,6 +45,8 @@ public class CardField extends Subject {
      * The CommandCardField constructor.
      *
      * @param player the {@link dk.dtu.compute.se.pisd.roborally.model.Player Player} that has the card field.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public CardField(Player player) {
         this.player = player;
@@ -53,6 +58,7 @@ public class CardField extends Subject {
      * Gets the {@link Card Card} that's on the field.
      *
      * @return the {@link Card Card}, if any.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public Card getCard() {
         return card;
@@ -63,6 +69,8 @@ public class CardField extends Subject {
      * Cannot set the card to the same card.
      *
      * @param card The {@link Card Card} to put on the field.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void setCard(Card card) {
         if (card != this.card) {
@@ -75,6 +83,7 @@ public class CardField extends Subject {
      * Whether the field is visible.
      *
      * @return <code>true</code> if the field is visible, else <code>false</code>.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public boolean isVisible() {
         return visible;
@@ -84,6 +93,7 @@ public class CardField extends Subject {
      * Control whether the field is visible or not.
      *
      * @param visible <code>true</code> if the field should be visible, else <code>false</code>.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void setVisible(boolean visible) {
         if (visible != this.visible) {

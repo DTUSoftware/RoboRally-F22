@@ -5,9 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Damage cards.
+ *
+ * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  * @author Oscar Maxwell
- * @author Marcus
- * @author Nicolai
+ * @author Nicolai Udbye
  */
 public enum Damage {
     /** Play top card of deck this register */
@@ -24,20 +27,16 @@ public enum Damage {
     final public String displayName;
 
     // XXX Assignment P3
+    /** list of options */
+    final private List<Damage> options;
+
     /**
      * The Damage constructor.
      *
      * @param displayName the displayName of the Damage.
+     * @param options     options
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
-    // Command(String displayName) {
-    //     this.displayName = displayName;
-    // }
-    // replaced by the code below:
-    /**
-     * list of options
-     */
-    final private List<Damage> options;
-
     Damage(String displayName, Damage... options) {
         this.displayName = displayName;
         this.options = Collections.unmodifiableList(Arrays.asList(options));
@@ -45,7 +44,9 @@ public enum Damage {
 
     /**
      * checks if it's interactive
+     *
      * @return if its empty
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public boolean isInteractive() {
         return !options.isEmpty();
@@ -53,7 +54,9 @@ public enum Damage {
 
     /**
      * gets the options
+     *
      * @return options
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public List<Damage> getOptions() {
         return options;

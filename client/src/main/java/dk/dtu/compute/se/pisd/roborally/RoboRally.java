@@ -38,6 +38,7 @@ import javafx.stage.Stage;
  * The main RoboRally application, run as a JavaFX application.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class RoboRally extends Application {
 
@@ -51,6 +52,7 @@ public class RoboRally extends Application {
      * Initializes the Application.
      *
      * @throws Exception if not initialized.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     @Override
     public void init() throws Exception {
@@ -61,6 +63,8 @@ public class RoboRally extends Application {
      * The function that runs when the application starts.
      *
      * @param primaryStage The primary {@link javafx.stage.Stage Stage} of the application.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     @Override
     public void start(Stage primaryStage) {
@@ -110,6 +114,8 @@ public class RoboRally extends Application {
      *
      * @param gameController The {@link dk.dtu.compute.se.pisd.roborally.controller.GameController GameController}.
      * @param appController  The {@link dk.dtu.compute.se.pisd.roborally.controller.AppController AppController}.
+     * @author Ekkart Kindler, ekki@dtu.dk
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void createBoardView(GameController gameController, AppController appController) {
         // if present, remove old BoardView
@@ -128,8 +134,7 @@ public class RoboRally extends Application {
                 Button loadButton = new Button("Load Game");
                 loadButton.setOnAction(e -> appController.loadGame());
                 boardRoot.getChildren().add(loadButton);
-            }
-            else {
+            } else {
                 createBoardView(gameController, this.appController);
             }
         }
@@ -141,6 +146,7 @@ public class RoboRally extends Application {
      * Stops the game.
      *
      * @throws Exception an exception thrown while tying to stop the game.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     @Override
     public void stop() throws Exception {
@@ -154,6 +160,8 @@ public class RoboRally extends Application {
 
     /**
      * exits the application
+     *
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public void exitApplication() {
         if (this.appController != null) {
@@ -163,8 +171,10 @@ public class RoboRally extends Application {
 
     /**
      * To be called when the game is won
+     *
      * @param gameController gamecontroller
-     * @param appController appcontroller
+     * @param appController  appcontroller
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void gameWon(GameController gameController, AppController appController) {
 
@@ -174,6 +184,7 @@ public class RoboRally extends Application {
      * The main function in the application - launches the game.
      *
      * @param args any arguments.
+     * @author Ekkart Kindler, ekki@dtu.dk
      */
     public static void main(String[] args) {
         launch(args);

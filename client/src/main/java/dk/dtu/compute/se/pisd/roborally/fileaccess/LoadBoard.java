@@ -37,23 +37,28 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * ...
+ * Loads a board.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public class LoadBoard {
 
-    /** The folder where the maps are saved */
+    /**
+     * The folder where the maps are saved
+     */
     public static final String BOARDSFOLDER = "maps";
     private static final String DEFAULTBOARD = "defaultboard";
     private static final int defaultBoardHeight = 8;
     private static final int defaultBoardWidth = 8;
 
     /**
-     *  Loads the board
+     * Loads the board from server.
+     *
      * @param gameController the gaecontroller
-     * @param boardname the name of the board to load
+     * @param boardname      the name of the board to load
      * @return the board.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static Board loadBoard(GameController gameController, String boardname) {
         if (boardname == null) {
@@ -86,8 +91,8 @@ public class LoadBoard {
 //            boardJSON = new JSONObject(tokener);
         }
 
-		Board board = null;
-		try {
+        Board board = null;
+        try {
             JSONObject size = boardJSON.getJSONObject("size");
             board = new Board(size.getInt("width"), size.getInt("height"), boardname);
 
@@ -157,17 +162,18 @@ public class LoadBoard {
             // add reboot tokens
             board.setRebootTokens(rebootTokens.toArray(new RebootToken[0]));
             board.setSpawnGears(spawnGears.toArray(new SpawnGear[0]));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return board;
     }
 
     /**
-     * saves the current board
+     * saves the current board locally
+     *
      * @param board the board to save
-     * @param name the nake to give
+     * @param name  the nake to give
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public static void saveBoard(Board board, String name) {
         JSONObject boardJSON = new JSONObject();
@@ -178,10 +184,10 @@ public class LoadBoard {
         boardJSON.put("size", size);
 
         JSONArray boardObjects = new JSONArray();
-        for (int x=0; x<board.width; x++) {
-            for (int y=0; y<board.height; y++) {
+        for (int x = 0; x < board.width; x++) {
+            for (int y = 0; y < board.height; y++) {
                 JSONObject spaceJSON = new JSONObject();
-                Space space = board.getSpace(x,y);
+                Space space = board.getSpace(x, y);
 
                 JSONObject positionJSON = new JSONObject();
                 positionJSON.put("x", space.x);
@@ -194,34 +200,26 @@ public class LoadBoard {
                     if (element instanceof Checkpoint) {
                         elementJSON.put("type", "checkpoint");
                         elementJSON.put("number", ((Checkpoint) element).getNumber());
-                    }
-                    else if (element instanceof ConveyorBelt) {
+                    } else if (element instanceof ConveyorBelt) {
                         elementJSON.put("type", "conveyor_belt");
                         elementJSON.put("color", ((ConveyorBelt) element).getColor());
                         elementJSON.put("direction", ((ConveyorBelt) element).getDirection().name());
-                    }
-                    else if (element instanceof EnergySpace) {
+                    } else if (element instanceof EnergySpace) {
                         elementJSON.put("type", "energy_space");
-                    }
-                    else if (element instanceof Gear) {
+                    } else if (element instanceof Gear) {
                         elementJSON.put("type", "gear");
                         elementJSON.put("direction", ((Gear) element).getDirection());
-                    }
-                    else if (element instanceof Laser) {
+                    } else if (element instanceof Laser) {
                         elementJSON.put("type", "laser");
                         elementJSON.put("direction", ((Laser) element).getDirection().name());
-                    }
-                    else if (element instanceof Pit) {
+                    } else if (element instanceof Pit) {
                         elementJSON.put("type", "pit");
-                    }
-                    else if (element instanceof PriorityAntenna) {
+                    } else if (element instanceof PriorityAntenna) {
                         elementJSON.put("type", "priority_antenna");
-                    }
-                    else if (element instanceof PushPanel) {
+                    } else if (element instanceof PushPanel) {
                         elementJSON.put("type", "push_panel");
                         elementJSON.put("direction", ((PushPanel) element).getDirection().name());
-                    }
-                    else if (element instanceof RebootToken) {
+                    } else if (element instanceof RebootToken) {
                         elementJSON.put("type", "reboot_token");
                         JSONObject rebootBounds = new JSONObject();
                         rebootBounds.put("x1", ((RebootToken) element).getx1());
@@ -229,16 +227,13 @@ public class LoadBoard {
                         rebootBounds.put("x2", ((RebootToken) element).getx2());
                         rebootBounds.put("y2", ((RebootToken) element).gety2());
                         elementJSON.put("bounds", rebootBounds);
-                    }
-                    else if (element instanceof SpawnGear) {
+                    } else if (element instanceof SpawnGear) {
                         elementJSON.put("type", "spawn_gear");
                         elementJSON.put("direction", ((SpawnGear) element).getDirection().name());
-                    }
-                    else if (element instanceof Wall) {
+                    } else if (element instanceof Wall) {
                         elementJSON.put("type", "wall");
                         elementJSON.put("direction", ((Wall) element).getDirection().name());
-                    }
-                    else {
+                    } else {
                         elementJSON.put("type", "undefined");
                     }
                     elementsJSON.put(elementJSON);

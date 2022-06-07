@@ -1,5 +1,7 @@
 package dk.dtu.compute.se.pisd.roborally_server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * A damagecard.
  *
@@ -27,5 +29,17 @@ public class DamageCard extends Card {
      */
     public Damage getDamage() {
         return damage;
+    }
+
+    /**
+     * Gets the displayName of the {@link Damage Damage} that's on the card.
+     *
+     * @return the displayName of the Command.
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    @JsonIgnore
+    @Override
+    public String getName() {
+        return damage.displayName;
     }
 }
