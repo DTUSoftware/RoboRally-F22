@@ -9,8 +9,8 @@ import java.io.IOException;
 
 /**
  * A PitView is the visual representation of a {@link Pit Pit}.
- * @Author Oscar Maxwell
- * @Author Marcus
+ * @author Oscar Maxwell
+ * @author Marcus Sand
  */
 public class PitView extends ElementView {
 

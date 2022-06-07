@@ -24,7 +24,7 @@ public class Pit extends ActionElement{
 
     /**
      * does takeDamage to the player and reboots the player
-     * @auther Marcus Sand
+     * @author Marcus Sand
      */
     @Override
     public void doLandingAction() {
