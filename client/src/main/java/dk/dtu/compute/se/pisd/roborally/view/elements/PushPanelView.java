@@ -14,6 +14,8 @@ import java.io.IOException;
 
 /**
  * A PushPanelView is the visual representation of a {@link PushPanel PushPanel}.
+ * @author Oscar Maxwell
+ * @author Marcus
  */
 public class PushPanelView extends ElementView {
 

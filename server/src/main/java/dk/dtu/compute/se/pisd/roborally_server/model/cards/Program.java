@@ -55,7 +55,7 @@ public enum Program {
     POWER_UP("power_up"),
     /** Plays the last card in register */
     AGAIN("again"),
-    /** Give 1 energy  */
+    /** Give 1 energy  */ //TODO Why do we still have upgradeCards cards in program cards?
     ENERGY_ROUTINE("energy_routine"),
     /** Move 1, 2, 3, Back Up, Left, Right or U-Turn  */
     SANDBOX_ROUTINE("sandbox_routine",MOVE_1,MOVE_2,MOVE_3,MOVE_BACKWARDS,LEFT,RIGHT,U_TURN),
