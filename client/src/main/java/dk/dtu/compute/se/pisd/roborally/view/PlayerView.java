@@ -211,11 +211,6 @@ public class PlayerView extends Tab implements ViewObserver {
                     case WAITING:
                         finishButton.setDisable(false);
                         break;
-                    case INITIALISATION:
-                        finishButton.setDisable(true);
-                        // XXX just to make sure that there is a way for the player to get
-                        //     from the initialization phase to the programming phase somehow!
-                        break;
 
                     case PROGRAMMING:
                         finishButton.setDisable(false);

@@ -1,0 +1,41 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+scale 350 width
+
+[*] --> WAITING
+
+state WAITING {
+    [*] --> Waiting
+    Waiting --> Waiting : Player joined
+    Waiting --> PROGRAMMING : All players joined\nand ready
+}
+
+state PROGRAMMING {
+    [*] --> Programming
+    Programming --> Programming : Drag card from deck\nto program
+    Programming --> ACTIVATION : All players ready
+}
+
+state ACTIVATION {
+    state "Execute Step" as ExecuteStep
+    [*] --> ExecuteStep
+    ExecuteStep --> ExecuteStep : Execute next step
+    ExecuteStep --> PLAYER_INTERACTION : Card needs player\ninteraction before continuing
+    ExecuteStep --> PROGRAMMING : All registers executed
+    ExecuteStep --> GAME_WON : Player reached\nall checkpoints
+}
+
+state PLAYER_INTERACTION {
+    state "Wait for player interaction" as WaitPlayer
+    [*] --> WaitPlayer
+    WaitPlayer --> WaitPlayer : Wrong player input
+    WaitPlayer --> ACTIVATION : Correct player input
+}
+
+state GAME_WON {
+}
+
+GAME_WON --> [*]
+
+@enduml

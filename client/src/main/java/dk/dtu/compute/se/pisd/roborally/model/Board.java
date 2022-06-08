@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
-
 /**
  * The Board holds all the players, spaces and keeps track of the
  * current {@link dk.dtu.compute.se.pisd.roborally.model.Phase Phase}.
@@ -67,7 +65,7 @@ public class Board extends Subject {
     private SpawnGear[] spawnGears;
     private RebootToken[] rebootTokens;
 
-    private Phase phase = INITIALISATION;
+    private Phase phase = Phase.WAITING;
 
     private int step = 0;
     private boolean stepMode;
