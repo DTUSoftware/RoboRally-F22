@@ -166,7 +166,7 @@ public class GameService implements IGameService {
     }
 
     /**
-     * Updates a game with id.
+     * Updates a game with id (doesn't update everything).
      *
      * @param id   gameid
      * @param game game to update with
@@ -178,13 +178,15 @@ public class GameService implements IGameService {
         Game gameFound = getGameByID(id);
         if (gameFound != null) {
             gameFound.setID(game.getID());
+            gameFound.setMapID(game.getMapID());
+            gameFound.setPlayerCount(game.getPlayerCount());
             return true;
         }
         return false;
     }
 
     /**
-     * Deletes a game from the service (not updated).
+     * Deletes a game from the service.
      *
      * @param id the ID of the game to delete
      * @return whether it was deleted
@@ -192,6 +194,10 @@ public class GameService implements IGameService {
      */
     @Override
     public boolean deleteGameByID(UUID id) {
+        if (games.containsKey(id)) {
+            games.remove(id);
+            return true;
+        }
         return false;
     }
 

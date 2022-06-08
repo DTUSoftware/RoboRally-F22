@@ -108,7 +108,7 @@ public class GameController {
     }
 
     /**
-     * Updates a game (not implemented).
+     * Updates a game.
      *
      * @param id   game ID
      * @param game new game
@@ -121,7 +121,7 @@ public class GameController {
     }
 
     /**
-     * Deletes a game from the server (not implemented in service).
+     * Deletes a game from the server.
      *
      * @param id id of game
      * @return whether it was deleted or not.
