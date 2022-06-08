@@ -8,8 +8,8 @@ rectangle Roborally {
     usecase "Playing the game" as play
     usecase "Saving the game" as saving
     usecase "Loading a game" as load
-    join .> load: include
-    play .> saving: include
+    load .> join: extend
+    saving .> play: extend
 
 }
 Player --> init
