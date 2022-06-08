@@ -27,12 +27,8 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState;
 import dk.dtu.compute.se.pisd.roborally.server.GameService;
 import dk.dtu.compute.se.pisd.roborally.server.MapService;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
 
 import dk.dtu.compute.se.pisd.roborally.model.elements.*;
 import javafx.scene.control.ChoiceDialog;
@@ -48,10 +44,6 @@ import java.net.URL;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard.loadBoard;
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.loadGameState;
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.saveGameState;
 
 /**
  * Controls stuff that happens on the Application.
@@ -170,25 +162,16 @@ public class AppController implements Observer {
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     private List<String> getMapOptions() {
-        List<String> mapOptions = null;
-
         JSONArray maps = MapService.getMaps();
 
-        if (maps != null && maps.length() > 0) {
-            mapOptions = new ArrayList<>();
-            for (int i = 0; i < maps.length(); i++) {
-                mapOptions.add(maps.getJSONObject(i).getString("id"));
-            }
+        if (maps == null || maps.length() == 0) {
+            System.out.println("COULD NOT GET MAPS FROM SERVER!!!!");
+            return null;
         }
 
-        // load from files if server down
-        // TODO: remove after development
-        if (mapOptions == null) {
-            mapOptions = getFolderJSON(LoadBoard.BOARDSFOLDER);
-            // TODO: on some computers Java cannot read the maps from the resources folder in the compiled .jar file. this is a temp fix
-            if (!mapOptions.contains("dizzy_highway")) {
-                mapOptions.add("dizzy_highway");
-            }
+        List<String> mapOptions = new ArrayList<>();
+        for (int i = 0; i < maps.length(); i++) {
+            mapOptions.add(maps.getJSONObject(i).getString("id"));
         }
 
         return mapOptions;
@@ -262,27 +245,29 @@ public class AppController implements Observer {
             //     here we just create an empty board with the required number of players.
             // Need to load file from game name -> playerNumberResult.get();
             List<String> mapOptions = getMapOptions();
-            ChoiceDialog<String> dialogMap = new ChoiceDialog<>(mapOptions.get(0), mapOptions);
-            dialogMap.setTitle("Maps");
-            dialogMap.setHeaderText("Select the map");
-            Optional<String> mapResult = dialogMap.showAndWait();
+            if (mapOptions != null && !mapOptions.isEmpty()) {
+                ChoiceDialog<String> dialogMap = new ChoiceDialog<>(mapOptions.get(0), mapOptions);
+                dialogMap.setTitle("Maps");
+                dialogMap.setHeaderText("Select the map");
+                Optional<String> mapResult = dialogMap.showAndWait();
 
-            if (mapResult.isPresent()) {
-                JSONObject gameJSON = GameService.newGame(mapResult.get(), playerNumberResult.get());
+                if (mapResult.isPresent()) {
+                    JSONObject gameJSON = GameService.newGame(mapResult.get(), playerNumberResult.get());
 
-                if (gameJSON != null) {
-                    Checkpoint.setNumberOfCheckpointsCreated(0);
-                    gameController = new GameController(this.roboRally, null);
+                    if (gameJSON != null) {
+                        Checkpoint.setNumberOfCheckpointsCreated(0);
+                        gameController = new GameController(this.roboRally, null);
 
-                    loadBoard(gameController, mapResult.get());
+                        gameController.loadBoard(mapResult.get());
 
-                    gameController.setGameID(UUID.fromString(gameJSON.getString("id")));
+                        gameController.setGameID(UUID.fromString(gameJSON.getString("id")));
 
-                    gameController.updateGameState();
+                        gameController.updateGameState();
 
-                    startGameStateUpdateTask();
+                        startGameStateUpdateTask();
 
-                    roboRally.createBoardView(gameController, null);
+                        roboRally.createBoardView(gameController, null);
+                    }
                 }
             }
         }
@@ -331,7 +316,7 @@ public class AppController implements Observer {
                 Checkpoint.setNumberOfCheckpointsCreated(0);
                 gameController = new GameController(this.roboRally, null);
 
-                loadBoard(gameController, gameJSON.getString("mapID"));
+                gameController.loadBoard(gameJSON.getString("mapID"));
 
                 gameController.setGameID(UUID.fromString(gameJSON.getString("id")));
 

@@ -25,7 +25,9 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.cards.*;
+import dk.dtu.compute.se.pisd.roborally.model.elements.*;
 import dk.dtu.compute.se.pisd.roborally.server.GameService;
+import dk.dtu.compute.se.pisd.roborally.server.MapService;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -46,6 +48,7 @@ public class GameController {
     private UUID gameID;
 
     final private RoboRally roboRally;
+    private static final String DEFAULTBOARD = "defaultboard";
 
     /**
      * The GameController constructor.
@@ -313,5 +316,119 @@ public class GameController {
      */
     private void resetGame() {
         // TODO: reset the game with same map and same players
+    }
+
+    /**
+     * Loads the board from server.
+     *
+     * @param boardname      the name of the board to load
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     * @author Oscar Maxwell
+     */
+    public void loadBoard(String boardname) {
+        if (boardname == null) {
+            boardname = DEFAULTBOARD;
+        }
+
+        JSONObject boardJSON = null;
+
+        boardJSON = MapService.getMap(boardname);
+
+        if (boardJSON == null) {
+            System.out.println("COULD NOT CONNECT TO SERVER!!!!");
+            return;
+            // as fallback, load from files
+//            System.out.println("COULD NOT CONNECT TO SERVER - LOADING FROM FILESYSTEM");
+//            InputStream inputStream = null;
+//            try {
+//                inputStream = Resources.getResource(BOARDSFOLDER + "/" + boardname + ".json").openStream();
+//            }
+//            catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            if (inputStream == null) {
+//                Board board = new Board(defaultBoardWidth,defaultBoardHeight, boardname);
+//                gameController.setBoard(board);
+//                return board;
+//            }
+//
+//            JSONTokener tokener = new JSONTokener(inputStream);
+//            boardJSON = new JSONObject(tokener);
+        }
+
+        Board newBoard = null;
+        try {
+            JSONObject size = boardJSON.getJSONObject("size");
+            newBoard = new Board(size.getInt("width"), size.getInt("height"), boardname);
+
+            // Add the board to the gamecontroller
+            setBoard(newBoard);
+
+            // add all spaces
+            JSONArray boardObjects = boardJSON.getJSONArray("board");
+
+            ArrayList<RebootToken> rebootTokens = new ArrayList<>();
+            ArrayList<SpawnGear> spawnGears = new ArrayList<>();
+            for (int i = 0; i < boardObjects.length(); i++) {
+                JSONObject spaceJSON = boardObjects.getJSONObject(i);
+
+                JSONObject positionJSON = spaceJSON.getJSONObject("position");
+                Space space = this.board.getSpace(positionJSON.getInt("x"), positionJSON.getInt("y"));
+
+                JSONArray elementsJSON = spaceJSON.getJSONArray("elements");
+                for (int j = 0; j < elementsJSON.length(); j++) {
+                    JSONObject elementJSON = elementsJSON.getJSONObject(j);
+                    switch (elementJSON.getString("type")) {
+                        case "checkpoint":
+                            new Checkpoint(space, elementJSON.getInt("number"));
+                            break;
+                        case "conveyor_belt":
+                            new ConveyorBelt(
+                                    space,
+                                    elementJSON.getBoolean("color"),
+                                    Heading.valueOf(elementJSON.getString("direction"))
+                            );
+                            break;
+                        case "energy_space":
+                            new EnergySpace(space);
+                            break;
+                        case "gear":
+                            new Gear(space, elementJSON.getBoolean("direction"));
+                            break;
+                        case "laser":
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
+                            new Laser(space, Heading.valueOf(elementJSON.getString("direction")), elementJSON.getInt("number"));
+                            break;
+                        case "pit":
+                            new Pit(space);
+                            break;
+                        case "priority_antenna":
+                            new PriorityAntenna(space);
+                            break;
+                        case "reboot_token":
+                            JSONObject rebootBounds = elementJSON.getJSONObject("bounds");
+                            rebootTokens.add(new RebootToken(space, Heading.valueOf(elementJSON.getString("direction")), rebootBounds.getInt("x1"), rebootBounds.getInt("y1"), rebootBounds.getInt("x2"), rebootBounds.getInt("y2")));
+                            break;
+                        case "spawn_gear":
+                            spawnGears.add(new SpawnGear(space, Heading.valueOf(elementJSON.getString("direction"))));
+                            break;
+                        case "wall":
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")), false);
+                            break;
+                        case "push_panel":
+                            new Wall(space, Heading.valueOf(elementJSON.getString("direction")), true);
+                            JSONObject pushPanel = elementJSON.getJSONObject("registers");
+                            new PushPanel(space, Heading.valueOf(elementJSON.getString("direction")), pushPanel.getInt("register1"), pushPanel.getInt("register2"));
+                            break;
+                    }
+                }
+            }
+
+            // add reboot tokens
+            this.board.setRebootTokens(rebootTokens.toArray(new RebootToken[0]));
+            this.board.setSpawnGears(spawnGears.toArray(new SpawnGear[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

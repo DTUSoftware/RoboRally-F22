@@ -1,13 +1,14 @@
 package dk.dtu.compute.se.pisd.roborally.server;
 
+import dk.dtu.compute.se.pisd.roborally.model.CardField;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.model.cards.DamageCard;
+import dk.dtu.compute.se.pisd.roborally.model.cards.ProgramCard;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.http.HttpRequest;
 import java.util.UUID;
-
-import static dk.dtu.compute.se.pisd.roborally.fileaccess.LoadGameState.getPlayerGameState;
 
 /**
  * The GameService, that sends queries to the ServerConnector at certain endpoints.
@@ -171,5 +172,75 @@ public class GameService {
     public static boolean chooseOption(UUID gameID, UUID playerID, String cardOption) {
         JSONObject responseJSON = ServerConnector.sendRequest("/games/" + gameID + "/gameState/" + playerID + "/chooseOption?cardOption=" + cardOption, ServerConnector.RequestType.POST, HttpRequest.BodyPublishers.ofString(""));
         return responseJSON != null && responseJSON.has("result");
+    }
+
+    /**
+     * Gets a player's gamestate as a JSONObject
+     *
+     * @param player the player
+     * @return JSON object
+     * @author Marcus Sand, mwasa@dtu.dk (s215827)
+     */
+    private static JSONObject getPlayerGameState(Player player) {
+        JSONObject playerJSON = new JSONObject();
+
+        playerJSON.put("name", player.getName());
+        playerJSON.put("color", player.getColor());
+        playerJSON.put("energy", player.getEnergy());
+        playerJSON.put("currentCheckpoint", player.getCurrentCheckpoint());
+
+        JSONObject position = new JSONObject();
+        position.put("x", player.getSpace().x);
+        position.put("y", player.getSpace().y);
+        position.put("heading", player.getHeading().name());
+        playerJSON.put("position", position);
+
+        JSONArray program = new JSONArray();
+        for (int j = 0; j < Player.NO_REGISTERS; j++) {
+            JSONObject programCard = new JSONObject();
+            CardField field = player.getProgramField(j);
+            if (field != null && field.getCard() != null) {
+                switch (field.getCard().getType()) {
+                    case PROGRAM:
+                        programCard.put("type", "PROGRAM");
+                        programCard.put("program", ((ProgramCard) field.getCard()).getProgram().name());
+                        break;
+                    case DAMAGE:
+                        programCard.put("type", "DAMAGE");
+                        programCard.put("damage", ((DamageCard) field.getCard()).getDamage().name());
+                        break;
+                    default:
+                        continue;
+                }
+                programCard.put("visible", field.isVisible());
+                program.put(programCard);
+            }
+        }
+        playerJSON.put("program", program);
+
+        JSONArray cards = new JSONArray();
+        for (int j = 0; j < Player.NO_CARDS; j++) {
+            JSONObject cardsJSON = new JSONObject();
+            CardField field = player.getCardField(j);
+            if (field != null && field.getCard() != null) {
+                switch (field.getCard().getType()) {
+                    case PROGRAM:
+                        cardsJSON.put("type", "PROGRAM");
+                        cardsJSON.put("program", ((ProgramCard) field.getCard()).getProgram().name());
+                        break;
+                    case DAMAGE:
+                        cardsJSON.put("type", "DAMAGE");
+                        cardsJSON.put("damage", ((DamageCard) field.getCard()).getDamage().name());
+                        break;
+                    default:
+                        continue;
+                }
+                cardsJSON.put("visible", field.isVisible());
+                cards.put(cardsJSON);
+            }
+        }
+        playerJSON.put("cards", cards);
+
+        return playerJSON;
     }
 }

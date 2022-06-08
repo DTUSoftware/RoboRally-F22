@@ -117,7 +117,6 @@ public class PlayerView extends Tab implements ViewObserver {
             GameService.markPlayerReady(gameController.getGameID(), player.getID());
 //            finishButton.setDisable(true);
         });
-
         buttonPanel = new VBox(finishButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
         buttonPanel.setSpacing(3.0);

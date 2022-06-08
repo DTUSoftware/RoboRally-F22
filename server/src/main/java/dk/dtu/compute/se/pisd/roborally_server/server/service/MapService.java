@@ -20,6 +20,9 @@ public class MapService implements IMapService {
     @Autowired
     private IJSONService jsonService;
 
+    /** The map list */
+    private static final String[] maps = new String[] {"chop_shop_challenge", "defaultboard", "dizzy_highway", "risky_crossing"};
+
     /**
      * Finds all MapID's available on the server.
      *
@@ -30,6 +33,14 @@ public class MapService implements IMapService {
     public JSONArray findAll() {
         JSONArray maps = new JSONArray();
         List<String> mapIDs = jsonService.getFolderJSON("maps");
+
+        // Add the static maps
+        for (String mapID : MapService.maps) {
+            if (!mapIDs.contains(mapID)) {
+                mapIDs.add(mapID);
+            }
+        }
+
         for (String mapID : mapIDs) {
             JSONObject map = new JSONObject();
             map.put("id", mapID);

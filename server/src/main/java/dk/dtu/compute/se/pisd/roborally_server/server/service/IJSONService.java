@@ -16,5 +16,5 @@ public interface IJSONService {
      * @return the filenames, if any
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
-    public List<String> getFolderJSON(String foldername);
+    List<String> getFolderJSON(String foldername);
 }

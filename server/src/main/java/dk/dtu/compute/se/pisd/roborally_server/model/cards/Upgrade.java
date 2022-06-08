@@ -9,6 +9,7 @@ import java.util.List;
  * @author Marcus Sand, mwasa@dtu.dk (s215827)
  */
 public enum Upgrade {
+    /** Filler card */
     NONE("none");
 
     /** The displayName of a command */

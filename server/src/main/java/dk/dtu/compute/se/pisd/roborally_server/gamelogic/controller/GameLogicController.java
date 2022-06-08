@@ -1007,6 +1007,7 @@ public class GameLogicController {
     /**
      * Debug log function.
      *
+     * @param message the message to log
      * @author Marcus Sand, mwasa@dtu.dk (s215827)
      */
     public void debug(String message) {
